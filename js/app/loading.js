@@ -18,9 +18,10 @@ function Loading() {
     height : h
   }); 
 	
-	var bg = s.rect(0, 0, w, h);
+  var bg = s.rect(0, 0, w, h);
   
   bg.attr({ fill : s.gradient("r(0.5, 0.5, 1)#30385f-#000") });
+	
 	
   var frame = s.rect(w*0.4, h*0.35, w*0.2, h*0.2);  
   
@@ -30,6 +31,7 @@ function Loading() {
     "fill-opacity" : 0
   });
  
+ 
   var loading = s.text(w*0.5, h*0.46, "USCT Loading..."); 
   
   loading.attr({
@@ -38,31 +40,34 @@ function Loading() {
     "font-size" : w * 0.02, 
   });
 
+
   var pLeftFrame  = creatHalfFrame(w*0.4, h*0.4, 1);
   
   var pRightFrame = creatHalfFrame(w*0.6, h*0.4, -1);
 
+
   var lineUp = s.line(w*0.5, 0, w*0.5, h*0.35);
   
   lineUp.attr({stroke : "white"});
+  
 
   var lineDown = s.line(w*0.5, h,w*0.5, h*0.55);
   
   lineDown.attr({stroke : "white"});  
 	
 	//create corners
-	var cLeftTop = s.polyline([
-   0, h*0.03-6,
-   0, h*0.07, -6,
-   h*0.07-6, -6,
-   h*0.03-6, w*0.03-12,
-   h*0.03-6, w*0.03,
-   h*0.03, 0, h*0.03
+  var cLeftTop = s.polyline([
+    0, h*0.03-6,
+    0, h*0.07, -6,
+    h*0.07-6, -6,
+    h*0.03-6, w*0.03-12,
+    h*0.03-6, w*0.03,
+    h*0.03, 0, h*0.03
   ]);
   
   cLeftTop.attr({
-   fill : "#fff",
-   stroke : "#fff"
+    fill : "#fff",
+    stroke : "#fff"
   });  
   
   cLeftTop.attr({transform : 'translate('+w*0.4+','+h*0.32+')'});
@@ -118,6 +123,7 @@ function Loading() {
   }); 
   
   cRightBottom.attr({transform : 'translate(' + w*0.6 + ',' + h*0.58 + ')'});
+      
            
   setTimeout(function(){ 
     var animationMode = mina.easeinout;
@@ -183,36 +189,37 @@ function Loading() {
   function creatHalfFrame(x, y, d){     
 
     var pLeftS = s.polyline([
-     d, h*0.03,
-     d, h*0.07,
-     -1*d, h*0.07-4,
-     -1*d, h*0.03+4
+      d, h*0.03,
+      d, h*0.07,
+      -1*d, h*0.07-4,
+      -1*d, h*0.03+4
     ]);
     
     pLeftS.attr({
-     fill   : "#000",
-     stroke : "#000"
+      fill   : "#000",
+      stroke : "#000"
     });    
 
     
     var pLeftM = s.polyline([
-     0, -0.02*h,
-     0, h*0.12,
-     -6*d, h*0.12-6,
-     -6*d, 6-0.02*h
+      0, -0.02*h,
+      0, h*0.12,
+      -6*d, h*0.12-6,
+      -6*d, 6-0.02*h
     ]);
 
     pLeftM.attr({
-     fill   : "white",
-     stroke : "white"
+      fill   : "white",
+      stroke : "white"
     }); 
 
+
     var pLeftB = s.polyline([
-     0, -h*0.05,
-     0, h*0.15,
-     10*d, h*0.15-10,
-     10*d, -h*0.05+10,
-     0,-h*0.05
+      0, -h*0.05,
+      0, h*0.15,
+      10*d, h*0.15-10,
+      10*d, -h*0.05+10,
+      0,-h*0.05
     ]);    
     
     pLeftB.attr({
@@ -221,10 +228,13 @@ function Loading() {
       "fill-opacity" : 0
     });
 
+
     var lineLeft = s.line(-w*0.4*d, h*0.05, -5*d, h*0.05);
+    
     lineLeft.attr({stroke : "white"});
 
     var halfFrame = s.group(pLeftB, pLeftM, pLeftS, lineLeft);        
+    
     halfFrame.attr({transform:'translate(' + x + ',' + y + ')'});
 
     return halfFrame;
