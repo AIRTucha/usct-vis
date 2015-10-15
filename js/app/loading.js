@@ -39,12 +39,12 @@ function Loading() {
                 stroke : "white",
                 "fill-opacity" : 0
               });
-
-  var loading = s.text(w*0.5, h*0.45, "Loading...\n USCT");       
+ 
+  var loading = s.text(w*0.5, h*0.46, "USCT Loading...");       
     loading.attr({
                   fill : "white",
                   "text-anchor" : "middle",
-                  "font-size" : w * 0.02
+                  "font-size" : w * 0.02, 
                  });
 
   var pLeftFrame  = creatHalfFrame(w*0.4, h*0.4, 1);
