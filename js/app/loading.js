@@ -13,105 +13,126 @@
 var $ = require('jquery');
 var Snap = require('snap');
 
-
+/**
+ * DESCRIPTION
+ * @constructor
+ */
 function Loading() {
 
-    var w = window.innerWidth;
-    var h = window.innerHeight;
+    var w = $(window).width();
+    var h = $(window).height();
 
-    // Why set body to overflow hidden?
     $("body").css("overflow", "hidden")
              .css("background", "black");
     
     var s = Snap("#main").attr({
-                width:w,
-                height:h
+                width  : w,
+                height : h
     }); 
-    
-    var frame = s.rect(w*0.4, h*0.35, w*0.2,h*0.2);             
-    frame.attr({
-        fill: "black",
-        stroke: "white"
-    });
+	
+		var bg = s.rect(0, 0, w, h);
+    		bg.attr({ fill : s.gradient("r(0.5, 0.5, 1)#33305f-#000") });
+	
+    var frame = s.rect(w*0.4, h*0.35, w*0.2, h*0.2);             
+				frame.attr({
+						fill : "black",
+						stroke : "white",
+						"fill-opacity" : 0
+				});
 
-    var loading = s.text(w*0.5,h*0.45,"Loading...");       
-    loading.attr({
-        fill: "white",
-        "text-anchor": "middle",
-        "font-size": w * 0.02
-    });
+    var loading = s.text(w*0.5, h*0.45, "Loading...");       
+				loading.attr({
+						fill : "white",
+						"text-anchor" : "middle",
+						"font-size" : w * 0.02
+				});
 
-    var pLeftFrame =  creatHalfFrame(s, h, w, w*0.4,h*0.4,1);
-    var pRightFrame = creatHalfFrame(s, h, w, w*0.6,h*0.4,-1);
+    var pLeftFrame  = creatHalfFrame(w*0.4, h*0.4, 1);
+    var pRightFrame = creatHalfFrame(w*0.6, h*0.4, -1);
     
-    var lineUp = s.line(w*0.5,0,w*0.5,h*0.35);
-    lineUp.attr({stroke:"white"});
+    var lineUp = s.line(w*0.5, 0, w*0.5, h*0.35);
+    		lineUp.attr({stroke : "white"});
     
-    var lineDown = s.line(w*0.5,h,w*0.5,h*0.55);
-    lineDown.attr({stroke:"white"});  
+    var lineDown = s.line(w*0.5, h,w*0.5, h*0.55);
+    		lineDown.attr({stroke : "white"});  
+	
+	//create corners
+		var cLeftTop = s.polyline([0, h*0.03-4, 0, h*0.07, -4, h*0.07-4, -4, h*0.03-4, w*0.03-8, h*0.03-4, w*0.03, h*0.03, 0, h*0.03]);
+           cLeftTop.attr({fill : "#fff",stroke : "#fff"});  
+           cLeftTop.attr({transform : 'translate('+w*0.4+','+h*0.32+')'});
+    
+    
+		var cRightTop = s.polyline([0, h*0.03-4, 0, h*0.07, 4, h*0.07-4, 4, h*0.03-4, 8-w*0.03, h*0.03-4, -w*0.03, h*0.03, 0, h*0.03]);
+           cRightTop.attr({fill : "#fff", stroke : "#fff"});  
+           cRightTop.attr({transform:'translate(' + w*0.6 + ',' + h*0.32 + ')'});
+    
+		var cLeftBottom = s.polyline([0, 4-h*0.03, 0,-h*0.07, -4, 4-h*0.07, -4, 4-h*0.03, w*0.03-8, 4-h*0.03, w*0.03, -h*0.03, 0, -h*0.03]);
+           cLeftBottom.attr({fill : "#fff", stroke : "#fff"});  
+           cLeftBottom.attr({transform : 'translate('+w*0.4+','+h*0.58+')'});
+    
+    
+		var cRightBottom = s.polyline([0, 4-h*0.03, 0, -h*0.07, 4, 4-h*0.07, 4, 4-h*0.03, 8-w*0.03, 4-h*0.03, -w*0.03, -h*0.03, 0, -h*0.03]);
+           cRightBottom.attr({fill : "#fff", stroke : "#fff"});  
+           cRightBottom.attr({transform : 'translate(' + w*0.6 + ',' + h*0.58 + ')'});
            
     setTimeout(function(){ 
-        frame.animate({
-            x: w * 0.05,
-            y: window.innerHeight*0.035, // Dont call from global unnecessary, probably better to use jQuery, or I should put it this way, don't use window unless you have really no choice
-            width: w * 0.9,
-            height: window.innerHeight*0.9},1000);
-            
-            pLeftFrame.animate({transform: 'translate(' + w*0.05 + ',' + h*0.4 + ')'}, 1000);
-            pRightFrame.animate({transform: 'translate(' + w*0.95 + ',' + h*0.4 + ')'}, 1000);
-            lineUp.animate({transform: 'translate(' + 0 + ',' + -h*0.315 + ')'}, 1000);
-            lineDown.animate({transform: 'translate(' + 0 + ',' + h*0.385 + ')'}, 1000);
-            
-            loading.remove();
-    }, 2000);
-
-    // Do we really need to make these methods to be accessible?
-    /*
-    
-    namespace.prototype.frame = frame;
-    namespace.prototype.loading = loading;
-    namespace.prototype.pLeftFrame =  pLeftFrame;
-    namespace.prototype.pRightFrame = pRightFrame;
-    namespace.prototype.lineUp = lineUp;
-    namespace.prototype.lineDown = lineDown;
-    namespace.prototype.creatHalfFrame = creatHalfFrame();
-    */
-}
-
-/**
- * DESCRIPTION
- * @constructor
- * @param {bool} flag - True to turn LED on, vice versa. 
- */
-Loading.prototype.loadData = function() {
-    console.log("Data loaded!");
-}
-
-
-
-// I'm not sure whether I should put this function here, maybe make more sense
-// to put it inside Loading()
-//
-function creatHalfFrame(s, h, w, x, y, d){     
+			
+			//animation for the end of loading
+					 frame.animate({x : w*0.05,
+													y : window.innerHeight*0.035,
+													width : w*0.9,
+													height : window.innerHeight*0.9} ,
+													1000, mina.easeinout);
                         
-    var pLeftS = s.polyline([1*d,h*0.03,1*d,h*0.07,-2*d,h*0.07-3,-2*d,h*0.03+3]);
-    pLeftS.attr({fill:"black",stroke:"black"});    
-
-    var pLeftM = s.polyline([0*d,0,0*d,h*0.1,-7*d,h*0.1-7,-7*d,7]);
-    pLeftM.attr({fill:"white",stroke:"white"}); 
-
-    var pLeftB = s.polyline([0*d,-h*0.03,0*d,h*0.13,10*d,h*0.13-10,10*d,-h*0.03+10,0*d,-h*0.03]);    
-    pLeftB.attr({stroke:"white","opacity": 0.5});
-
-    var lineLeft = s.line(-w*0.4*d,h*0.05,-5*d,h*0.05);
-    lineLeft.attr({stroke:"white"});
+            cLeftTop.animate({transform : 'translate(' + w*0.05 + ',' + h*0.005 + ')'}, 1000, mina.easeinout);
+            cRightTop.animate({transform : 'translate(' + w*0.95 + ',' + h*0.005 + ')'}, 1000, mina.easeinout);
+            cLeftBottom.animate({transform : 'translate(' + w*0.05 + ',' + h*0.965 + ')'}, 1000, mina.easeinout);
+            cRightBottom.animate({transform : 'translate(' + w*0.95 + ',' + h*0.965 + ')'}, 1000, mina.easeinout);
             
-    var halfFrame = s.group(pLeftB,pLeftM,pLeftS,lineLeft);
-        
-    halfFrame.attr({transform:'translate('+x+','+y+')'});
+            pLeftFrame.animate({transform : 'translate(' + w*0.05 + ',' + h*0.4 + ')'}, 1000, mina.easeinout);
+            pRightFrame.animate({transform : 'translate(' + w*0.95 + ',' + h*0.4 + ')'}, 1000, mina.easeinout);
+            lineUp.animate({transform : 'translate(' + 0 + ',' + -h*0.315 + ')'}, 1000, mina.easeinout);
+            lineDown.animate({transform  : 'translate(' + 0 + ',' + h*0.385 + ')'}, 1000, mina.easeinout);
             
-    return halfFrame
+            loading.remove();           
+    }, 1000);
+
+ /**
+ * DESCRIPTION
+ * @function create image of sophisticated part of the frame 
+ * @param x, y {int} coordinates position
+ * @param d {int} scaling on x axis
+ */
+    function creatHalfFrame(x, y, d){     
+                        
+        var pLeftS = s.polyline([ 1*d, h*0.03, 1*d, h*0.07, -1*d, h*0.07-3, -1*d, h*0.03+3]);
+            pLeftS.attr({
+												 fill   : "#000",
+												 stroke : "#000"
+												});    
+
+
+        var pLeftM = s.polyline([0*d, -0.02*h, 0*d, h*0.12, -4*d, h*0.12-4, -4*d, 4-0.02*h]);
+            pLeftM.attr({
+												 fill   : "white",
+												 stroke : "white"
+												}); 
+
+        var pLeftB = s.polyline([0*d, -h*0.05, 0*d, h*0.15, 5*d, h*0.15-5, 5*d, -h*0.05+5, 0*d,-h*0.05]);    
+            pLeftB.attr({
+												stroke  : "white",
+												"opacity" : 0.5,
+												"fill-opacity" : 0
+						});
+
+        var lineLeft = s.line(-w*0.4*d, h*0.05, -5*d, h*0.05);
+            lineLeft.attr({stroke : "white"});
+            
+        var halfFrame = s.group(pLeftB, pLeftM, pLeftS, lineLeft);        
+            halfFrame.attr({transform:'translate(' + x + ',' + y + ')'});
+            
+            return    halfFrame
+        }
 }
-
 
 module.exports = Loading;
