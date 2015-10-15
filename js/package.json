@@ -1,0 +1,25 @@
+{
+  "name": "usct-vis",
+  "version": "1.0.0",
+  "description": "browserify app/main.js -o usct.js -d",
+  "main": "usct.js",
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "snap": "global:Snap"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "browserify": "^11.2.0",
+    "browserify-shim": "^3.8.10",
+    "jquery": "^2.1.4"
+  },
+  "devDependencies": {}
+}
