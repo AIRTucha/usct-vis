@@ -7,6 +7,8 @@ var Snap = require('snap');
 
 function Loading() {
 
+  var loaded = false;
+  
   var w = $(window).width();
   var h = $(window).height();
   
@@ -120,9 +122,12 @@ function Loading() {
     
   // animation starts
   setTimeout(function(){ 
-    loadingIconAnimation(mina.easeinout, 300);
-    openScreenAnimation(mina.easeinout, 300);
+    loadingIconAnimation(mina.easeinout, 250, loaded, openScreenAnimation);
   }, 1000);
+  
+  setTimeout(function(){ 
+    loaded = true;
+  }, 5000);
 
   
  /**
@@ -280,16 +285,120 @@ function Loading() {
     return icon;    
   }
   
-  function loadingIconAnimation(animationMode, duration){    
-     loadingIcon.right.animate(
-       {d: 'M ' +
-        loadingIcon.bl[0] + ',' + loadingIcon.bl[1] + ' ' +
-        loadingIcon.c[0] + ',' + loadingIcon.c[1]  + ' ' +
-        loadingIcon.br[0] + ',' + loadingIcon.br[1] + ' Z'
-       },
+  function loadingIconAnimation(animationMode, duration, ready, callback){
+   //step one
+    loadingIcon.right.animate({
+      transform : 'rotate(' + 90 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
+    },
        duration,animationMode
-       );
+    );
+        
+    loadingIcon.left.animate({
+      transform : 'rotate(' + 90 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
+    },                           
+      duration,animationMode
+    );
+    
+    if(loaded) 
+      endAnimation(callback);
+    else
+      setTimeout(function(){
+        loadingStepTwo(animationMode, duration, ready, callback)
+      }, 750);    
   }
+  
+  function loadingStepTwo(animationMode, duration, ready, callback){  
+    loadingIcon.right.animate({
+      transform : 'rotate(' + 180 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
+      },
+       duration,animationMode,
+       function(){
+        loadingIcon.right.attr({
+          transform : 'rotate(' + 0 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
+        });
+       }
+    );
+        
+    loadingIcon.left.animate({
+      transform : 'rotate(' + 180 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
+      },                           
+      duration,animationMode,
+      function(){
+        loadingIcon.left.attr({
+          transform : 'rotate(' + 0 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
+        });
+      }                             
+    );        
+    
+    if(loaded) 
+      endAnimation(callback);
+    else
+      setTimeout(function(){
+        loadingStepThree(animationMode, duration, ready, callback)
+      }, 750);
+  }
+  
+  function loadingStepThree(animationMode, duration, ready, callback){  
+    loadingIcon.top.animate({
+      transform : 'rotate(' + 90 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
+    },
+       duration,animationMode
+    );
+        
+    loadingIcon.bottom.animate({
+      transform : 'rotate(' + 90 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
+    },                           
+      duration,animationMode
+    );
+    
+    if(loaded) 
+      endAnimation(callback);
+    else
+      setTimeout(function(){
+        loadingStepFour(animationMode, duration, ready, callback)
+      }, 750);
+  }
+  
+  function loadingStepFour(animationMode, duration, ready, callback){  
+    loadingIcon.top.animate({
+      transform : 'rotate(' + 180 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
+    },
+       duration,animationMode,
+      function(){
+        loadingIcon.top.attr({
+          transform : 'rotate(' + 0 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
+        });
+      }             
+    );
+        
+    loadingIcon.bottom.animate({
+      transform : 'rotate(' + 180 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
+    },                           
+      duration,animationMode,
+      function(){
+        loadingIcon.bottom.attr({
+          transform : 'rotate(' + 0 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
+        });
+      }                   
+    );
+    
+    if(loaded) 
+      endAnimation(callback);
+    else
+      setTimeout(function(){
+        loadingIconAnimation(animationMode, duration, ready, callback)
+      }, 750);
+  }
+  
+  function endAnimation(callback){  
+    loadingIcon.top.remove();
+    loadingIcon.right.remove();
+    loadingIcon.bottom.remove();
+    loadingIcon.left.remove();
+    
+    callback(mina.easeinout, 250);    
+  }
+  
   
   /**
   * @function function returns function which keeps color in string as closure
@@ -302,7 +411,7 @@ function Loading() {
         fill   : color
       });
     }
-  }
+  } 
 }
 
 module.exports = Loading;
