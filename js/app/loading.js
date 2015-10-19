@@ -84,7 +84,7 @@ function Loading() {
     
     logo.transform('matrix('
       + logo.scale + ',0,0,' + logo.scale + ','
-      + w*0.403 + ',' + h*0.4 + ')'
+      + w*0.405 + ',' + h*0.4 + ')'
     );
   });
 
