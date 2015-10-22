@@ -1,22 +1,21 @@
 var $ = require('jquery');
 var Loading = require('./loading');
+var Modes = require('./modes');
 
 console.log("Main file loaded");
-
-// This line runs your loading stuff
-// You need to think of how to use This
-// For example:
-// var loading = new Loading("data": <PATH>);
-//
-// and if user switch data
-// we can do loading.loadData(<PATH>);
-// and a loading bar with appear, but dont redo the splash animation
-var loading = new Loading(function(){
  
-  $('#container').css({"x":$(window).width()*0.5-256,"y":$(window).height()*0.5-256})    
-             
+var loading = new Loading('#main',function(){
+  var s = Snap("#main");
+  var fO = s.append(Snap.parse('<foreignObject id="container" width="512" height="512"></foreignObject>'));
+  
+  s.select('#container').attr({
+    x: $(window).width()*0.5-256,
+    y: $(window).height()*0.5-256
+  });
+
+
 	config = {
-		"dom_container_id": "container",
+		"domContainerId": "container",
 		"slicemaps_paths": [
 		  'data/new_data_USCT1.png',
 			'data/new_data_USCT2.png',
@@ -29,15 +28,18 @@ var loading = new Loading(function(){
 			'data/new_data_USCT9.png'
 			],
       "callback" : function(){
-        setTimeout(function(){loading.stopIcon()}, 500); 
-      },
+        setTimeout(function(){
+          loading.stopIcon();         
+        }, 500); 
+      },    
+      "shader_name" : "secondPassRB",
 			"slices_range": [0, 144],
 			"gray_min": 0.05,
 			"gray_max": 0.45,
 			"row_col": [4, 4],
 			"steps": 100,
 			"render_size": [512, 512],
-			"renderer_canvas_size": [512, 512],
+			"renderer_canvas_size": [512, 512], 
 			"absorption_mode": 1,
 			"opacity_factor": 4,
 			"color_factor": 2,
@@ -53,6 +55,9 @@ var loading = new Loading(function(){
       "sat" :0.8,
       "sos" :1
 		};
-  
-   rcl2 = new VRC.VolumeRaycaster(config);
+    setTimeout(function(){
+       rcl2 = new VRC.VolumeRaycaster(config);
+       Modes('#main');
+      }, 500); 
+   
 });

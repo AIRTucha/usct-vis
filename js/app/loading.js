@@ -5,12 +5,12 @@
 var $ = require('jquery');
 var Snap = require('snap');
 
-function Loading(callback) {
+function Loading(container,callback) {
   
   var w = $(window).width();
   var h = $(window).height();
   
-  var s = Snap("#main").attr({
+  var s = Snap(container).attr({
     width  : w,
     height : h
   });
@@ -18,8 +18,8 @@ function Loading(callback) {
   var bg = s.rect(0, 0, w, h);
   var frame = s.rect(w*0.4, h*0.35, w*0.2, h*0.2);
   
-  var pLeftFrame  = creatHalfFrame(w*0.4, h*0.4, 1);  
-  var pRightFrame = creatHalfFrame(w*0.6, h*0.4, -1);
+  var pLeftFrame  = createHalfFrame(w*0.4, h*0.4, 1);  
+  var pRightFrame = createHalfFrame(w*0.6, h*0.4, -1);
   
   var lineUp = s.line(w*0.5, 0, w*0.5, h*0.35);
   var lineDown = s.line(w*0.5, h,w*0.5, h*0.55);  
@@ -201,7 +201,7 @@ function Loading(callback) {
       duration, animationMode,
       function(){
         //start loading icon animation
-        loadingIcon = creatLoadingIcon(w*0.5, h*0.47); 
+        loadingIcon = createLoadingIcon(w*0.5, h*0.47); 
         startIconAnimation(mina.easeinout, 250);
       
         callback()
@@ -217,7 +217,7 @@ function Loading(callback) {
    * @param x, y {int} coordinates position
    * @param d {int} scaling on x axis
    */
-  function creatHalfFrame(x, y, d){     
+  function createHalfFrame(x, y, d){     
 
     var pLeftS = s.polyline([
      d, h*0.03,
@@ -263,7 +263,7 @@ function Loading(callback) {
   * @function create loading icon
   * @param x, y {int} coordinates position    
   */
-  function creatLoadingIcon(x, y){
+  function createLoadingIcon(x, y){
     x-=h*0.02; // centralizetion 
     
     var tl = [x, y];              // top left corner
