@@ -90,6 +90,9 @@ function Loading(container,callback) {
     Snap.load("/logo.svg", function(f){
       logo=f.select('#usct-logo')
       logo.scale = w/4000;
+      logo.height = 125 * logo.scale;
+      logo.width = 725 * logo.scale;
+      
       s.append(logo);
 
       logo.transform('matrix('
@@ -142,9 +145,9 @@ function Loading(container,callback) {
     //main frame animation
     frame.animate({
       x : w*0.05,
-      y : window.innerHeight*0.035,
+      y : h*0.035,
       width : w*0.9,
-      height : window.innerHeight*0.9
+      height : h*0.9
       },
       duration,animationMode
      );
@@ -191,13 +194,12 @@ function Loading(container,callback) {
     },
      duration, animationMode);
 
-
     //logo moved to corner
     logo.animate({
       transform : 'matrix('
       + logo.scale + ',0,0,' + logo.scale + ','
-      + w*0.75 + ',' + h*0.87 + ')'
-    },
+      + (w*0.95 - logo.width - h*0.015 )  + ',' + (h*0.92 - logo.height) + ')'
+    },            
       duration, animationMode,
       function(){
         //start loading icon animation

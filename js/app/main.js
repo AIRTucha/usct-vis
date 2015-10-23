@@ -6,26 +6,31 @@ console.log("Main file loaded");
  
 var loading = new Loading('#main',function(){
   var s = Snap("#main");
-  var fO = s.append(Snap.parse('<foreignObject id="container" width="512" height="512"></foreignObject>'));
+  var breastSize = $(window).height() / 2;
+  var fO = s.append(Snap.parse('<foreignObject id="container" width="' + breastSize + 
+                               '" height="' + breastSize + '"></foreignObject>'));
+  
+  
+  
   
   s.select('#container').attr({
-    x: $(window).width()*0.5-256,
-    y: $(window).height()*0.5-256
+    x: $(window).width()*0.5-breastSize/2,
+    y: $(window).height()*0.5-breastSize/2
   });
 
 
 	config = {
 		"domContainerId": "container",
 		"slicemaps_paths": [
-		  'data/new_data_USCT1.png',
-			'data/new_data_USCT2.png',
-			'data/new_data_USCT3.png',
-			'data/new_data_USCT4.png',
-			'data/new_data_USCT5.png',
-			'data/new_data_USCT6.png',
-			'data/new_data_USCT7.png',
-			'data/new_data_USCT8.png',
-			'data/new_data_USCT9.png'
+		  'data/phantom1.png',
+			'data/phantom2.png',
+			'data/phantom3.png',
+			'data/phantom4.png',
+			'data/phantom5.png',
+			'data/phantom6.png',
+			'data/phantom7.png',
+			'data/phantom8.png',
+			'data/phantom9.png'
 			],
       "callback" : function(){
         setTimeout(function(){
@@ -38,8 +43,8 @@ var loading = new Loading('#main',function(){
 			"gray_max": 0.45,
 			"row_col": [4, 4],
 			"steps": 100,
-			"render_size": [512, 512],
-			"renderer_canvas_size": [512, 512], 
+			"render_size": [breastSize, breastSize],
+			"renderer_canvas_size": [breastSize, breastSize], 
 			"absorption_mode": 1,
 			"opacity_factor": 4,
 			"color_factor": 2,
@@ -57,7 +62,7 @@ var loading = new Loading('#main',function(){
 		};
     setTimeout(function(){
        rcl2 = new VRC.VolumeRaycaster(config);
-       Modes('#main');
+       Modes(rcl2,'#main');
       }, 500); 
    
 });

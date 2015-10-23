@@ -1,1 +1,1 @@
-py -m SimpleHTTPServer 10005
+py -m SimpleHTTPServer 10002
