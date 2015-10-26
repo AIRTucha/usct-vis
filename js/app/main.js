@@ -37,28 +37,18 @@ var loading = new Loading('#main',function(){
           loading.stopIcon();         
         }, 500); 
       },    
-      "shader_name" : "secondPassRB",
-			"slices_range": [0, 144],
-			"gray_min": 0.05,
-			"gray_max": 0.45,
+      "shader_name" : "secondPassFusion",
+			"slices_range": [0, 144],			
 			"row_col": [4, 4],
-			"steps": 100,
 			"render_size": [breastSize, breastSize],
-			"renderer_canvas_size": [breastSize, breastSize], 
-			"absorption_mode": 1,
-			"opacity_factor": 4,
-			"color_factor": 2,
+			"renderer_canvas_size": [breastSize, breastSize],	
+			"opacity_factor": 40,
+      "color_factor": 1,
 			"x_min": 0.0,
-			"x_max": 1.0,
-			"auto_steps": true,
-			"tf_colors": [
-	      {"pos": 0.25,"color": "#7CFF79"},
-	      {"pos": 0.5, "color": "#FF9400"},
-	      {"pos": 1.0, "color": "#7F0000"},
-	     ],
-      "refl":0.4,
-      "sat" :0.8,
-      "sos" :1
+			"x_max": 1.0,	
+      "refl":5,
+      "sat" :0.9,
+      "sos" :0.8
 		};
     setTimeout(function(){
        rcl2 = new VRC.VolumeRaycaster(config);

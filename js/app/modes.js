@@ -12,14 +12,20 @@ function Modes(obj, container, callback) {
   
   var s = Snap(container);
   
-  
+
   modesButtonGenerator([
     {
       image:'/imgs/atten.PNG',
       name:'Attenuation',
       tooltip:'',
       config:{
-        shader_name:'secondPassAtten'
+        shader_name:'secondPassAtten',
+        gray_min : 0.1,
+        gray_max : 0.9,
+        color_factor : 2,
+        sos : 1,
+        sat : 0.8,
+        refl: 0.4
       }
     },
     {
@@ -106,7 +112,7 @@ function Modes(obj, container, callback) {
                                    'width='+ buttonSize + ' ' + 
                                    'height=' + buttonSize*1.25 +  ' ' + 
                                    'x=' + (w*0.05 + buttonSize*(.5+i))  + ' ' +
-                                   'y=' + (h*0.95 - buttonSize*1.5) +
+                                   'y=' + (h*0.95 - buttonSize*1.75)+
                                    '><div class="mode_button"'+
                                    'id=' + 'mode' + i + ' ' +
                                    '></div></foreignObject>'));
