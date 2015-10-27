@@ -8,7 +8,7 @@ function Modes(obj, container, callback) {
   var w = $(window).width();
   var h = $(window).height();
   var size = w / 3;
-  var buttonSize = size / 6;
+  var buttonSize = size / 8;
   
   var s = Snap(container);
   
@@ -110,10 +110,12 @@ function Modes(obj, container, callback) {
       var fO = s.append(Snap.parse('<foreignObject ' + 
                                    
                                    'width='+ buttonSize + ' ' + 
-                                   'height=' + buttonSize*1.25 +  ' ' + 
+                                   'height=' + buttonSize*1.3 +  ' ' + 
                                    'x=' + (w*0.05 + buttonSize*(.5+i))  + ' ' +
-                                   'y=' + (h*0.95 - buttonSize*1.75)+
-                                   '><div class="mode_button"'+
+                                   'y=' + (h*0.95 - buttonSize*1.75) +
+                                   (b.name == 'Fusion' ? 
+                                   '><div class="mode_button_active"' :  
+                                   '><div class="mode_button"') +
                                    'id=' + 'mode' + i + ' ' +
                                    '></div></foreignObject>'));
       
@@ -125,7 +127,11 @@ function Modes(obj, container, callback) {
       $('#mode'+i).append('<p>' + b.name + '</p>' ); 
       
       $('#mode'+i).click(function(){
-        obj.setMode(b.config);
+        obj.setMode(b.config);         
+        
+        $('.mode_button_active').removeClass('mode_button_active').addClass('mode_button');
+        
+        $('#mode'+i).addClass('mode_button_active');       
       });      
     });      
   }

@@ -6,7 +6,7 @@ console.log("Main file loaded");
  
 var loading = new Loading('#main',function(){
   var s = Snap("#main");
-  var breastSize = $(window).height() / 2;
+  var breastSize = $(window).height() / 1.75;
   var fO = s.append(Snap.parse('<foreignObject id="container" width="' + breastSize + 
                                '" height="' + breastSize + '"></foreignObject>'));
   
@@ -49,10 +49,12 @@ var loading = new Loading('#main',function(){
       "refl":5,
       "sat" :0.9,
       "sos" :0.8
-		};
+		};  
     setTimeout(function(){
        rcl2 = new VRC.VolumeRaycaster(config);
-       Modes(rcl2,'#main');
-      }, 500); 
-   
+       Modes(rcl2,'#main'); 
+       loading.drawCorners(breastSize);
+      }, 500);    
 });
+
+
