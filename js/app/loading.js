@@ -5,7 +5,7 @@
 var $ = require('jquery');
 var Snap = require('snap');
 
-function Loading(container,callback) {
+function loading(container,callback) {
   
   var w = $(window).width();
   var h = $(window).height();
@@ -427,61 +427,64 @@ function Loading(container,callback) {
 
     loaded = true;
   }
-  
+    /**
+  * @function drows white corners in for square in the center of screen
+  * @param size of square
+  */
   this.drawCorners = function(size){ 
-  var h = $(window).height()/1.5;
-  
-  var x = $(window).width()*0.5-size/2;
-  var y = $(window).height()*0.5-size/2;
-  
-  var cLeftTop = s.polyline([
-         x-3, y,
-         x-3, y+h*0.03-3,
-         x, y+h*0.03-6,
-         x, y,
-         x+h*0.03-6, y, 
-         x+h*0.03-3, y-3,
-         x-3, y-3
-        ]);
+    var h = $(window).height()/1.5;
 
-  var cRightTop = s.polyline([
-         x+3+size, y,
-         x+3+size, y+h*0.03-3,
-         x+size, y+h*0.03-6,
-         x+size, y,
-         x-h*0.03+6+size, y, 
-         x-h*0.03+3+size, y-3,
-         x+3+size, y-3
-     ]);
+    var x = $(window).width()*0.5-size/2;
+    var y = $(window).height()*0.5-size/2;
 
-  var cLeftBottom = s.polyline([  
-         x-3, y+size,
-         x-3, y-h*0.03+3+size,
-         x, y-h*0.03+6+size,
-         x, y+size,
-         x+h*0.03-6, y+size, 
-         x+h*0.03-3, y+3+size,
-         x-3, y+3+size
-    ]);
+    var cLeftTop = s.polyline([
+           x-3, y,
+           x-3, y+h*0.03-3,
+           x, y+h*0.03-6,
+           x, y,
+           x+h*0.03-6, y, 
+           x+h*0.03-3, y-3,
+           x-3, y-3
+          ]);
 
-  var cRightBottom = s.polyline([ 
-         x+3+size, y+size,
-         x+3+size, y-h*0.03+3+size,
-         x+size, y-h*0.03+6+size,
-         x+size, y+size,
-         x-h*0.03+6+size, y+size, 
-         x-h*0.03+3+size, y+3+size,
-         x+3+size, y+3+size
-    ]); 
+    var cRightTop = s.polyline([
+           x+3+size, y,
+           x+3+size, y+h*0.03-3,
+           x+size, y+h*0.03-6,
+           x+size, y,
+           x-h*0.03+6+size, y, 
+           x-h*0.03+3+size, y-3,
+           x+3+size, y-3
+       ]);
 
-  var breastBoarder = s.group(cLeftTop, cRightTop, cLeftBottom, cRightBottom); 
+    var cLeftBottom = s.polyline([  
+           x-3, y+size,
+           x-3, y-h*0.03+3+size,
+           x, y-h*0.03+6+size,
+           x, y+size,
+           x+h*0.03-6, y+size, 
+           x+h*0.03-3, y+3+size,
+           x-3, y+3+size
+      ]);
 
-  breastBoarder.attr({
-    fill   : 'white'
-  });
+    var cRightBottom = s.polyline([ 
+           x+3+size, y+size,
+           x+3+size, y-h*0.03+3+size,
+           x+size, y-h*0.03+6+size,
+           x+size, y+size,
+           x-h*0.03+6+size, y+size, 
+           x-h*0.03+3+size, y+3+size,
+           x+3+size, y+3+size
+      ]); 
+
+    var breastBoarder = s.group(cLeftTop, cRightTop, cLeftBottom, cRightBottom); 
+
+    breastBoarder.attr({
+      fill   : 'white'
+    });
+  }
 }
-}
 
 
 
-module.exports = Loading;
+module.exports = loading;

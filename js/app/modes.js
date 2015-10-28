@@ -3,21 +3,22 @@
 **/
 var $ = require('jquery');
 var Snap = require('snap');
+var Tooltip= require('./tooltip');
 
-function Modes(obj, container, callback) {
+function modes(obj, container, callback) {
   var w = $(window).width();
   var h = $(window).height();
   var size = w / 3;
   var buttonSize = size / 8;
   
   var s = Snap(container);
-  
+  var tl = Tooltip(container);
 
   modesButtonGenerator([
     {
       image:'/imgs/atten.PNG',
       name:'Attenuation',
-      tooltip:'',
+      tooltip:'The model shows distribution of areas with high and low attenuation to user via brightness. So, it allows to estimate the attenuational value at certain point of space.<br>Attenuation can be helpful in an identification of the particular lesion`s type.',
       config:{
         shader_name:'secondPassAtten',
         gray_min : 0.1,
@@ -31,7 +32,7 @@ function Modes(obj, container, callback) {
     {
       image:'/imgs/attenM.PNG',
       name:'Attenuation Max',
-      tooltip:'',
+      tooltip:'The model shows user only parts of breast which have highest attenuation values and allows to look at it more clear.<br>Attenuation can be helpful in an identification of the particular lesion`s type.',
       config:{
         shader_name:'secondPassAttenMax'
       }
@@ -39,7 +40,7 @@ function Modes(obj, container, callback) {
     {
       image:'/imgs/sos.PNG',
       name:'Sound Speed',
-      tooltip:'',
+      tooltip:'The model shows you distribution of areas with high and low sound speed via brightness. So, it allows to estimate the value of sound speed at certain point of space.<br>Hight sound speed points doctor to the high probability on breast cancer at the point.',
       config:{
         shader_name:'secondPassSos'
       }
@@ -47,7 +48,7 @@ function Modes(obj, container, callback) {
     {
       image:'/imgs/sosM.PNG',
       name:'Sound Speed Max',
-      tooltip:'',
+      tooltip:'The model shows user only parts of breast which have highest sound speed values and allows look at more clear.<br>Hight sound speed points doctor to the high probability on breast cancer at the point.',
       config:{
         shader_name:'secondPassSosMax'
       }
@@ -55,7 +56,7 @@ function Modes(obj, container, callback) {
     {
       image:'imgs/Refl.PNG',
       name:'Reflection',
-      tooltip:'',
+      tooltip:'The model shows high resolution general structure of a breast and uses the same principle with traditional ultrasound diagnostics.',
       config:{
         shader_name:'secondPassRefl'
       }
@@ -63,7 +64,7 @@ function Modes(obj, container, callback) {
     {
       image:'/imgs/cuttOff.PNG',
       name:'Refl+CuttOff',
-      tooltip:'',
+      tooltip:'Combination of reflectional image with high lighted areas there sound speed data`s values are high.<br>Hight sound speed points doctor to the high probability on breast cancer at the point.',
       config:{
         shader_name:'secondPassCutOff'
       }
@@ -71,7 +72,7 @@ function Modes(obj, container, callback) {
     {
       image:'/imgs/RA.PNG',
       name:'Refl+Atten',
-      tooltip:'',
+      tooltip:'Combination of reflection and attenuation allows to evaluate structure and an attenuation at the same time.<br>The reflectional data is represented by gray scale gradation and attenuation is shown via color. Human eye is more sensitive to the hue of the color than to the saturation that`s why the mode is useful when ditelisation of attentional data is important.',
       config:{
         shader_name:'secondPassAR'
       }
@@ -79,7 +80,7 @@ function Modes(obj, container, callback) {
     {
       image:'/imgs/rb.PNG',
       name:'Readl Body',
-      tooltip:'',
+      tooltip:'The mode combines sound speed and reaflecional infromation to separate skin and actuall body and make it look like more realistic.',
       config:{
         shader_name:'secondPassRB'
       }
@@ -87,7 +88,7 @@ function Modes(obj, container, callback) {
     {
       image:'/imgs/fusion.PNG',
       name:'Fusion',
-      tooltip:'',
+      tooltip:'Combination of three different modalities demonstrates the most complete way to visualize USCT data, it allows to evaluate structure, sound speed and attenuation at the same time.<br>The reflectional data is represented by gray scale gradation, sound speed by color and attenuation is shown via saturation of the color.',
       config:{
         shader_name:'secondPassFusion'
       }
@@ -95,7 +96,7 @@ function Modes(obj, container, callback) {
     {
       image:'/imgs/sr.PNG',
       name:'Sos+Refl',
-      tooltip:'',
+      tooltip:'Combination of reflection and sound speed allows to evaluate structure and sound speed at the same time.<br>The reflectional data is represented by gray scale gradation and sound speed is shown via color. The mode can be more helpful than fusion of three modalities, because it can be difficult to determine color in areas with high attenuation for normal fusion.',
       config:{
         shader_name:'secondPassSR'
       }
@@ -132,15 +133,14 @@ function Modes(obj, container, callback) {
         $('.mode_button_active').removeClass('mode_button_active').addClass('mode_button');
         
         $('#mode'+i).addClass('mode_button_active');       
-      });      
+      });
+      
+      tl('#mode'+i)(b.tooltip);
     });      
   }
 }
 
-
-module.exports = Modes;
-
-
+module.exports = modes;
 
 
 
