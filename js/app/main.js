@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var Loading = require('./loading');
 var Modes = require('./modes');
+var Box = require('./box');
 
 console.log("Main file loaded");
  
@@ -9,6 +10,8 @@ var loading = new Loading('#main',function(){
   var breastSize = $(window).height() / 1.75;
   var fO = s.append(Snap.parse('<foreignObject id="container" width="' + breastSize + 
                                '" height="' + breastSize + '"></foreignObject>'));
+  
+  var box = Box("#main",breastSize*1.5,breastSize/4);
   
   
   
