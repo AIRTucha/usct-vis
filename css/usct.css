@@ -1,10 +1,13 @@
 @import url("reset.css");
+@import url("jquery-ui.min.css");
+@import url("jq-tweak.css");
 @import url(https://fonts.googleapis.com/css?family=Montserrat);
 
 /*# sourceMappingURL=usct.css.map */
 
 body {
 font-family: 'Open Sans Condensed', sans-serif;
+color : white;
 }
 
 .mode_button {
@@ -44,3 +47,4 @@ color: white;
 text-align: center;
 opacity: 0.85;
 }
+

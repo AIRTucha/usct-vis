@@ -1,0 +1,13 @@
+
+.ui-slider .ui-slider-handle {
+    cursor: default;
+    height: 0.6em;
+    z-index: 2;
+    border-radius: 0px;
+}
+.ui-slider-horizontal {
+    cursor: default;
+    height: 0.2em;
+    z-index: 2;
+    border-radius: 0px;
+}

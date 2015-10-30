@@ -1,28 +1,19 @@
 var $ = require('jquery');
 var Loading = require('./loading');
 var Modes = require('./modes');
-var Box = require('./box');
+var sliders = require('./sliders');
+
+
 
 console.log("Main file loaded");
  
 var loading = new Loading('#main',function(){
   var s = Snap("#main");
+  var w = $(window).width();
   var breastSize = $(window).height() / 1.75;
   var fO = s.append(Snap.parse('<foreignObject id="container" width="' + breastSize + 
                                '" height="' + breastSize + '"></foreignObject>'));
-  
-  var box = Box("#main","test",breastSize/2,breastSize);
-  
-  
-  
-  
-  s.select('#container').attr({
-    x: $(window).width()*0.5-breastSize/2,
-    y: $(window).height()*0.5-breastSize/2
-  });
-
-
-	config = {
+  var tomoConfig = {
 		"domContainerId": "container",
 		"slicemaps_paths": [
 		  'data/phantom1.png',
@@ -52,11 +43,51 @@ var loading = new Loading('#main',function(){
       "refl":5,
       "sat" :0.9,
       "sos" :0.8
-		};  
+		};
+  
+  var slidersConf = {
+    container : '#main',
+    title : 'Cutter',
+    width : w/6,
+    sliders :[
+      {
+        range : true,
+        min : 0,
+        max : 500,
+        values: [ 75, 300 ],
+        text : function (v){return "X range is " + v[0] + "% - " + v[1] +"%"},
+        callback: function (v){ console.log(v)}
+      },
+      {
+        range : true,
+        min : 0,
+        max : 500,
+        values: [ 75, 300 ],
+        text : function (v){return "Y range is " + v[0] + "% - " + v[1] +"%"},
+        callback: function (v){ console.log(v)}
+      },
+      {
+        range : true,
+        min : 0,
+        max : 500,
+        values: [ 75, 300 ],
+        text : function (v){return "Z range is " + v[0] + "% - " + v[1] +"%"},
+        callback: function (v){ console.log(v)}
+      }
+    ]    
+  }
+  
+  s.select('#container').attr({
+    x: $(window).width()*0.5-breastSize/2,
+    y: $(window).height()*0.5-breastSize/2
+  });
+  
+  
     setTimeout(function(){
-       rcl2 = new VRC.VolumeRaycaster(config);
+       rcl2 = new VRC.VolumeRaycaster(tomoConfig);
        Modes(rcl2,'#main'); 
        loading.drawCorners(breastSize);
+       sliders(slidersConf);
       }, 500);    
 });
 

@@ -19,7 +19,8 @@
   "dependencies": {
     "browserify": "^11.2.0",
     "browserify-shim": "^3.8.10",
-    "jquery": "^2.1.4"
+    "jquery": "^2.1.4",
+    "jquery-ui": "^1.10.5"
   },
   "devDependencies": {}
 }
