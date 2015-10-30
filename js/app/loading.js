@@ -16,7 +16,10 @@ function loading(container,callback) {
   });
   
   var bg = s.rect(0, 0, w, h);
+  
   var frame = s.rect(w*0.4, h*0.35, w*0.2, h*0.2);
+  var maskW = s.rect(0, 0, w, h);
+  var maskB = s.rect(0, h*0.43+1, w, h*0.04-1);
   
   var pLeftFrame  = createHalfFrame(w*0.4, h*0.4, 1);  
   var pRightFrame = createHalfFrame(w*0.6, h*0.4, -1);
@@ -74,6 +77,11 @@ function loading(container,callback) {
  * @functions set parametrs for elements of animation
  */   
   function init(callback){
+    var mask = s.group(maskW, maskB);
+    
+    maskW.attr({fill : 'white'});
+    maskB.attr({fill : 'black'});
+    
     //make app almost full screen
     $("body").css("overflow", "hidden")
              .css("background", "black");  
@@ -83,7 +91,8 @@ function loading(container,callback) {
     frame.attr({
       fill : "black",
       stroke : "white",
-      "fill-opacity" : 0
+      "fill-opacity" : 0,
+      mask : mask
     });  
     
     // loads logo and init all other elements after that
@@ -219,15 +228,7 @@ function loading(container,callback) {
    * @param x, y {int} coordinates position
    * @param d {int} scaling on x axis
    */
-  function createHalfFrame(x, y, d){     
-
-    var pLeftS = s.polyline([
-     d, h*0.03,
-     d, h*0.07,
-     -1*d, h*0.07-4,
-     -1*d, h*0.03+4
-    ]);   
-        
+  function createHalfFrame(x, y, d){    
     var pLeftM = s.polyline([
       0, -0.02*h,
       0, h*0.12,
@@ -243,8 +244,21 @@ function loading(container,callback) {
      0,-h*0.05
     ]); 
     
+    var maskB = s.polyline([
+     d, h*0.03,
+     d, h*0.07,
+     -1*d, h*0.07-4,
+     -1*d, h*0.03+4
+    ]);
+    
+    var maskW = s.rect(d>0?-w*0.4:-w*0.1, -h*.1, w/2, h*.3);
+    var mask = s.group(maskW, maskB);
+    
     var lineLeft = s.line(-w*0.4*d, h*0.05, -5*d, h*0.05);
-    var halfFrame = s.group(pLeftB, pLeftM, pLeftS, lineLeft);
+    var halfFrame = s.group(pLeftB, pLeftM, lineLeft, mask);
+    
+    maskW.attr({fill : 'white'});
+    maskB.attr({fill : 'black', stroke : 'black'});
     
     pLeftB.attr({
       stroke  : "white",
@@ -253,10 +267,9 @@ function loading(container,callback) {
     });
     
     lineLeft.attr({stroke : "white"});
-    setColor('#000020')(pLeftS);
     setColor('#ffffff')(pLeftM);
     
-    halfFrame.attr({transform:'translate(' + x + ',' + y + ')'});
+    halfFrame.attr({transform:'translate(' + x + ',' + y + ')', mask : mask});
         
     return halfFrame;
   }

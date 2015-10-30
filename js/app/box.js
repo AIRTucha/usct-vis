@@ -4,7 +4,7 @@
 var $ = require('jquery');
 var Snap = require('snap');
 
-function box(container,boxW,boxH) {
+function box(container,text,boxW,boxH) {
   var w = $(window).width();
   var h = $(window).height();
   var s = Snap(container);
@@ -74,7 +74,20 @@ function box(container,boxW,boxH) {
 
     ]);
   
+  var rect = s.rect(0,0,boxW,boxH);
   
+  var txt = s.text(h*0.02,h*0.015,text);
+  
+  rect.attr({
+      stroke  : "white",
+      "fill" : "white"
+    });
+  
+  txt.attr({
+      stroke  : "black",
+      "fill" : "black",
+      "font-size": "1.5vh"
+    });
   
   
   rigthTop.attr({
@@ -102,8 +115,12 @@ function box(container,boxW,boxH) {
       "fill-opacity" : 0
     });
   
-  var box = s.group(frame, rigthTop, leftTop, leftBottom, rigth, frame);
   
+  
+  var box = s.group(frame, rigthTop, leftTop, leftBottom, rigth, frame);
+  var mask = s.group(rect, txt);
+  
+  box.attr({mask : mask});  
   box.drag();
 }
 

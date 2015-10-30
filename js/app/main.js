@@ -11,7 +11,7 @@ var loading = new Loading('#main',function(){
   var fO = s.append(Snap.parse('<foreignObject id="container" width="' + breastSize + 
                                '" height="' + breastSize + '"></foreignObject>'));
   
-  var box = Box("#main",breastSize*1.5,breastSize/4);
+  var box = Box("#main","test",breastSize/2,breastSize);
   
   
   
