@@ -58,7 +58,7 @@ var loading = new Loading('#main',function(){
         min : 0,
         max : 100,
         values: [ 0, 100 ],
-        getText : function (v){return 'X range is ' + textRange(v)},
+        getText : function (v){return '<span class = "slider_results">X range is ' + textRange(v) + "</span>"},
         callback: function (v){ 
           rcl2.setGeometryMinX(v[0]/100);
           rcl2.setGeometryMaxX(v[1]/100);
@@ -69,7 +69,7 @@ var loading = new Loading('#main',function(){
         min : 0,
         max : 100,
         values: [ 0, 100 ],
-        getText : function (v){return "Y range is " + textRange(v)},
+        getText : function (v){return '<span class = "slider_results">Y range is ' + textRange(v) + "</span>"},
         callback: function (v){ 
           rcl2.setGeometryMinY(v[0]/100);
           rcl2.setGeometryMaxY(v[1]/100);
@@ -80,7 +80,7 @@ var loading = new Loading('#main',function(){
         min : 0,
         max : 100,
         values: [ 0, 100 ],
-        getText : function (v){return "Z range is " + textRange(v)},
+        getText : function (v){return '<span class = "slider_results">Z range is ' + textRange(v) + "</span>"},
         callback: function (v){  
           rcl2.setGeometryMinZ(v[0]/101);
           rcl2.setGeometryMaxZ(v[1]/101);}

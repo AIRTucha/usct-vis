@@ -11,3 +11,14 @@
     z-index: 2;
     border-radius: 0px;
 }
+.ui-slider-range{
+background : #40f0ff;
+opacity: 0.8;
+}
+
+.ui-slider{
+background : black;
+}
+
+
+

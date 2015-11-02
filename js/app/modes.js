@@ -62,7 +62,7 @@ function modes(obj, container, callback) {
       }
     },
     {
-      image:'/imgs/cuttOff.PNG',
+      image:'/imgs/CuttOff.PNG',
       name:'Refl+CuttOff',
       tooltip:'Combination of reflectional image with high lighted areas there sound speed data`s values are high.<br>Hight sound speed points doctor to the high probability on breast cancer at the point.',
       config:{
