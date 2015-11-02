@@ -130,6 +130,66 @@ var loading = new Loading('#main',function(){
       }
     ]    
   }
+   
+   var msConf = {
+    container : '#main',
+    title : 'Main settings',
+    width : (w - breastSize )/2 - (w*0.05*2 + h*0.045),
+    x : w*0.05 + h*0.04,
+    y : h*0.07 * 3 + h*0.15,
+    sliders :[
+      {
+        range : 'min',
+        min : 0,
+        max : 200,
+        value: 100,
+        getText : function (v){return 'Lightness ' + textSlider(v)},
+        callback: function (v){ 
+          rcl2.setRefl(v/20);
+        }
+      },
+      {
+        range : 'min',
+        min : 0,
+        max : 200,
+        value: 100,
+        getText : function (v){return 'Contrast ' + textSlider(v)},
+        callback: function (v){ 
+          rcl2.setColorFactor(v/100);
+        }
+      },
+      {
+        range : 'min',
+        min : 0,
+        max : 100,
+        value: 80,
+        getText : function (v){return 'Opacity ' + textSlider(v)},
+        callback: function (v){ 
+          rcl2.setOpacityFactor(v/2);
+        }
+      },
+      {
+        range : 'min',
+        min : 0,
+        max : 160,
+        value: 80,
+        getText : function (v){return 'Color mappint'},
+        callback: function (v){ 
+          rcl2.setSos(v/100);
+        }
+      },
+      {
+        range : 'min',
+        min : 0,
+        max : 180,
+        value: 90,
+        getText : function (v){return 'Color mappint'},
+        callback: function (v){ 
+          rcl2.setSat(v/100);
+        }
+      },
+    ]    
+  }
   
   s.select('#container').attr({
     x: $(window).width()*0.5-breastSize/2,
@@ -143,6 +203,7 @@ var loading = new Loading('#main',function(){
        loading.drawCorners(breastSize);
        sliders(cutterConf);
        sliders(thConf);
+       sliders(msConf);
       }, 500);    
 });
 
@@ -152,4 +213,7 @@ return '<span class = "slider_results">' +
           v[1] +"% </span>"
 }
 
+function textSlider(v){
+  return '<span class = "slider_results">' + v + "% </span>"
+}
 

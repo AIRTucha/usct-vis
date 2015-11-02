@@ -32,7 +32,7 @@ function sliders(conf) {
   var w = $(window).width();
   var h = $(window).height();
   var s = Snap(conf.container);
-  var sliderH = h*0.21;
+  var sliderH = h*0.07;
   var box = Box("#main", conf.title, conf.width + h*0.06, sliderH*conf.sliders.length + h*0.04);
   
   box.attr({transform : 'translate(' + conf.x + ',' + conf.y + ')'});
@@ -49,32 +49,61 @@ function sliders(conf) {
     
     $('#slider_' + conf.title.replace(' ','_') + i).css({'width':conf.width,'margin-top':sliderH/8 });    
    
-    $('#slider_' + conf.title.replace(' ','_') + i).slider({
-      range : d.range,
-      min : d.min,
-      max : d.max,
-      values : d.values,
-      slide : function( event, ui ) {
-        $('#result_' + conf.title.replace(' ','_') + i).remove();
-        $('#' + conf.title.replace(' ','_') + i).prepend(
-          '<p id=' + 
-          'result_' + conf.title.replace(' ','_') + i + '>'+ 
-          d.getText(ui.values) + 
-          '</p>' 
-        );
-        d.callback(ui.values);
-      }
-    });
+   
     
-    $('#' + conf.title.replace(' ','_') + i).prepend(
-      '<p id=' + 
-      'result_' + conf.title.replace(' ','_') + i + '>'+ 
-      d.getText([
-        $('#slider_' + conf.title.replace(' ','_') + i).slider("values", 0),
-        $('#slider_' + conf.title.replace(' ','_') + i).slider( "values", 1)
-      ]) + 
-      '</p>' 
-    );
+    if(d.range == true){
+      $('#slider_' + conf.title.replace(' ','_') + i).slider({
+        range : d.range,
+        min : d.min,
+        max : d.max,
+        values : d.values,
+        slide : function( event, ui ) {
+          $('#result_' + conf.title.replace(' ','_') + i).remove();
+          $('#' + conf.title.replace(' ','_') + i).prepend(
+            '<p id=' + 
+            'result_' + conf.title.replace(' ','_') + i + '>'+ 
+            d.getText(ui.values) + 
+            '</p>' 
+          );
+          d.callback(ui.values);
+        }
+      });
+      
+      $('#' + conf.title.replace(' ','_') + i).prepend(
+        '<p id=' + 
+        'result_' + conf.title.replace(' ','_') + i + '>'+ 
+        d.getText([
+          $('#slider_' + conf.title.replace(' ','_') + i).slider("values", 0),
+          $('#slider_' + conf.title.replace(' ','_') + i).slider( "values", 1)
+        ]) + 
+        '</p>' 
+      );
+    }
+    else {
+      $('#slider_' + conf.title.replace(' ','_') + i).slider({
+        range : d.range,
+        min : d.min,
+        max : d.max,
+        value : d.value,
+        slide : function( event, ui ) {
+          $('#result_' + conf.title.replace(' ','_') + i).remove();
+          $('#' + conf.title.replace(' ','_') + i).prepend(
+            '<p id=' + 
+            'result_' + conf.title.replace(' ','_') + i + '>'+ 
+            d.getText(ui.value) + 
+            '</p>' 
+          );
+          d.callback(ui.value);
+        }
+      });
+      
+      $('#' + conf.title.replace(' ','_') + i).prepend(
+        '<p id=' + 
+        'result_' + conf.title.replace(' ','_') + i + '>'+ 
+        d.getText($('#slider_' + conf.title.replace(' ','_') + i).slider("value")) + 
+        '</p>' 
+      );
+    }
   });
   
   
