@@ -90,20 +90,20 @@ var loading = new Loading('#main',function(){
   
    var thConf = {
     container : '#main',
-    title : 'Cut Off',
-    width : w/4,
-    x : w*0.05 + h*0.025,
-    y : h*0.06,
+    title : 'Threshold',
+    width : (w - breastSize )/2 - (w*0.05*2 + h*0.045),
+    x : w*0.5 + breastSize/2 + h*0.025,
+    y : h*0.07,
     sliders :[
       {
         range : true,
         min : 0,
         max : 100,
         values: [ 0, 100 ],
-        text : function (v){return "X range is " + v[0] + "% - " + v[1] +"%"},
+        getText : function (v){return 'Sound Speed threshold ' + textRange(v)},
         callback: function (v){ 
-          rcl2.setGeometryMinX(v[0]/100);
-          rcl2.setGeometryMaxX(v[1]/100);
+          rcl2.setMinSos(v[0]/100);
+          rcl2.setMaxSos(v[1]/100);
         }
       },
       {
@@ -111,10 +111,10 @@ var loading = new Loading('#main',function(){
         min : 0,
         max : 100,
         values: [ 0, 100 ],
-        text : function (v){return "Y range is " + v[0] + "% - " + v[1] +"%"},
+        getText : function (v){return 'Attenuation threshold ' + textRange(v)},
         callback: function (v){ 
-          rcl2.setGeometryMinY(v[0]/100);
-          rcl2.setGeometryMaxY(v[1]/100);
+          rcl2.setMinAtten(v[0]/100);
+          rcl2.setMaxAtten(v[1]/100);
         }
       },
       {
@@ -122,10 +122,11 @@ var loading = new Loading('#main',function(){
         min : 0,
         max : 100,
         values: [ 0, 100 ],
-        text : function (v){return 'Z range is <p class = "slider_values">' + v[0] + "% - " + v[1] +"%</p>"},
+        getText : function (v){return 'Reflection threshold ' + textRange(v)},
         callback: function (v){  
-          rcl2.setGeometryMinZ(v[0]/101);
-          rcl2.setGeometryMaxZ(v[1]/101);}
+          rcl2.setMinRefl(v[0]/100);
+          rcl2.setMaxRefl(v[1]/100);
+        }
       }
     ]    
   }
@@ -141,6 +142,7 @@ var loading = new Loading('#main',function(){
        Modes(rcl2,'#main'); 
        loading.drawCorners(breastSize);
        sliders(cutterConf);
+       sliders(thConf);
       }, 500);    
 });
 

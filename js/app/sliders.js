@@ -32,7 +32,7 @@ function sliders(conf) {
   var w = $(window).width();
   var h = $(window).height();
   var s = Snap(conf.container);
-  var sliderH = h*0.07;
+  var sliderH = h*0.21;
   var box = Box("#main", conf.title, conf.width + h*0.06, sliderH*conf.sliders.length + h*0.04);
   
   box.attr({transform : 'translate(' + conf.x + ',' + conf.y + ')'});
