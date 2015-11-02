@@ -74,9 +74,9 @@ function box(container,text,boxW,boxH) {
 
     ]);
   
-  var rect = s.rect(0,0,boxW,boxH);
+  var rect = s.rect(0, 0, boxW, boxH);
   
-  var txt = s.text(h*0.02,h*0.015,text);
+  var txt = s.text(h*0.02, h*0.015, text);
   
   rect.attr({
       stroke  : "white",
@@ -115,13 +115,12 @@ function box(container,text,boxW,boxH) {
       "fill-opacity" : 0
     });
   
-  
-  
   var box = s.group(frame, rigthTop, leftTop, leftBottom, rigth, frame);
   var mask = s.group(rect, txt);
   
-  box.attr({mask : mask});  
-  box.drag();
+  box.attr({mask : mask, id : text + '_Box'});  
+  
+  return box;
 }
 
 module.exports = box;

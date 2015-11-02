@@ -3,16 +3,17 @@ var Loading = require('./loading');
 var Modes = require('./modes');
 var sliders = require('./sliders');
 
-
-
 console.log("Main file loaded");
  
 var loading = new Loading('#main',function(){
   var s = Snap("#main");
   var w = $(window).width();
+  var h = $(window).height();
   var breastSize = $(window).height() / 1.75;
   var fO = s.append(Snap.parse('<foreignObject id="container" width="' + breastSize + 
                                '" height="' + breastSize + '"></foreignObject>'));
+  var rcl2;
+  
   var tomoConfig = {
 		"domContainerId": "container",
 		"slicemaps_paths": [
@@ -45,34 +46,86 @@ var loading = new Loading('#main',function(){
       "sos" :0.8
 		};
   
-  var slidersConf = {
+  var cutterConf = {
     container : '#main',
     title : 'Cutter',
-    width : w/6,
+    width : (w - breastSize )/2 - (w*0.05*2 + h*0.025),
+    x : w*0.05 + h*0.02,
+    y : h*0.06,
     sliders :[
       {
         range : true,
         min : 0,
-        max : 500,
-        values: [ 75, 300 ],
+        max : 100,
+        values: [ 0, 100 ],
         text : function (v){return "X range is " + v[0] + "% - " + v[1] +"%"},
-        callback: function (v){ console.log(v)}
+        callback: function (v){ 
+          rcl2.setGeometryMinX(v[0]/100);
+          rcl2.setGeometryMaxX(v[1]/100);
+        }
       },
       {
         range : true,
         min : 0,
-        max : 500,
-        values: [ 75, 300 ],
+        max : 100,
+        values: [ 0, 100 ],
         text : function (v){return "Y range is " + v[0] + "% - " + v[1] +"%"},
-        callback: function (v){ console.log(v)}
+        callback: function (v){ 
+          rcl2.setGeometryMinY(v[0]/100);
+          rcl2.setGeometryMaxY(v[1]/100);
+        }
       },
       {
         range : true,
         min : 0,
-        max : 500,
-        values: [ 75, 300 ],
+        max : 100,
+        values: [ 0, 100 ],
         text : function (v){return "Z range is " + v[0] + "% - " + v[1] +"%"},
-        callback: function (v){ console.log(v)}
+        callback: function (v){  
+          rcl2.setGeometryMinZ(v[0]/101);
+          rcl2.setGeometryMaxZ(v[1]/101);}
+      }
+    ]    
+  }
+  
+   var cutOffConf = {
+    container : '#main',
+    title : 'Cut Off',
+    width : w/4,
+    x : w*0.05 + h*0.025,
+    y : h*0.06,
+    sliders :[
+      {
+        range : true,
+        min : 0,
+        max : 100,
+        values: [ 0, 100 ],
+        text : function (v){return "X range is " + v[0] + "% - " + v[1] +"%"},
+        callback: function (v){ 
+          rcl2.setGeometryMinX(v[0]/100);
+          rcl2.setGeometryMaxX(v[1]/100);
+        }
+      },
+      {
+        range : true,
+        min : 0,
+        max : 100,
+        values: [ 0, 100 ],
+        text : function (v){return "Y range is " + v[0] + "% - " + v[1] +"%"},
+        callback: function (v){ 
+          rcl2.setGeometryMinY(v[0]/100);
+          rcl2.setGeometryMaxY(v[1]/100);
+        }
+      },
+      {
+        range : true,
+        min : 0,
+        max : 100,
+        values: [ 0, 100 ],
+        text : function (v){return "Z range is " + v[0] + "% - " + v[1] +"%"},
+        callback: function (v){  
+          rcl2.setGeometryMinZ(v[0]/101);
+          rcl2.setGeometryMaxZ(v[1]/101);}
       }
     ]    
   }
@@ -87,7 +140,7 @@ var loading = new Loading('#main',function(){
        rcl2 = new VRC.VolumeRaycaster(tomoConfig);
        Modes(rcl2,'#main'); 
        loading.drawCorners(breastSize);
-       sliders(slidersConf);
+       sliders(cutterConf);
       }, 500);    
 });
 
