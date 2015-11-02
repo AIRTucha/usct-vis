@@ -8,7 +8,7 @@ function box(container,text,boxW,boxH) {
   var w = $(window).width();
   var h = $(window).height();
   var s = Snap(container);
-  var color = "white";//"#50F5FC"
+  var color = "#40f0ff";//"#50F5FC"
   
   var frame = s.polyline([  
     //left top corner
@@ -118,7 +118,7 @@ function box(container,text,boxW,boxH) {
   var box = s.group(frame, rigthTop, leftTop, leftBottom, rigth, frame);
   var mask = s.group(rect, txt);
   
-  box.attr({mask : mask, id : text + '_Box'});  
+  box.attr({mask : mask, id : text + '_Box', opacity : 0.75});  
   
   return box;
 }

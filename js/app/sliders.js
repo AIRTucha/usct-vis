@@ -42,8 +42,8 @@ function sliders(conf) {
                                    'width=' + conf.width + ' ' + 
                                    'height=' + sliderH +  ' ' + 
                                    'x=' + (h*0.025 + conf.x) + ' ' +
-                                   'y=' + ((sliderH*i+h*0.04) + conf.y) + '>' +
-                                   '<p id=' + 'result_' + conf.title.replace(' ','_') + i + '></p>' +
+                                   'y=' + ((sliderH*i+h*0.04) + conf.y) +
+                                   ' id=' + conf.title.replace(' ','_') + i + '>' +                                   
                                    '<div id=' + 'slider_' + conf.title.replace(' ','_') + i + ' ' +
                                    '></div></foreignObject>'));
     
@@ -55,16 +55,26 @@ function sliders(conf) {
       max : d.max,
       values : d.values,
       slide : function( event, ui ) {
-        $('#result_' + conf.title.replace(' ','_') + i).text(d.text(ui.values));
+        $('#result_' + conf.title.replace(' ','_') + i).remove();
+        $('#' + conf.title.replace(' ','_') + i).prepend(
+          '<p id=' + 
+          'result_' + conf.title.replace(' ','_') + i + '>'+ 
+          d.getText(ui.values) + 
+          '</p>' 
+        );
         d.callback(ui.values);
       }
     });
     
-    $('#result_' + conf.title.replace(' ','_') + i).text(
-      d.text([
+    $('#' + conf.title.replace(' ','_') + i).prepend(
+      '<p id=' + 
+      'result_' + conf.title.replace(' ','_') + i + '>'+ 
+      d.getText([
         $('#slider_' + conf.title.replace(' ','_') + i).slider("values", 0),
         $('#slider_' + conf.title.replace(' ','_') + i).slider( "values", 1)
-      ]));
+      ]) + 
+      '</p>' 
+    );
   });
   
   

@@ -493,7 +493,8 @@ function loading(container,callback) {
     var breastBoarder = s.group(cLeftTop, cRightTop, cLeftBottom, cRightBottom); 
 
     breastBoarder.attr({
-      fill   : 'white'
+      fill   : 'white',
+      opacity : 0.1
     });
   }
 }

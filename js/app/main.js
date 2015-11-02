@@ -48,17 +48,17 @@ var loading = new Loading('#main',function(){
   
   var cutterConf = {
     container : '#main',
-    title : 'Cutter',
-    width : (w - breastSize )/2 - (w*0.05*2 + h*0.025),
-    x : w*0.05 + h*0.02,
-    y : h*0.06,
+    title : 'Slice range',
+    width : (w - breastSize )/2 - (w*0.05*2 + h*0.045),
+    x : w*0.05 + h*0.04,
+    y : h*0.07,
     sliders :[
       {
         range : true,
         min : 0,
         max : 100,
         values: [ 0, 100 ],
-        text : function (v){return "X range is " + v[0] + "% - " + v[1] +"%"},
+        getText : function (v){return 'X range is ' + textRange(v)},
         callback: function (v){ 
           rcl2.setGeometryMinX(v[0]/100);
           rcl2.setGeometryMaxX(v[1]/100);
@@ -69,7 +69,7 @@ var loading = new Loading('#main',function(){
         min : 0,
         max : 100,
         values: [ 0, 100 ],
-        text : function (v){return "Y range is " + v[0] + "% - " + v[1] +"%"},
+        getText : function (v){return "Y range is " + textRange(v)},
         callback: function (v){ 
           rcl2.setGeometryMinY(v[0]/100);
           rcl2.setGeometryMaxY(v[1]/100);
@@ -80,7 +80,7 @@ var loading = new Loading('#main',function(){
         min : 0,
         max : 100,
         values: [ 0, 100 ],
-        text : function (v){return "Z range is " + v[0] + "% - " + v[1] +"%"},
+        getText : function (v){return "Z range is " + textRange(v)},
         callback: function (v){  
           rcl2.setGeometryMinZ(v[0]/101);
           rcl2.setGeometryMaxZ(v[1]/101);}
@@ -88,7 +88,7 @@ var loading = new Loading('#main',function(){
     ]    
   }
   
-   var cutOffConf = {
+   var thConf = {
     container : '#main',
     title : 'Cut Off',
     width : w/4,
@@ -122,7 +122,7 @@ var loading = new Loading('#main',function(){
         min : 0,
         max : 100,
         values: [ 0, 100 ],
-        text : function (v){return "Z range is " + v[0] + "% - " + v[1] +"%"},
+        text : function (v){return 'Z range is <p class = "slider_values">' + v[0] + "% - " + v[1] +"%</p>"},
         callback: function (v){  
           rcl2.setGeometryMinZ(v[0]/101);
           rcl2.setGeometryMaxZ(v[1]/101);}
@@ -143,5 +143,11 @@ var loading = new Loading('#main',function(){
        sliders(cutterConf);
       }, 500);    
 });
+
+function textRange(v){
+return '<span class = "slider_results">' + 
+          v[0] + '% </span> - <span class = "slider_results">' + 
+          v[1] +"% </span>"
+}
 
 
