@@ -14,6 +14,7 @@ require('jquery-ui');
     container : plase holder Class or ID (String)
     title : sliders block name (String)
     width : width of sliders (int)
+    sliderH : int
     x : int
     y : int
     //array with personal sliders settings
@@ -32,22 +33,21 @@ function sliders(conf) {
   var w = $(window).width();
   var h = $(window).height();
   var s = Snap(conf.container);
-  var sliderH = h*0.07;
-  var box = Box("#main", conf.title, conf.width + h*0.06, sliderH*conf.sliders.length + h*0.04);
+  var box = Box("#main", conf.title, conf.width + h*0.06, conf.sliderH*conf.sliders.length + h*0.04);
   
   box.attr({transform : 'translate(' + conf.x + ',' + conf.y + ')'});
   
   conf.sliders.forEach(function(d,i,ds){
     var fO = s.append(Snap.parse('<foreignObject ' +                                    
                                    'width=' + conf.width + ' ' + 
-                                   'height=' + sliderH +  ' ' + 
+                                   'height=' + conf.sliderH +  ' ' + 
                                    'x=' + (h*0.025 + conf.x) + ' ' +
-                                   'y=' + ((sliderH*i+h*0.04) + conf.y) +
+                                   'y=' + ((conf.sliderH*i+h*0.04) + conf.y) +
                                    ' id=' + conf.title.replace(' ','_') + i + '>' +                                   
                                    '<div id=' + 'slider_' + conf.title.replace(' ','_') + i + ' ' +
                                    '></div></foreignObject>'));
     
-    $('#slider_' + conf.title.replace(' ','_') + i).css({'width':conf.width,'margin-top':sliderH/8 });    
+    $('#slider_' + conf.title.replace(' ','_') + i).css({'width':conf.width,'margin-top':conf.sliderH/8 });    
    
    
     

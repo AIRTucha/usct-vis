@@ -445,57 +445,60 @@ function loading(container,callback) {
   * @param size of square
   */
   this.drawCorners = function(size){ 
-    var h = $(window).height()/1.5;
-
-    var x = $(window).width()*0.5-size/2;
-    var y = $(window).height()*0.5-size/2;
-
-    var cLeftTop = s.polyline([
-           x-3, y,
-           x-3, y+h*0.03-3,
-           x, y+h*0.03-6,
-           x, y,
-           x+h*0.03-6, y, 
-           x+h*0.03-3, y-3,
-           x-3, y-3
-          ]);
-
-    var cRightTop = s.polyline([
-           x+3+size, y,
-           x+3+size, y+h*0.03-3,
-           x+size, y+h*0.03-6,
-           x+size, y,
-           x-h*0.03+6+size, y, 
-           x-h*0.03+3+size, y-3,
-           x+3+size, y-3
-       ]);
-
-    var cLeftBottom = s.polyline([  
-           x-3, y+size,
-           x-3, y-h*0.03+3+size,
-           x, y-h*0.03+6+size,
-           x, y+size,
-           x+h*0.03-6, y+size, 
-           x+h*0.03-3, y+3+size,
-           x-3, y+3+size
-      ]);
-
-    var cRightBottom = s.polyline([ 
-           x+3+size, y+size,
-           x+3+size, y-h*0.03+3+size,
-           x+size, y-h*0.03+6+size,
-           x+size, y+size,
-           x-h*0.03+6+size, y+size, 
-           x-h*0.03+3+size, y+3+size,
-           x+3+size, y+3+size
-      ]); 
-
-    var breastBoarder = s.group(cLeftTop, cRightTop, cLeftBottom, cRightBottom); 
-
-    breastBoarder.attr({
-      fill   : 'white',
-      opacity : 0.1
-    });
+//    var h = $(window).height()/1.5;
+//
+//    //var x = $(window).width()*0.5-size/2;
+//    //var y = $(window).height()*0.5-size/2;
+//    
+//    var x = w * 0.05 + h * 0.015;
+//    var y = h * 0.05 + h * 0.015;
+//
+//    var cLeftTop = s.polyline([
+//           x-3, y,
+//           x-3, y+h*0.03-3,
+//           x, y+h*0.03-6,
+//           x, y,
+//           x+h*0.03-6, y, 
+//           x+h*0.03-3, y-3,
+//           x-3, y-3
+//          ]);
+//
+//    var cRightTop = s.polyline([
+//           x+3+size, y,
+//           x+3+size, y+h*0.03-3,
+//           x+size, y+h*0.03-6,
+//           x+size, y,
+//           x-h*0.03+6+size, y, 
+//           x-h*0.03+3+size, y-3,
+//           x+3+size, y-3
+//       ]);
+//
+//    var cLeftBottom = s.polyline([  
+//           x-3, y+size,
+//           x-3, y-h*0.03+3+size,
+//           x, y-h*0.03+6+size,
+//           x, y+size,
+//           x+h*0.03-6, y+size, 
+//           x+h*0.03-3, y+3+size,
+//           x-3, y+3+size
+//      ]);
+//
+//    var cRightBottom = s.polyline([ 
+//           x+3+size, y+size,
+//           x+3+size, y-h*0.03+3+size,
+//           x+size, y-h*0.03+6+size,
+//           x+size, y+size,
+//           x-h*0.03+6+size, y+size, 
+//           x-h*0.03+3+size, y+3+size,
+//           x+3+size, y+3+size
+//      ]); 
+//
+//    var breastBoarder = s.group(cLeftTop, cRightTop, cLeftBottom, cRightBottom); 
+//
+//    breastBoarder.attr({
+//      fill   : 'white',
+//      opacity : 0.1
+//    });
   }
 }
 

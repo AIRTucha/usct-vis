@@ -18,7 +18,7 @@ function modes(obj, container, callback) {
     {
       image:'/imgs/atten.PNG',
       name:'Attenuation',
-      tooltip:'The model shows distribution of areas with high and low attenuation to user via brightness. So, it allows to estimate the attenuational value at certain point of space.<br>Attenuation can be helpful in an identification of the particular lesion`s type.',
+      tooltip:'The model shows distribution of areas with high and low attenuation to user via brightness. So, it allows to estimate the attenuation value at the certain point of space.<br>Attenuation can be helpful in an identification of the particular lesion`s type.',
       config:{
         shader_name:'secondPassAtten',
         gray_min : 0.1,
@@ -32,7 +32,7 @@ function modes(obj, container, callback) {
     {
       image:'/imgs/attenM.PNG',
       name:'Attenuation Max',
-      tooltip:'The model shows user only parts of breast which have highest attenuation values and allows to look at it more clear.<br>Attenuation can be helpful in an identification of the particular lesion`s type.',
+      tooltip:'The model shows only parts of breast which have highest attenuation values and allows to look at it more clear.<br>Attenuation can be helpful in an identification of the particular lesion`s type.',
       config:{
         shader_name:'secondPassAttenMax'
       }
@@ -40,7 +40,7 @@ function modes(obj, container, callback) {
     {
       image:'/imgs/sos.PNG',
       name:'Sound Speed',
-      tooltip:'The model shows you distribution of areas with high and low sound speed via brightness. So, it allows to estimate the value of sound speed at certain point of space.<br>Hight sound speed points doctor to the high probability on breast cancer at the point.',
+      tooltip:'The model shows you distribution of areas with high and low sound speed via brightness. So, it allows to estimate the value of sound speed at certain point of space.<br>High sound speed points doctor to the high probability on breast cancer at the point.',
       config:{
         shader_name:'secondPassSos'
       }
@@ -48,7 +48,7 @@ function modes(obj, container, callback) {
     {
       image:'/imgs/sosM.PNG',
       name:'Sound Speed Max',
-      tooltip:'The model shows user only parts of breast which have highest sound speed values and allows look at more clear.<br>Hight sound speed points doctor to the high probability on breast cancer at the point.',
+      tooltip:'The model shows user only parts of breast which have highest sound speed values and allows look at more clear.<or>High sound speed points doctor to the high probability on breast cancer at the point.',
       config:{
         shader_name:'secondPassSosMax'
       }
@@ -56,7 +56,7 @@ function modes(obj, container, callback) {
     {
       image:'imgs/Refl.PNG',
       name:'Reflection',
-      tooltip:'The model shows high resolution general structure of a breast and uses the same principle with traditional ultrasound diagnostics.',
+      tooltip:'The model shows general structures of a breast in high resolution and uses the same principle with traditional ultrasound diagnostics.',
       config:{
         shader_name:'secondPassRefl'
       }
@@ -64,7 +64,7 @@ function modes(obj, container, callback) {
     {
       image:'/imgs/CuttOff.PNG',
       name:'Refl+CuttOff',
-      tooltip:'Combination of reflectional image with high lighted areas there sound speed data`s values are high.<br>Hight sound speed points doctor to the high probability on breast cancer at the point.',
+      tooltip:'Combination of reflectional image with highlighted areas there sound speed data`s values are high.<br>High sound speed points doctor to the high probability on breast cancer at the point.',
       config:{
         shader_name:'secondPassCutOff'
       }
@@ -72,7 +72,7 @@ function modes(obj, container, callback) {
     {
       image:'/imgs/RA.PNG',
       name:'Refl+Atten',
-      tooltip:'Combination of reflection and attenuation allows to evaluate structure and an attenuation at the same time.<br>The reflectional data is represented by gray scale gradation and attenuation is shown via color. Human eye is more sensitive to the hue of the color than to the saturation that`s why the mode is useful when ditelisation of attentional data is important.',
+      tooltip:'Combination of reflection and attenuation allows to evaluate structure and an attenuation at the same time.<br>The reflectional data is represented by gray scale gradation and attenuation is shown via color. Human eye is more sensitive to the hue of the color than to the saturation that`s why the mode is useful when detalization of attentional data is important.',
       config:{
         shader_name:'secondPassAR'
       }
@@ -80,7 +80,7 @@ function modes(obj, container, callback) {
     {
       image:'/imgs/rb.PNG',
       name:'Readl Body',
-      tooltip:'The mode combines sound speed and reaflecional infromation to separate skin and actuall body and make it look like more realistic.',
+      tooltip:'The mode combines sound speed and reflectional information to separate skin and actual body and make it look like more realistic.',
       config:{
         shader_name:'secondPassRB'
       }
@@ -96,7 +96,7 @@ function modes(obj, container, callback) {
     {
       image:'/imgs/sr.PNG',
       name:'Sos+Refl',
-      tooltip:'Combination of reflection and sound speed allows to evaluate structure and sound speed at the same time.<br>The reflectional data is represented by gray scale gradation and sound speed is shown via color. The mode can be more helpful than fusion of three modalities, because it can be difficult to determine color in areas with high attenuation for normal fusion.',
+      tooltip:'Combination of reflection and sound speed allows to evaluate structure and sound speed at the same time.<br>The reflectional data is represented by grayscale gradation and sound speed is shown via color. The mode can be more helpful than fusion of three modalities, because it can be difficult to determine color in areas with high attenuation for normal fusion.',
       config:{
         shader_name:'secondPassSR'
       }
