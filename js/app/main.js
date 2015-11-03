@@ -9,7 +9,7 @@ var loading = new Loading('#main',function(){
   var s = Snap("#main");
   var w = $(window).width();
   var h = $(window).height();
-  var breastSize = $(window).height() / 1.75;
+  var breastSize = $(window).height() / 1.25;
   var fO = s.append(Snap.parse('<foreignObject id="container" width="' + breastSize + 
                                '" height="' + breastSize + '"></foreignObject>'));
   var rcl2;
@@ -35,7 +35,7 @@ var loading = new Loading('#main',function(){
       "shader_name" : "secondPassFusion",
 			"slices_range": [0, 144],			
 			"row_col": [4, 4],
-			"render_size": [breastSize, breastSize],
+			"render_size": [breastSize * .65, breastSize * .65],
 			"renderer_canvas_size": [breastSize, breastSize],	
 			"opacity_factor": 40,
       "color_factor": 1,
@@ -49,9 +49,10 @@ var loading = new Loading('#main',function(){
   var cutterConf = {
     container : '#main',
     title : 'Slice range',
-    width : (w - breastSize )/2 - (w*0.05*2 + h*0.045),
-    x : w*0.05 + h*0.04,
-    y : h*0.07,
+    width : (w - breastSize ) - w * .25,
+    x : breastSize + w*0.1 + h*0.06,
+    y : h*0.08,
+    sliderH : h*0.08,
     sliders :[
       {
         range : true,
@@ -91,9 +92,10 @@ var loading = new Loading('#main',function(){
    var thConf = {
     container : '#main',
     title : 'Threshold',
-    width : (w - breastSize )/2 - (w*0.05*2 + h*0.045),
-    x : w*0.5 + breastSize/2 + h*0.025,
-    y : h*0.07,
+    sliderH : h*0.05,
+    width :  breastSize,
+    x : w*0.05 + h*0.04,
+    y : breastSize*0.8 ,
     sliders :[
       {
         range : true,
@@ -134,9 +136,10 @@ var loading = new Loading('#main',function(){
    var msConf = {
     container : '#main',
     title : 'Main settings',
-    width : (w - breastSize )/2 - (w*0.05*2 + h*0.045),
-    x : w*0.05 + h*0.04,
-    y : h*0.07 * 3 + h*0.15,
+    sliderH : h*0.08,
+    width : (w - breastSize ) - w * .25,
+    x : breastSize + w*0.1 + h*0.06,
+    y : h*0.08 * 3 + h*0.15,
     sliders :[
       {
         range : 'min',
@@ -155,7 +158,7 @@ var loading = new Loading('#main',function(){
         value: 100,
         getText : function (v){return 'Contrast ' + textSlider(v)},
         callback: function (v){ 
-          rcl2.setColorFactor(v/100);
+          rcl2.setColorFactor((200-v)/100);
         }
       },
       {
@@ -192,8 +195,8 @@ var loading = new Loading('#main',function(){
   }
   
   s.select('#container').attr({
-    x: $(window).width()*0.5-breastSize/2,
-    y: $(window).height()*0.5-breastSize/2
+    x: w*0.1,
+    y: -h*0.05
   });
   
   
