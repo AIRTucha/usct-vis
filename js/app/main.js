@@ -183,7 +183,7 @@ var loading = new Loading('#main',function(){
         min : 0,
         max : 180,
         value: 90,
-        getText : function (v){return 'Color mappint'},
+        getText : function (v){return 'Saturation'},
         callback: function (v){ 
           rcl2.setSat(v/100);
         }
