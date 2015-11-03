@@ -35,7 +35,7 @@ var loading = new Loading('#main',function(){
       "shader_name" : "secondPassFusion",
 			"slices_range": [0, 144],			
 			"row_col": [4, 4],
-			"render_size": [breastSize * .65, breastSize * .65],
+			"render_size": [breastSize, breastSize * .65],
 			"renderer_canvas_size": [breastSize, breastSize],	
 			"opacity_factor": 40,
       "color_factor": 1,
@@ -49,17 +49,17 @@ var loading = new Loading('#main',function(){
   var cutterConf = {
     container : '#main',
     title : 'Slice range',
-    width : (w - breastSize ) - w * .25,
-    x : breastSize + w*0.1 + h*0.06,
+    width : boxWidthCalculation(w, breastSize),
+    x :  boxXCalculation(w, breastSize),
     y : h*0.08,
-    sliderH : h*0.08,
+    sliderH : h*0.05,
     sliders :[
       {
         range : true,
         min : 0,
         max : 100,
         values: [ 0, 100 ],
-        getText : function (v){return '<span class = "slider_results">X range is ' + textRange(v) + "</span>"},
+        getText : function (v){return 'X range is ' + textRange(v)},
         callback: function (v){ 
           rcl2.setGeometryMinX(v[0]/100);
           rcl2.setGeometryMaxX(v[1]/100);
@@ -70,7 +70,7 @@ var loading = new Loading('#main',function(){
         min : 0,
         max : 100,
         values: [ 0, 100 ],
-        getText : function (v){return '<span class = "slider_results">Y range is ' + textRange(v) + "</span>"},
+        getText : function (v){return 'Y range is ' + textRange(v)},
         callback: function (v){ 
           rcl2.setGeometryMinY(v[0]/100);
           rcl2.setGeometryMaxY(v[1]/100);
@@ -81,7 +81,7 @@ var loading = new Loading('#main',function(){
         min : 0,
         max : 100,
         values: [ 0, 100 ],
-        getText : function (v){return '<span class = "slider_results">Z range is ' + textRange(v) + "</span>"},
+        getText : function (v){return 'Z range is ' + textRange(v)},
         callback: function (v){  
           rcl2.setGeometryMinZ(v[0]/101);
           rcl2.setGeometryMaxZ(v[1]/101);}
@@ -93,9 +93,9 @@ var loading = new Loading('#main',function(){
     container : '#main',
     title : 'Threshold',
     sliderH : h*0.05,
-    width :  breastSize,
-    x : w*0.05 + h*0.04,
-    y : breastSize*0.8 ,
+    width :  boxWidthCalculation(w, breastSize),
+    x :  boxXCalculation(w, breastSize),
+    y : h*.05 * 8 + h*.24  ,
     sliders :[
       {
         range : true,
@@ -136,10 +136,10 @@ var loading = new Loading('#main',function(){
    var msConf = {
     container : '#main',
     title : 'Main settings',
-    sliderH : h*0.08,
-    width : (w - breastSize ) - w * .25,
-    x : breastSize + w*0.1 + h*0.06,
-    y : h*0.08 * 3 + h*0.15,
+    sliderH : h*0.05,
+    width : boxWidthCalculation(w, breastSize),
+    x :   boxXCalculation(w, breastSize),
+    y : h*0.05 * 3 + h*0.16,
     sliders :[
       {
         range : 'min',
@@ -195,8 +195,8 @@ var loading = new Loading('#main',function(){
   }
   
   s.select('#container').attr({
-    x: w*0.1,
-    y: -h*0.05
+    x: w * 0.05,
+    y: h*0.035
   });
   
   
@@ -218,5 +218,13 @@ return '<span class = "slider_results">' +
 
 function textSlider(v){
   return '<span class = "slider_results">' + v + "% </span>"
+}
+
+function boxWidthCalculation(w, breastSize){
+  return w * 0.8 - (breastSize > w/2 ? breastSize : w/2)
+}
+
+function boxXCalculation(w, breastSize){
+  return (breastSize > w * 0.5) ? w*0.05 + breastSize : w*0.55
 }
 
