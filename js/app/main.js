@@ -176,7 +176,7 @@ var loading = new Loading('#main',function(){
         min : 0,
         max : 160,
         value: 80,
-        getText : function (v){return 'Color mappint'},
+        getText : function (v){return 'Color mapping'},
         callback: function (v){ 
           rcl2.setSos(v/100);
         }
