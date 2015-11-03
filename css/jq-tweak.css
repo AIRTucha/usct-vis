@@ -1,0 +1,24 @@
+
+.ui-slider .ui-slider-handle {
+    cursor: default;
+    height: 0.6em;
+    z-index: 2;
+    border-radius: 0px;
+}
+.ui-slider-horizontal {
+    cursor: default;
+    height: 0.2em;
+    z-index: 2;
+    border-radius: 0px;
+}
+.ui-slider-range{
+background : #40f0ff;
+opacity: 0.8;
+}
+
+.ui-slider{
+background : rgba(0, 0, 0, 0);
+}
+
+
+
