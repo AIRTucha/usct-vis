@@ -62,11 +62,19 @@ function modes(obj, container, callback) {
       }
     },
     {
-      image:'/imgs/CuttOff.PNG',
-      name:'Refl+CuttOff',
+      image:'/imgs/CuttOffSos.PNG',
+      name:'CuttOff Sound Speed',
       tooltip:'Combination of reflectional image with highlighted areas there sound speed data`s values are high.<br>High sound speed points doctor to the high probability on breast cancer at the point.',
       config:{
-        shader_name:'secondPassCutOff'
+        shader_name:'secondPassCutOffSos'
+      }
+    },
+    {
+      image:'/imgs/CuttOffAtten.PNG',
+      name:'CuttOff Attenuation',
+      tooltip:'Combination of reflectional image with highlighted areas there attenuational data`s values are high.<br>Attenuation can be helpful in an identification of the particular lesion`s type.',
+      config:{
+        shader_name:'secondPassCutOffAtten'
       }
     },
     {
@@ -76,15 +84,7 @@ function modes(obj, container, callback) {
       config:{
         shader_name:'secondPassAR'
       }
-    },
-    {
-      image:'/imgs/rb.PNG',
-      name:'Readl Body',
-      tooltip:'The mode combines sound speed and reflectional information to separate skin and actual body and make it look like more realistic.',
-      config:{
-        shader_name:'secondPassRB'
-      }
-    },
+    },    
     {
       image:'/imgs/fusion.PNG',
       name:'Fusion',

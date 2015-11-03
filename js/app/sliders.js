@@ -33,7 +33,7 @@ function sliders(conf) {
   var w = $(window).width();
   var h = $(window).height();
   var s = Snap(conf.container);
-  var box = Box("#main", conf.title, conf.width + h*0.06, conf.sliderH*conf.sliders.length + h*0.04);
+  var box = Box("#main", conf.title, conf.width + h*0.06, conf.sliderH*conf.sliders.length + conf.sliderH);
   
   box.attr({transform : 'translate(' + conf.x + ',' + conf.y + ')'});
   
@@ -53,6 +53,7 @@ function sliders(conf) {
     
     if(d.range == true){
       $('#slider_' + conf.title.replace(' ','_') + i).slider({
+        animate: "fast",
         range : d.range,
         min : d.min,
         max : d.max,
@@ -81,6 +82,7 @@ function sliders(conf) {
     }
     else {
       $('#slider_' + conf.title.replace(' ','_') + i).slider({
+        animate: "fast",
         range : d.range,
         min : d.min,
         max : d.max,

@@ -35,15 +35,16 @@ var loading = new Loading('#main',function(){
       "shader_name" : "secondPassFusion",
 			"slices_range": [0, 144],			
 			"row_col": [4, 4],
-			"render_size": [breastSize, breastSize * .65],
+			"render_size": [breastSize * .65, breastSize * .65],
 			"renderer_canvas_size": [breastSize, breastSize],	
 			"opacity_factor": 40,
-      "color_factor": 1,
+      "color_factor": 0.4,
 			"x_min": 0.0,
 			"x_max": 1.0,	
-      "refl":5,
-      "sat" :0.9,
-      "sos" :0.8
+      "l": 7,
+      "s" :0.9,
+      "hMin" :-0.5,
+      "hMax" : 1
 		};
   
   var cutterConf = {
@@ -144,21 +145,21 @@ var loading = new Loading('#main',function(){
       {
         range : 'min',
         min : 0,
-        max : 200,
-        value: 100,
-        getText : function (v){return 'Lightness ' + textSlider(v)},
+        max : 140,
+        value: 70,
+        getText : function (v){return 'Brightness ' + textSlider(v/0.7)},
         callback: function (v){ 
-          rcl2.setRefl(v/20);
+          rcl2.setL(v/10);
         }
       },
       {
         range : 'min',
         min : 0,
-        max : 200,
-        value: 100,
-        getText : function (v){return 'Contrast ' + textSlider(v)},
+        max : 80,
+        value: 40,
+        getText : function (v){return 'Darkness ' + textSlider(v/.4)},
         callback: function (v){ 
-          rcl2.setColorFactor((200-v)/100);
+          rcl2.setColorFactor((80 - v) / 100);
         }
       },
       {
@@ -172,13 +173,14 @@ var loading = new Loading('#main',function(){
         }
       },
       {
-        range : 'min',
-        min : 0,
-        max : 160,
-        value: 80,
+        range : true,
+        min : -100,
+        max : 200,
+        values: [ 0 , 100 ],
         getText : function (v){return 'Color mapping'},
         callback: function (v){ 
-          rcl2.setSos(v/100);
+          rcl2.setHMin(v[0]/100 - 0.5);
+          rcl2.setHMax(v[1]/100);
         }
       },
       {
@@ -188,7 +190,7 @@ var loading = new Loading('#main',function(){
         value: 90,
         getText : function (v){return 'Saturation'},
         callback: function (v){ 
-          rcl2.setSat(v/100);
+          rcl2.setS(v/100);
         }
       },
     ]    
@@ -212,12 +214,12 @@ var loading = new Loading('#main',function(){
 
 function textRange(v){
 return '<span class = "slider_results">' + 
-          v[0] + '% </span> - <span class = "slider_results">' + 
-          v[1] +"% </span>"
+          Math.round(v[0]) + '% </span> - <span class = "slider_results">' + 
+          Math.round(v[1]) +"% </span>"
 }
 
 function textSlider(v){
-  return '<span class = "slider_results">' + v + "% </span>"
+  return '<span class = "slider_results">' + Math.round(v) + "% </span>"
 }
 
 function boxWidthCalculation(w, breastSize){
