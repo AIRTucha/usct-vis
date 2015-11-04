@@ -13,6 +13,9 @@ var loading = new Loading('#main',function(){
   var fO = s.append(Snap.parse('<foreignObject id="container" width="' + breastSize + 
                                '" height="' + breastSize + '"></foreignObject>'));
   var rcl2;
+  var slidersSR;
+  var slidersMS;
+  var slidersTH;
   
   var tomoConfig = {
 		"domContainerId": "container",
@@ -29,7 +32,7 @@ var loading = new Loading('#main',function(){
 			],
       "callback" : function(){
         setTimeout(function(){
-          loading.stopIcon();         
+          loading.stopIcon();           
         }, 500); 
       },    
       "shader_name" : "secondPassFusion",
@@ -47,7 +50,7 @@ var loading = new Loading('#main',function(){
       "hMax" : 1
 		};
   
-  var cutterConf = {
+  var srConf = {
     container : '#main',
     title : 'Slice range',
     width : boxWidthCalculation(w, breastSize),
@@ -195,6 +198,168 @@ var loading = new Loading('#main',function(){
       },
     ]    
   }
+   
+   var modesConf = {     
+     container : '#main',
+     modes : [
+      {
+        image:'/imgs/atten.PNG',
+        name:'Attenuation',
+        tooltip:'The model shows distribution of areas with high and low attenuation to user via brightness. So, it allows to estimate the attenuation value at the certain point of space.<br>Attenuation can be helpful in an identification of the particular lesion`s type.',
+        callback : function (v) {
+         rcl2.setMode(v);
+          
+         //disable useless sliders 
+         slidersMS[3].slider( "disable" );
+         slidersMS[4].slider( "disable" );
+        },
+        config:{
+          shader_name:'secondPassAtten',
+          gray_min : 0.1,
+          gray_max : 0.9,
+          color_factor : 2,
+          sos : 1,
+          sat : 0.8,
+          refl: 0.4
+        }
+      },
+      {
+        image:'/imgs/attenM.PNG',
+        name:'Attenuation Max',
+        tooltip:'The model shows only parts of breast which have highest attenuation values and allows to look at it more clear.<br>Attenuation can be helpful in an identification of the particular lesion`s type.',
+        callback : function (v) {
+         rcl2.setMode(v)
+         
+         //disable useless sliders 
+         slidersMS[3].slider( "disable" );
+         slidersMS[4].slider( "disable" );
+        },
+        config:{
+          shader_name:'secondPassAttenMax'
+        }
+      },
+      {
+        image:'/imgs/sos.PNG',
+        name:'Sound Speed',
+        tooltip:'The model shows you distribution of areas with high and low sound speed via brightness. So, it allows to estimate the value of sound speed at certain point of space.<br>High sound speed points doctor to the high probability on breast cancer at the point.',
+        callback : function (v) {
+         rcl2.setMode(v)
+         
+         //disable useless sliders 
+         slidersMS[3].slider( "disable" );
+         slidersMS[4].slider( "disable" );
+        },
+        config:{
+          shader_name:'secondPassSos'
+        }
+      },
+      {
+        image:'/imgs/sosM.PNG',
+        name:'Sound Speed Max',
+        tooltip:'The model shows user only parts of breast which have highest sound speed values and allows look at more clear.<or>High sound speed points doctor to the high probability on breast cancer at the point.',
+        callback : function (v) {
+         rcl2.setMode(v)
+         
+         //disable useless sliders 
+         slidersMS[3].slider( "disable" );
+         slidersMS[4].slider( "disable" );
+        },
+        config:{
+          shader_name:'secondPassSosMax'
+        }
+      },
+      {
+        image:'imgs/Refl.PNG',
+        name:'Reflection',
+        tooltip:'The model shows general structures of a breast in high resolution and uses the same principle with traditional ultrasound diagnostics.',
+        callback : function (v) {
+         rcl2.setMode(v)
+         
+         //disable useless sliders 
+         slidersMS[3].slider( "disable" );
+         slidersMS[4].slider( "disable" );
+        },
+        config:{
+          shader_name:'secondPassRefl'
+        }
+      },
+      {
+        image:'/imgs/CuttOffSos.PNG',
+        name:'CuttOff Sound Speed',
+        tooltip:'Combination of reflectional image with highlighted areas there sound speed data`s values are high.<br>High sound speed points doctor to the high probability on breast cancer at the point.',
+        callback : function (v) {
+         rcl2.setMode(v)
+         
+         //enable sliders for sat and color range
+         slidersMS[3].slider( "enable" );
+         slidersMS[4].slider( "enable" );
+        },
+        config:{
+          shader_name:'secondPassCutOffSos'
+        }
+      },
+      {
+        image:'/imgs/CuttOffAtten.PNG',
+        name:'CuttOff Attenuation',
+        tooltip:'Combination of reflectional image with highlighted areas there attenuational data`s values are high.<br>Attenuation can be helpful in an identification of the particular lesion`s type.',
+        callback : function (v) {
+         rcl2.setMode(v)
+         
+         //enable sliders for sat and color range
+         slidersMS[3].slider( "enable" );
+         slidersMS[4].slider( "enable" );
+        },
+        config:{
+          shader_name:'secondPassCutOffAtten'
+        }
+      },
+      {
+        image:'/imgs/RA.PNG',
+        name:'Refl+Atten',
+        tooltip:'Combination of reflection and attenuation allows to evaluate structure and an attenuation at the same time.<br>The reflectional data is represented by gray scale gradation and attenuation is shown via color. Human eye is more sensitive to the hue of the color than to the saturation that`s why the mode is useful when detalization of attentional data is important.',
+        callback : function (v) {
+         rcl2.setMode(v)
+         
+         //enable sliders for sat and color range
+         slidersMS[3].slider( "enable" );
+         slidersMS[4].slider( "enable" );
+        },
+        config:{
+          shader_name:'secondPassAR'
+        }
+      },    
+      {
+        image:'/imgs/fusion.PNG',
+        name:'Fusion',
+        callback : function (v) {
+         rcl2.setMode(v)
+         
+         //enable sliders for sat and color range
+         slidersMS[3].slider( "enable" );
+         slidersMS[4].slider( "enable" );
+        },
+        tooltip:'Combination of three different modalities demonstrates the most complete way to visualize USCT data, it allows to evaluate structure, sound speed and attenuation at the same time.<br>The reflectional data is represented by gray scale gradation, sound speed by color and attenuation is shown via saturation of the color.',
+        config:{
+          shader_name:'secondPassFusion'
+        }
+      },
+      {
+        image:'/imgs/sr.PNG',
+        name:'Sos+Refl',
+        tooltip:'Combination of reflection and sound speed allows to evaluate structure and sound speed at the same time.<br>The reflectional data is represented by grayscale gradation and sound speed is shown via color. The mode can be more helpful than fusion of three modalities, because it can be difficult to determine color in areas with high attenuation for normal fusion.',
+        callback : function (v) {
+         rcl2.setMode(v)
+         
+         //enable sliders for sat and color range
+         slidersMS[3].slider( "enable" );
+         slidersMS[4].slider( "enable" );
+        },
+        config:{
+          shader_name:'secondPassSR'
+        }
+      }   
+    ]
+   };
   
   s.select('#container').attr({
     x: w * 0.05,
@@ -204,11 +369,10 @@ var loading = new Loading('#main',function(){
   
     setTimeout(function(){
        rcl2 = new VRC.VolumeRaycaster(tomoConfig);
-       Modes(rcl2,'#main'); 
-       loading.drawCorners(breastSize);
-       sliders(cutterConf);
-       sliders(thConf);
-       sliders(msConf);
+       Modes(modesConf); 
+       slidersSR = sliders(srConf);
+       slidersMS = sliders(msConf);
+       slidersTH = sliders(thConf);
       }, 500);    
 });
 
@@ -229,4 +393,5 @@ function boxWidthCalculation(w, breastSize){
 function boxXCalculation(w, breastSize){
   return (breastSize > w * 0.5) ? w*0.05 + breastSize : w*0.55
 }
+
 

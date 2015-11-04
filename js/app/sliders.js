@@ -34,6 +34,7 @@ function sliders(conf) {
   var h = $(window).height();
   var s = Snap(conf.container);
   var box = Box("#main", conf.title, conf.width + h*0.06, conf.sliderH*conf.sliders.length + conf.sliderH);
+  var slider = [];
   
   box.attr({transform : 'translate(' + conf.x + ',' + conf.y + ')'});
   
@@ -106,10 +107,12 @@ function sliders(conf) {
         '</p>' 
       );
     }
+    
+    slider.push($('#slider_' + conf.title.replace(' ','_') + i));
   });
   
   
-  
+  return slider;
 }
 
 module.exports = sliders;
