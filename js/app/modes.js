@@ -8,8 +8,7 @@ var Tooltip= require('./tooltip');
 function modes(conf) {
   var w = $(window).width();
   var h = $(window).height();
-  var size = w / 3;
-  var buttonSize = size / 8;
+  var buttonSize = w / 24;
   
   var s = Snap(conf.container);
   var tl = Tooltip(conf.container);
