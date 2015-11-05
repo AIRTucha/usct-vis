@@ -415,7 +415,32 @@ var srConf = {
   ]
  };
 
-var loading = new Loading('#main',function(){ startApp() });
+var loading = new Loading('#main',function(){ 
+  var s = Snap("#main")  
+
+  s.append(Snap.parse('<foreignObject id="breast" width="' + breastWidth + 
+                           '" height="' + breastHeight + '"></foreignObject>'));
+
+
+  s.select('#breast').attr({
+    x: w * 0.05 + h*0.016,
+    y: h*0.04
+  });
+
+
+  setTimeout(function(){
+    rcl2 = new VRC.VolumeRaycaster(tomoConfig);
+    Modes(modesConf); 
+    slidersSR = sliders(srConf);
+    slidersMS = sliders(msConf);
+    slidersTH = sliders(thConf);
+    
+    $(window).resize(function(){
+      window.location.href = window.location.href;
+    }); 
+
+    }, 500);   
+});
 
 function textRange(v){
 return '<span class = "slider_results">' + 
@@ -440,30 +465,5 @@ function setHue(obj,v){
    obj.setHMax(v[1]/100);
 }
 
-function startApp(){
-     var s = Snap("#main")  
-  
-     s.append(Snap.parse('<foreignObject id="breast" width="' + breastWidth + 
-                             '" height="' + breastHeight + '"></foreignObject>'));
-
-    
-    s.select('#breast').attr({
-      x: w * 0.05 + h*0.016,
-      y: h*0.04
-    });
-  
-  
-    setTimeout(function(){
-      rcl2 = new VRC.VolumeRaycaster(tomoConfig);
-      Modes(modesConf); 
-      slidersSR = sliders(srConf);
-      slidersMS = sliders(msConf);
-      slidersTH = sliders(thConf);
-      
-      $(window).resize(function(){
-         location.reload();
-      }); 
-      }, 500);   
-}
 
 
