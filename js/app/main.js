@@ -57,7 +57,8 @@ var tomoConfig = {
     "minAtten" : 0,  
     "maxRefl" : 1,
     "maxSos" : 1,
-    "maxAtten" : 1
+    "maxAtten" : 1,
+    "zFactor" : 0.56
   };
 
 var srConf = {
