@@ -59,7 +59,7 @@ function sliders(conf) {
         min : d.min,
         max : d.max,
         values : d.values,
-        slide : function( e, ui ) {
+        slide : function( event, ui ) {
           $('#result_' + conf.title.replace(' ','_') + i).remove();
           $('#' + conf.title.replace(' ','_') + i).prepend(
             '<p id=' + 
@@ -67,10 +67,6 @@ function sliders(conf) {
             d.getText(ui.values) + 
             '</p>' 
           );
-                  
-          event.preventDefault();
-          event.stopPropagation();
-                    
           d.callback(ui.values);
         }
       });
@@ -92,18 +88,14 @@ function sliders(conf) {
         min : d.min,
         max : d.max,
         value : d.value,
-        slide : function( e, ui ) {
+        slide : function( event, ui ) {
           $('#result_' + conf.title.replace(' ','_') + i).remove();
           $('#' + conf.title.replace(' ','_') + i).prepend(
             '<p id=' + 
             'result_' + conf.title.replace(' ','_') + i + '>'+ 
             d.getText(ui.value) + 
             '</p>' 
-          );          
-        
-          event.preventDefault();
-          event.stopPropagation();
-          
+          );
           d.callback(ui.value);
         }
       });
