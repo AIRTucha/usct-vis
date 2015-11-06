@@ -40,7 +40,7 @@ var tomoConfig = {
     "shader_name" : "secondPassFusion",
     "slices_range": [0, 144],			
     "row_col": [4, 4],
-    "render_size": breastHeight < breastWidth ? 
+    "render_size": breastHeight > breastWidth ? 
                     [breastHeight * .65, breastHeight * .65 ] : 
                     [breastWidth * .65, breastWidth * .65 ],
     "renderer_canvas_size": [ breastWidth , breastHeight ],	
@@ -435,11 +435,17 @@ var loading = new Loading('#main',function(){
     slidersMS = sliders(msConf);
     slidersTH = sliders(thConf);
     
+    
+    var resizeEvt;
     $(window).resize(function(){
-      window.location.href = window.location.href;
-    }); 
-
-    }, 500);   
+      clearTimeout(resizeEvt);
+      resizeEvt = setTimeout(function() {
+        window.location.href = window.location.href;
+    }, 500); 
+    });
+  });
+              
+  
 });
 
 function textRange(v){
