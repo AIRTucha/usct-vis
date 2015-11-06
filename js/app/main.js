@@ -13,11 +13,8 @@ var colorMapCutOff = [ 70, 100] ;
 var colorMap = [ 0, 100] ;
 var isCuttOffColorMap = false;
 
-var fO;
 var rcl2;
-var slidersSR;
-var slidersMS;
-var slidersTH;
+var fO;
 
 var tomoConfig = {
   "domContainerId": "breast",
@@ -59,7 +56,7 @@ var tomoConfig = {
     "maxSos" : 1,
     "maxAtten" : 1,
     "zFactor" : 0.56
-  };
+};
 
 var srConf = {
   container : '#main',
@@ -102,7 +99,7 @@ var srConf = {
         rcl2.setGeometryMaxZ(v[1]/101);}
     }
   ]    
-}
+};
 
  var thConf = {
   container : '#main',
@@ -146,7 +143,7 @@ var srConf = {
       }
     }
   ]    
-}
+};
 
  var msConf = {
   container : '#main',
@@ -205,9 +202,9 @@ var srConf = {
       callback: function (v){ 
         rcl2.setS(v/100);
       }
-    },
+    }
   ]    
-}
+};
 
  var modesConf = {     
    container : '#main',
@@ -224,13 +221,7 @@ var srConf = {
        slidersMS[4].slider( "disable" );
       },
       config:{
-        shader_name:'secondPassAtten',
-        gray_min : 0.1,
-        gray_max : 0.9,
-        color_factor : 2,
-        sos : 1,
-        sat : 0.8,
-        refl: 0.4
+        shader_name:'secondPassAtten'
       }
     },
     {
@@ -416,45 +407,52 @@ var srConf = {
   ]
  };
 
+//magic starts here
 var loading = new Loading('#main',function(){ 
-  var s = Snap("#main")  
+  var s = Snap("#main");
 
   s.append(Snap.parse('<foreignObject id="breast" width="' + breastWidth + 
                            '" height="' + breastHeight + '"></foreignObject>'));
-
-
+  
   s.select('#breast').attr({
     x: w * 0.05 + h*0.016,
     y: h*0.04
   });
-
-
-  setTimeout(function(){
-    rcl2 = new VRC.VolumeRaycaster(tomoConfig);
-    Modes(modesConf); 
-    slidersSR = sliders(srConf);
-    slidersMS = sliders(msConf);
-    slidersTH = sliders(thConf);
-    
-    
-    var resizeEvt;
-    $(window).resize(function(){
-      clearTimeout(resizeEvt);
-      resizeEvt = setTimeout(function() {
-        window.location.href = window.location.href;
-    }, 500); 
-    });
-  });
-              
   
+  //starts tomo and gui, on the end of animation, timeout for smothness
+  setTimeout(function(){
+    
+    rcl2 = new VRC.VolumeRaycaster(tomoConfig);
+    
+    Modes(modesConf); 
+    
+    sliders(srConf);
+    sliders(msConf);
+    sliders(thConf);
+    
+  },500);
+  
+  //resize action
+  var resizeEvt;
+  $(window).resize(function(){
+    clearTimeout(resizeEvt);
+    resizeEvt = setTimeout(function() {
+      window.location.href = window.location.href;
+  }, 500); 
+  });      
 });
 
+/*
+* generate right string for range sliders
+*/
 function textRange(v){
-return '<span class = "slider_results">' + 
+  return '<span class = "slider_results">' + 
           Math.round(v[0]) + '% </span> - <span class = "slider_results">' + 
           Math.round(v[1]) +"% </span>"
 }
-
+/*
+* generate right string for sliders
+*/
 function textSlider(v){
   return '<span class = "slider_results">' + Math.round(v) + "% </span>"
 }
@@ -468,8 +466,8 @@ function boxXCalculation(){
 }
 
 function setHue(obj,v){  
-   obj.setHMin(v[0]/100 - 0.5);
-   obj.setHMax(v[1]/100);
+  obj.setHMin(v[0]/100 - 0.5);
+  obj.setHMax(v[1]/100);
 }
 
 

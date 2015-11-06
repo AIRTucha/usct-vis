@@ -28,47 +28,51 @@ function loading(container, callback) {
   var lineDown = s.line(w*0.5, h,w*0.5, h*0.55);  
   
   var cLeftTop = s.polyline([
-     0, h*0.03-6,
-     0, h*0.07, -6,
-     h*0.07-6, -6,
-     h*0.03-6, w*0.03-12,
-     h*0.03-6, w*0.03,
-     h*0.03, 0, h*0.03
-    ]);
+    0, h*0.03-6,
+    0, h*0.07,
+    -6, h*0.07-6,
+    -6, h*0.03-6,
+    w*0.03-12, h*0.03-6,
+    w*0.03, h*0.03,
+    0, h*0.03
+  ]);
   
   var cRightTop = s.polyline([
-      0, h*0.03-6,
-      0, h*0.07, 6,
-      h*0.07-6, 6,
-      h*0.03-6, 12-w*0.03,
-      h*0.03-6, -w*0.03,
-      h*0.03, 0, h*0.03
-     ]);
+    0, h*0.03-6,
+    0, h*0.07, 
+    6, h*0.07-6,
+    6, h*0.03-6,
+    12-w*0.03, h*0.03-6,
+    -w*0.03, h*0.03, 
+    0, h*0.03
+  ]);
   
   var cLeftBottom = s.polyline([  
-      0, 6-h*0.03,
-      0,-h*0.07, -6,
-      6-h*0.07, -6,
-      6-h*0.03, w*0.03-12,
-      6-h*0.03, w*0.03,
-      -h*0.03, 0, -h*0.03
-    ]);
+    0, 6-h*0.03,
+    0,-h*0.07,
+    -6, 6-h*0.07,
+    -6, 6-h*0.03,
+    w*0.03-12, 6-h*0.03,
+    w*0.03, -h*0.03,
+    0, -h*0.03
+  ]);
   
   var cRightBottom = s.polyline([ 
-     0, 6-h*0.03,
-     0, -h*0.07,
-     6, 6-h*0.07,
-     6, 6-h*0.03,
-     12-w*0.03, 6-h*0.03,
-     -w*0.03, -h*0.03,
-     0, -h*0.03
-    ]);
+   0, 6-h*0.03,
+   0, -h*0.07,
+   6, 6-h*0.07,
+   6, 6-h*0.03,
+   12-w*0.03, 6-h*0.03,
+   -w*0.03, -h*0.03,
+   0, -h*0.03
+  ]);
     
   var loaded = false;
   
   var loadingIcon;
   var logo; 
   
+  //starts animation onload
   $(window).ready(function(){
     init(callback);
   });
@@ -435,13 +439,13 @@ function loading(container, callback) {
   /**
   * @function turn off the loading icon
   */
-  this.stopIcon = function (){  
+  this.stopIcon = function (){   
     loadingIcon.top.remove();
     loadingIcon.right.remove();
     loadingIcon.bottom.remove();
     loadingIcon.left.remove();
 
-    loaded = true;
+    loaded = true;   
   }
   /**
   * @function drows white corners in for square in the center of screen
