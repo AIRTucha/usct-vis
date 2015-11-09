@@ -14,18 +14,20 @@ require('jquery-ui');
     container : plase holder Class or ID (String)
     title : sliders block name (String)
     width : width of sliders (int)
-    sliderH : int
+    sliderH : hieght of every slider int
     x : int
     y : int
     //array with personal sliders settings
     sliders :[
       {
-        range : true,
-        min : 0,
-        max : 500,
-        values: [ 75, 300 ],
-        text : function (v){return "X range is " + v[0] + "% - " + v[1] +"%"},
-        callback: function (v){ console.log(v)}
+        range : true - for range sliders, 'min' - for normal
+        min : int minamal value
+        max : int maximal value
+        values: [ int default min range, int default max range] for range
+        value: int default value for normal
+        text : function (v){return (String) handling of int @param - v },
+        callback: function (v){ 
+        handlining of int @param - v
       },
 */
  
@@ -33,10 +35,16 @@ function sliders(conf) {
   var w = $(window).width();
   var h = $(window).height();
   var s = Snap(conf.container);
-  var box = Box("#main", conf.title, conf.width + h*0.06, conf.sliderH*conf.sliders.length + h*0.04);
+  var box = Box("#main", 
+                conf.title, 
+                conf.width + h*0.06, 
+                conf.sliderH * conf.sliders.length + conf.sliderH);
+  var slider = [];
   
+  //move box to right position
   box.attr({transform : 'translate(' + conf.x + ',' + conf.y + ')'});
   
+  //run accross array of sliders and creates them
   conf.sliders.forEach(function(d,i,ds){
     var fO = s.append(Snap.parse('<foreignObject ' +                                    
                                    'width=' + conf.width + ' ' + 
@@ -47,12 +55,15 @@ function sliders(conf) {
                                    '<div id=' + 'slider_' + conf.title.replace(' ','_') + i + ' ' +
                                    '></div></foreignObject>'));
     
-    $('#slider_' + conf.title.replace(' ','_') + i).css({'width':conf.width,'margin-top':conf.sliderH/8 });    
+    $('#slider_' + conf.title.replace(' ','_') + i)
+      .css({'width':conf.width,'margin-top':conf.sliderH/8 });    
    
    
     
     if(d.range == true){
+      //create jQuery UI range slider 
       $('#slider_' + conf.title.replace(' ','_') + i).slider({
+        animate: "fast",
         range : d.range,
         min : d.min,
         max : d.max,
@@ -69,6 +80,7 @@ function sliders(conf) {
         }
       });
       
+      //create title of the slider
       $('#' + conf.title.replace(' ','_') + i).prepend(
         '<p id=' + 
         'result_' + conf.title.replace(' ','_') + i + '>'+ 
@@ -80,7 +92,9 @@ function sliders(conf) {
       );
     }
     else {
+       //create jQuery UI normal slider 
       $('#slider_' + conf.title.replace(' ','_') + i).slider({
+        animate: "fast",
         range : d.range,
         min : d.min,
         max : d.max,
@@ -97,6 +111,7 @@ function sliders(conf) {
         }
       });
       
+      //create title of the slider
       $('#' + conf.title.replace(' ','_') + i).prepend(
         '<p id=' + 
         'result_' + conf.title.replace(' ','_') + i + '>'+ 
@@ -104,10 +119,12 @@ function sliders(conf) {
         '</p>' 
       );
     }
-  });
+    
+
+    slider.push($('#slider_' + conf.title.replace(' ','_') + i));
+  });  
   
-  
-  
+  return slider;
 }
 
 module.exports = sliders;

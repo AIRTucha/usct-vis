@@ -6,6 +6,7 @@ var $ = require('jquery');
 
 function tooltip(container) {
   return function(obj){
+    
     var w = $(window).width();
     var h = $(window).height();
     var ttH = $(window).height()/4;
@@ -15,8 +16,8 @@ function tooltip(container) {
     return function(string){
       $(obj).hover(        
         function(){    
-         $('.tooltip').remove();
-         $('svg').before('<div class="tooltip">' +
+          $('.tooltip').remove();
+          $('svg').before('<div class="tooltip">' +
                           '<p>'+ string + '</p>' +
                           '</div>');
         },

@@ -4,12 +4,20 @@
 var $ = require('jquery');
 var Snap = require('snap');
 
+/*
+* Instanciate the box 
+* @param - String points SVG element
+* @param - String title of the box
+* @param - int width
+* @param - int hiegth
+*/
 function box(container,text,boxW,boxH) {
   var w = $(window).width();
   var h = $(window).height();
   var s = Snap(container);
   var color = "#40f0ff";//"#50F5FC"
   
+  //set coordinates for elements
   var frame = s.polyline([  
     //left top corner
       0, h*0.01,
@@ -78,6 +86,7 @@ function box(container,text,boxW,boxH) {
   
   var txt = s.text(h*0.02, h*0.015, text);
   
+  //set properties 
   rect.attr({
       stroke  : "white",
       "fill" : "white"
@@ -115,6 +124,7 @@ function box(container,text,boxW,boxH) {
       "fill-opacity" : 0
     });
   
+  //create title as hole in the top element of box
   var box = s.group(frame, rigthTop, leftTop, leftBottom, rigth, frame);
   var mask = s.group(rect, txt);
   
