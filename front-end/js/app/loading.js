@@ -5,7 +5,7 @@
 var $ = require('jquery');
 var Snap = require('snap');
 
-function loading(container, color, callback) {
+function loading(container, color, gradient, callback) {
   
   var w = $(window).width();
   var h = $(window).height();
@@ -90,7 +90,7 @@ function loading(container, color, callback) {
     $("body").css("overflow", "hidden")
              .css("background", "black");  
 
-    bg.attr({ fill : s.gradient("r(0.5, 0.5, 1)#30385f-#000") });
+    bg.attr({ fill : s.gradient(gradient) });
 	  
     frame.attr({
       fill : "black",
