@@ -10,12 +10,12 @@ var Snap = require('snap');
 * @param - String title of the box
 * @param - int width
 * @param - int hiegth
+* @param - String color
 */
-function box(container,text,boxW,boxH) {
+function box(container, text, boxW, boxH, color) {
   var w = $(window).width();
   var h = $(window).height();
   var s = Snap(container);
-  var color = "#40f0ff";//"#50F5FC"
   
   //set coordinates for elements
   var frame = s.polyline([  

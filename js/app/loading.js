@@ -5,7 +5,7 @@
 var $ = require('jquery');
 var Snap = require('snap');
 
-function loading(container, callback) {
+function loading(container, color, callback) {
   
   var w = $(window).width();
   var h = $(window).height();
@@ -115,9 +115,7 @@ function loading(container, callback) {
         + w*0.405 + ',' + h*0.425 + ')'
       );   
       
-      logo.attr({border : 0.9});
-
-      logo.click(function (){ $('.about').fadeIn(500) });
+      logo.attr({border : 0.9});     
       
       //set vertical lines on top and bottom
       lineUp.attr({stroke : "white"}); 
@@ -160,7 +158,7 @@ function loading(container, callback) {
  * @param animation mode for Snap
  * @param callback executed when the loading is done
  */ 
-  function startLoadingAnimation(duration, animationMode, callback){ 
+  function startLoadingAnimation(duration, animationMode, callback){     
     //main frame animation
     frame.animate({
       x : w*0.05,
@@ -211,8 +209,8 @@ function loading(container, callback) {
     lineDown.animate({
       transform  : 'translate(' + 0 + ',' + h*0.385 + ')'
     },
-     duration, animationMode);
-
+     duration, animationMode); 
+    
     //logo moved to corner
     logo.animate({
       transform : 'matrix('
@@ -221,6 +219,13 @@ function loading(container, callback) {
     },            
       duration, animationMode,
       function(){
+      
+        var logoEventHandler = s.rect(w*0.95 - logo.width - h*0.015, (h*0.92 - logo.height), logo.width, logo.height);
+        
+        logoEventHandler.attr({fill : 'rgba(0, 0, 0, 0)'}).click(function (){ $('.about').fadeIn(500) });
+        
+        logoEventHandler.addClass('usct-logo');
+      
         //start loading icon animation
         loadingIcon = createLoadingIcon(w*0.5, h*0.47); 
         startIconAnimation(mina.easeinout, 250);
@@ -511,11 +516,15 @@ function loading(container, callback) {
   function createAbout(){
     $('body').append('<div class = "about"><div class = "about_content"></div><div class = "about_exit"></div></div>');
     
+    
+    
     $('.about_content').append('<h1>About Us</h1><br/>' + 
                        '<p>The visualisation is created by <a target = "_blank" href = "http://ipe.kit.edu">Institute of Data Processing and Electronics</a> of <a target = "_blank" href = "http://kit.edu">Karslruhe Institute of Technology</a> for <a target = "_blank" href = "http://www.ipe.kit.edu/english/167.php">Early Breast Cancer Detection with Ultrasound Computertomography project</a>.</p><br/>' +
                        '<p>Breast cancer is one of the most common and fatal cancerous diseases among women. Worldwide, there are approx. 1,600,000 cases of breast cancer every year. Although the breast is not a vital organ, the number of women healed of this disease is not as large as it could be. If breast cancer is diagnosed early, patients have a good prognosis.</p><br/>' +
                       '<p>In the project "Ultrasound Computer Tomography" (USCT) a new imaging methodology for early breast cancer detection is developed. It promises three dimensional images of the breast with high spatial resolution. Our aim is the detection of tumors with an average diameter of less than 5 mm to improve the survival probability of the patients.</p><br/>' + 
                       '<p><a target = "_blank" href = "https://www.startnext.com/en/usct"> You can help project here!</a></p>');
+    
+   $('a').css({'color' : color});
     
    $(".about_exit").click(function(){ $(".about").fadeOut(500)});
     

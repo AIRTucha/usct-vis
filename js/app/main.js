@@ -12,6 +12,7 @@ var breastWidth = boxXCalculation() - w * 0.05 - h*0.02;
 var colorMapCutOff = [ 70, 100] ;
 var colorMap = [ 0, 100] ;
 var isCuttOffColorMap = false;
+var guiColor = "#40f0ff";
 
 var rcl2;
 var fO;
@@ -64,6 +65,7 @@ var srConf = {
   width : boxWidthCalculation(),
   x :  boxXCalculation(),
   y : h*0.08,
+  color : guiColor,
   sliderH : h*0.05,
   sliders :[
     {
@@ -107,7 +109,8 @@ var srConf = {
   sliderH : h*0.05,
   width :  boxWidthCalculation(),
   x :  boxXCalculation(),
-  y : h*.05 * 8 + h*.24  ,
+  y : h*.05 * 8 + h*.24,
+  color : guiColor,
   sliders :[
     {
       range : true,
@@ -152,6 +155,7 @@ var srConf = {
   width : boxWidthCalculation(),
   x :   boxXCalculation(),
   y : h*0.05 * 3 + h*0.16,
+  color : guiColor,
   sliders :[
     {
       range : 'min',
@@ -408,7 +412,7 @@ var srConf = {
  };
 
 //magic starts here
-var loading = new Loading('#main',function(){ 
+var loading = new Loading('#main', guiColor,function(){ 
   var s = Snap("#main");
 
   s.append(Snap.parse('<foreignObject id="breast" width="' + breastWidth + 
@@ -446,15 +450,15 @@ var loading = new Loading('#main',function(){
 * generate right string for range sliders
 */
 function textRange(v){
-  return '<span class = "slider_results">' + 
-          Math.round(v[0]) + '% </span> - <span class = "slider_results">' + 
+  return '<span style = "color : ' + guiColor + '">' + 
+          Math.round(v[0]) + '% </span> - <span style = "color : ' + guiColor + '">' + 
           Math.round(v[1]) +"% </span>"
 }
 /*
 * generate right string for sliders
 */
 function textSlider(v){
-  return '<span class = "slider_results">' + Math.round(v) + "% </span>"
+  return '<span style = "color : ' + guiColor + '">' + Math.round(v) + "% </span>"
 }
 
 function boxWidthCalculation(){

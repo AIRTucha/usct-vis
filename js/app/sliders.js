@@ -14,6 +14,7 @@ require('jquery-ui');
     container : plase holder Class or ID (String)
     title : sliders block name (String)
     width : width of sliders (int)
+    color : String color code 
     sliderH : hieght of every slider int
     x : int
     y : int
@@ -38,9 +39,10 @@ function sliders(conf) {
   var box = Box("#main", 
                 conf.title, 
                 conf.width + h*0.06, 
-                conf.sliderH * conf.sliders.length + conf.sliderH);
+                conf.sliderH * conf.sliders.length + conf.sliderH,
+                conf.color);
   var slider = [];
-  
+    
   //move box to right position
   box.attr({transform : 'translate(' + conf.x + ',' + conf.y + ')'});
   
@@ -99,7 +101,8 @@ function sliders(conf) {
         min : d.min,
         max : d.max,
         value : d.value,
-        slide : function( event, ui ) {
+        slide : function( event, 
+                           ui ) {
           $('#result_' + conf.title.replace(' ','_') + i).remove();
           $('#' + conf.title.replace(' ','_') + i).prepend(
             '<p id=' + 
@@ -123,6 +126,9 @@ function sliders(conf) {
 
     slider.push($('#slider_' + conf.title.replace(' ','_') + i));
   });  
+  
+  //set slider color
+  $('.ui-slider-range').css({"background" : conf.color, "opacity" : 0.8});  
   
   return slider;
 }

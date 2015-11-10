@@ -61,10 +61,6 @@ color: white;
 text-align: center;
 opacity: 0.85;
 }
-.slider_results{
-color : #40f0ff;
-opacity: 0.9;
-}
 .about {
 z-index: 11;
 position: absolute; 
@@ -84,7 +80,7 @@ left: 25%;
 position: absolute; 
 padding: 1%;
 }
-#usct-logo {
+.usct-logo {
 cursor: pointer;
 }
 .about_exit {
