@@ -5,49 +5,45 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-
-app.use('/', routes);
+//routes
+app.get('/', function(req, res, next) {
+    var conf = {
+    shader_name : req.query.shader_name === undefined ? 'secondPassFusion' : req.query.shader_name,
+    l : req.query.l === undefined ? 100 : req.query.l,
+    s : req.query.s === undefined ? 100 : req.query.s,
+    hMin : req.query.hMin === undefined ? 0 : req.query.hMin,
+    hMax : req.query.hMax === undefined ? 100 : req.query.hMax,
+    minRefl : req.query.minRefl === undefined ? 0 : req.query.minRefl,
+    minSos : req.query.minSos === undefined ? 0 : req.query.minSos,
+    minAtten : req.query.minAtten === undefined ? 0 : req.query.minAtten,  
+    maxRefl : req.query.maxRefl === undefined ? 100 : req.query.maxRefl, 
+    maxSos : req.query.maxSos === undefined ? 100 : req.query.maxSos, 
+    maxAtten : req.query.maxAtten === undefined ? 100 : req.query.maxAtten, 
+    opacity_factor : req.query.opacity === undefined ? 80 : req.query.opacity,
+    color_factor : req.query.darkness === undefined ? 100 : req.query.darkness,
+    xMin : req.query.xMin === undefined ? 0 : req.query.xMin,
+    yMin : req.query.yMin === undefined ? 0 : req.query.yMin,
+    zMin : req.query.zMin === undefined ? 0 : req.query.zMin,  
+    xMax : req.query.xMax === undefined ? 100 : req.query.xMax, 
+    yMax : req.query.yMax === undefined ? 100 : req.query.yMax, 
+    zMax : req.query.zMax === undefined ? 100 : req.query.zMax
+  };
+    
+    res.render('index',conf);
+});
 
 app.use(express.static(path.join(__dirname, 'public')));
-
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
 
 
 module.exports = app;

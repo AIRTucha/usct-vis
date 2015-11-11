@@ -45,7 +45,7 @@ function modes(conf) {
                                    'height=' + buttonSize*1.3 +  ' ' + 
                                    'x=' + (w*0.05 + buttonSize*(.5+i))  + ' ' +
                                    'y=' + (h*0.95 - buttonSize*1.75) +
-                                   (b.shader_name == conf.activeMode ? 
+                                   (conf.activeMode == b.config.shader_name ? 
                                    '><div class="mode_button_active"' :  
                                    '><div class="mode_button"') +
                                    'id=' + 'mode' + i + ' ' +

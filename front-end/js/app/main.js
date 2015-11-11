@@ -48,23 +48,24 @@ var sliders = require('./sliders');
                         [breastHeight * .65, breastHeight * .65 ] : 
                         [breastWidth * .65, breastWidth * .65 ],
         "renderer_canvas_size": [ breastWidth , breastHeight ],	
-        "opacity_factor": 40,
-        "color_factor": 0.4,
-        "x_min": 0.0,
-        "x_max": 1.0,	
-        "l": 7,
-        "s" :0.9,
-        "hMin" :-0.5,
-        "hMax" : 1,
-        "minRefl" : 0,
-        "minSos" : 0,
-        "minAtten" : 0,  
-        "maxRefl" : 1,
-        "maxSos" : 1,
-        "maxAtten" : 1,
+        "opacity_factor": mainConf.opacity_factor / 2,
+        "color_factor": (80 - mainConf.color_factor * 0.4) / 100,
+        "x_min": 0,
+        "x_max": 
+      1,
+        "l": parseFloat(mainConf.l) * 0.049,
+        "s" : parseFloat(mainConf.s) / 100,
+        "hMin" : (parseFloat(mainConf.hMin) / 100) - 0.5,
+        "hMax" : parseFloat(mainConf.hMax) / 100,
+        "minRefl" : parseFloat(mainConf.minRefl) / 100,
+        "minSos" : parseFloat(mainConf.minSos) / 100,
+        "minAtten" : parseFloat(mainConf.minAtten) / 100, 
+        "maxRefl" : parseFloat(mainConf.maxRefl) / 100,
+        "maxSos" : parseFloat(mainConf.maxSos) / 100,
+        "maxAtten" : parseFloat(mainConf.maxAtten) / 100,
         "zFactor" : 0.56
     };
-
+    
     var srConf = {
       container : '#main',
       title : 'Slice range',
@@ -78,7 +79,7 @@ var sliders = require('./sliders');
           range : true,
           min : 0,
           max : 100,
-          values: [ 0, 100 ],
+          values: [ mainConf.xMin, mainConf.xMax ],
           getText : function (v){return 'X range is ' + textRange(v)},
           callback: function (v){ 
             rcl2.setGeometryMinX(v[0]/100);
@@ -89,7 +90,7 @@ var sliders = require('./sliders');
           range : true,
           min : 0,
           max : 100,
-          values: [ 0, 100 ],
+          values: [ mainConf.yMin, mainConf.yMax ],
           getText : function (v){return 'Y range is ' + textRange(v)},
           callback: function (v){ 
             rcl2.setGeometryMinY(v[0]/100);
@@ -100,7 +101,7 @@ var sliders = require('./sliders');
           range : true,
           min : 0,
           max : 100,
-          values: [ 0, 100 ],
+          values: [ mainConf.zMin, mainConf.zMax ],
           getText : function (v){return 'Z range is ' + textRange(v)},
           callback: function (v){  
             rcl2.setGeometryMinZ(v[0]/101);
@@ -122,7 +123,7 @@ var sliders = require('./sliders');
           range : true,
           min : 0,
           max : 100,
-          values: [ 0, 100 ],
+          values: [ mainConf.minSos, mainConf.maxSos ],
           getText : function (v){return 'Sound Speed threshold ' + textRange(v)},
           callback: function (v){ 
             rcl2.setMinSos(v[0]/100);
@@ -133,7 +134,7 @@ var sliders = require('./sliders');
           range : true,
           min : 0,
           max : 100,
-          values: [ 0, 100 ],
+          values: [ mainConf.minAtten, mainConf.maxAtten ],
           getText : function (v){return 'Attenuation threshold ' + textRange(v)},
           callback: function (v){ 
             rcl2.setMinAtten(v[0]/100);
@@ -144,7 +145,7 @@ var sliders = require('./sliders');
           range : true,
           min : 0,
           max : 100,
-          values: [ 0, 100 ],
+          values: [ mainConf.minRefl, mainConf.maxRefl ],
           getText : function (v){return 'Reflection threshold ' + textRange(v)},
           callback: function (v){  
             rcl2.setMinRefl(v[0]/100);
@@ -167,7 +168,7 @@ var sliders = require('./sliders');
           range : 'min',
           min : 0,
           max : 140,
-          value: 70,
+          value: mainConf.l * 0.7,
           getText : function (v){return 'Brightness ' + textSlider(v/0.7)},
           callback: function (v){ 
             rcl2.setL(v/10);
@@ -177,7 +178,7 @@ var sliders = require('./sliders');
           range : 'min',
           min : 0,
           max : 80,
-          value: 40,
+          value: mainConf.color_factor * 0.4,
           getText : function (v){return 'Darkness ' + textSlider(v/.4)},
           callback: function (v){ 
             rcl2.setColorFactor((80 - v) / 100);
@@ -187,7 +188,7 @@ var sliders = require('./sliders');
           range : 'min',
           min : 0,
           max : 100,
-          value: 80,
+          value: mainConf.opacity_factor,
           getText : function (v){return 'Opacity ' + textSlider(v)},
           callback: function (v){ 
             rcl2.setOpacityFactor(v/2);
@@ -197,7 +198,7 @@ var sliders = require('./sliders');
           range : true,
           min : -100,
           max : 200,
-          values: [ 0 , 100 ],
+          values: [ mainConf.hMin , mainConf.hMax ],
           getText : function (v){return 'Color mapping'},
           callback: function (v){ 
             setHue( rcl2, v);
@@ -207,8 +208,8 @@ var sliders = require('./sliders');
           range : 'min',
           min : 0,
           max : 180,
-          value: 90,
-          getText : function (v){return 'Saturation'},
+          value: mainConf.s * 0.9,
+          getText : function (v){return 'Saturation ' + textSlider(v/9*10)},
           callback: function (v){ 
             rcl2.setS(v/100);
           }
@@ -244,7 +245,7 @@ var sliders = require('./sliders');
 
            //disable useless sliders 
            slidersMS[3].slider( "disable" );
-           slidersMS[4].slider( "disable" );
+           slidersMS[4].slider( "enable" );
           },
           config:{
             shader_name:'secondPassAttenMax'
@@ -274,7 +275,7 @@ var sliders = require('./sliders');
 
            //disable useless sliders 
            slidersMS[3].slider( "disable" );
-           slidersMS[4].slider( "disable" );
+           slidersMS[4].slider( "enable" );
           },
           config:{
             shader_name:'secondPassSosMax'
@@ -434,6 +435,17 @@ var sliders = require('./sliders');
       setTimeout(function(){
 
         rcl2 = new VRC.VolumeRaycaster(tomoConfig);
+      
+        //set presetted slice ranges
+        rcl2.setGeometryMinX(mainConf.xMin/101);
+        rcl2.setGeometryMaxX(mainConf.xMax/101);
+
+        rcl2.setGeometryMinY(mainConf.yMin/101);
+        rcl2.setGeometryMaxY(mainConf.yMax/101);
+
+        rcl2.setGeometryMinZ(mainConf.zMin/101);
+        rcl2.setGeometryMaxZ(mainConf.zMax/101);
+       
 
         Modes(modesConf); 
 
