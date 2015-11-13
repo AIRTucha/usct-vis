@@ -47,6 +47,9 @@ function sliders(conf) {
   box.attr({transform : 'translate(' + conf.x + ',' + conf.y + ')'});
   
   //run accross array of sliders and creates them
+  //
+  //create a foreign object as a placeholder for html elements
+  //after this, add Jquery ui element attached to the id container
   conf.sliders.forEach(function(d,i,ds){
     var fO = s.append(Snap.parse('<foreignObject ' +                                    
                                    'width=' + conf.width + ' ' + 
