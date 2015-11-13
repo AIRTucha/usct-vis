@@ -1,1 +1,0 @@
-py -m SimpleHTTPServer 10002
