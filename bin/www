@@ -7,13 +7,15 @@
 var app = require('../app');
 var debug = require('debug')('usct-vis:server');
 var http = require('http');
+var portString = '10005';
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '10005');
+var port = normalizePort(process.env.PORT || portString);
 app.set('port', port);
+console.log('BTW, I am running on ' + portString)
 
 /**
  * Create HTTP server.

@@ -12,10 +12,17 @@ var sliders = require('./sliders');
     var breastHeight = $(window).height() - h * .09 - w / 14;
     var breastWidth = boxXCalculation() - w * 0.05 - h*0.02;
 
+    //settings for CuttOff modes
     var colorMapCutOff = [ 70, 100] ;
     var colorMap = [ 0, 100] ;
     var isCuttOffColorMap = false;
+    
+    //colors
     var guiColor = "#40f0ff";
+    var gradString = "r(0.5, 0.8, 1)#30385f-#000";
+    var frameColor = '#ffffff';
+    
+    //initiate url updator
     var urlUpdate = URLUpdator();
 
     var slidersSR;
@@ -24,6 +31,7 @@ var sliders = require('./sliders');
     var rcl2;
     var fO;
        
+    //configurations
     var tomoConfig = {
       "domContainerId": "breast",
       "slicemaps_paths": [
@@ -452,10 +460,17 @@ var sliders = require('./sliders');
       ]
      };
 
-    //magic starts here
-    var loading = new Loading('#main', guiColor, "r(0.5, 0.8, 1)#30385f-#000", function(){ 
+    /*
+    ************************** magic starts here *************************************
+    *
+    * creates backgound frame, control splash animation and 
+    * call the callback with main logic
+    *
+    */
+    var loading = new Loading('#main', guiColor, gradString, frameColor, function(){ 
       var s = Snap("#main");
 
+      //create container for tomo
       s.append(Snap.parse('<foreignObject id="breast" width="' + breastWidth + 
                                '" height="' + breastHeight + '"></foreignObject>'));
 
@@ -464,31 +479,30 @@ var sliders = require('./sliders');
         y: h*0.04
       });
 
-      //starts tomo and gui, on the end of animation, timeout for smothness
-      setTimeout(function(){
+      //starts tomo and gui, on the end of animation     
+      rcl2 = new VRC.VolumeRaycaster(tomoConfig);
 
-        rcl2 = new VRC.VolumeRaycaster(tomoConfig);
-      
-        //set presetted slice ranges
-        rcl2.setGeometryMinX(mainConf.xMin/101);
-        rcl2.setGeometryMaxX(mainConf.xMax/101);
+      //set presetted slice ranges
+      rcl2.setGeometryMinX(mainConf.xMin/101);
+      rcl2.setGeometryMaxX(mainConf.xMax/101);
 
-        rcl2.setGeometryMinY(mainConf.yMin/101);
-        rcl2.setGeometryMaxY(mainConf.yMax/101);
+      rcl2.setGeometryMinY(mainConf.yMin/101);
+      rcl2.setGeometryMaxY(mainConf.yMax/101);
 
-        rcl2.setGeometryMinZ(mainConf.zMin/101);
-        rcl2.setGeometryMaxZ(mainConf.zMax/101);
-       
+      rcl2.setGeometryMinZ(mainConf.zMin/101);
+      rcl2.setGeometryMaxZ(mainConf.zMax/101);
 
-        Modes(modesConf); 
+      //create buttons for shader modes
+      Modes(modesConf); 
 
-        slidersSR = sliders(srConf);
-        slidersMS = sliders(msConf);
-        slidersTH = sliders(thConf);
+      //create slider boxes
+      slidersSR = sliders(srConf);
+      slidersMS = sliders(msConf);
+      slidersTH = sliders(thConf);    
 
-      },500);
-
-      //resize action
+      /*
+      ***************** resize action ******************
+      */
       var resizeEvt;
       $(window).resize(function(){
         clearTimeout(resizeEvt);
@@ -526,6 +540,9 @@ var sliders = require('./sliders');
       obj.setHMax(v[1]/100);
     }
     
+    /*
+    * retrun function to update URL
+    */    
     function URLUpdator(){
       var conf = {
         shader_name    : mainConf .shader_name.toLowerCase().indexOf('fusion') > -1 ? 
@@ -550,14 +567,20 @@ var sliders = require('./sliders');
         zMin           : parseFloat(mainConf.zMin)     == 0   ? null : parseFloat(mainConf.zMin)
       }
       
+      /*
+      * update string
+      * @param object with set of changed varaibles
+      */    
       return function (settings) {
         var url = '/?';
         
+        //update config
         Object.keys(settings).forEach(function (sName){
           if (conf[sName] != settings[sName]) 
             conf[sName] = settings[sName];
         });
         
+        //create new url with non-default parameters
         Object.keys(conf).forEach(function (cName, i){        
           if(conf[cName] != null)            
             url += '&' + cName + '=' + conf[cName];          

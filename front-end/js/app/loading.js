@@ -5,10 +5,22 @@
 var $ = require('jquery');
 var Snap = require('snap');
 
-function loading(container, color, gradient, callback) {
+/*
+* Creates backgound frame, control splash animation and 
+* call the callback with main logic fieried when everithing is done
+*
+* @param css selector for webGL container (String)
+* @param color links are about page (String)
+* @param gradient for background (String)
+* @param color for frame (String)
+* @param callback is fired in the end of anumation, contains main logic of the app
+*/
+function loading(container, color, gradient, mainColor, callback) {
   
   var w = $(window).width();
   var h = $(window).height();
+  
+  var setFrameColor =  setColor(mainColor);
   
   var s = Snap(container).attr({
     width  : w,
@@ -94,7 +106,7 @@ function loading(container, color, gradient, callback) {
 	  
     frame.attr({
       fill : "black",
-      stroke : "white",
+      stroke : mainColor,
       "fill-opacity" : 0,
       mask : mask
     });  
@@ -118,31 +130,31 @@ function loading(container, color, gradient, callback) {
       logo.attr({border : 0.9});     
       
       //set vertical lines on top and bottom
-      lineUp.attr({stroke : "white"}); 
-      lineDown.attr({stroke : "white"}); 		
+      lineUp.attr({stroke : mainColor}); 
+      lineDown.attr({stroke : mainColor}); 		
 
       //set corners
       cLeftTop.attr({
-       fill : "#fff",
-       stroke : "#fff"
+       fill : mainColor,
+       stroke : mainColor
       });  
       cLeftTop.attr({transform : 'translate('+w*0.4+','+h*0.32+')'});
 
       cRightTop.attr({
-        fill : "#fff",
-        stroke : "#fff"
+        fill : mainColor,
+        stroke : mainColor
       }); 
       cRightTop.attr({transform:'translate(' + w*0.6 + ',' + h*0.32 + ')'});
 
       cLeftBottom.attr({
-        fill : "#fff",
-        stroke : "#fff"
+        fill : mainColor,
+        stroke : mainColor
       });  
       cLeftBottom.attr({transform : 'translate('+w*0.4+','+h*0.58+')'});   
 
       cRightBottom.attr({
-        fill : "#fff",
-        stroke : "#fff"
+        fill : mainColor,
+        stroke : mainColor
       }); 
       cRightBottom.attr({transform : 'translate(' + w*0.6 + ',' + h*0.58 + ')'});    
        
@@ -152,6 +164,7 @@ function loading(container, color, gradient, callback) {
       }, 500);            
     });
   }
+  
  /**
  * @functions start loading animation
  * @param int duration in ms
@@ -229,8 +242,11 @@ function loading(container, color, gradient, callback) {
         //start loading icon animation
         loadingIcon = createLoadingIcon(w*0.5, h*0.47); 
         startIconAnimation(mina.easeinout, 250);
-      
-        callback();
+        
+        //timeout for better smothness
+        setTimeout(function(){
+          callback();
+        },500);
       }       
     );     
   } 
@@ -273,13 +289,13 @@ function loading(container, color, gradient, callback) {
     maskB.attr({fill : 'black', stroke : 'black'});
     
     pLeftB.attr({
-      stroke  : "white",
+      stroke  : mainColor,
       "opacity" : 0.5,
       "fill-opacity" : 0
     });
     
-    lineLeft.attr({stroke : "white"});
-    setColor('#ffffff')(pLeftM);
+    lineLeft.attr({stroke : mainColor});
+    setFrameColor(pLeftM);
     
     halfFrame.attr({transform:'translate(' + x + ',' + y + ')', mask : mask});
         
@@ -304,10 +320,10 @@ function loading(container, color, gradient, callback) {
     var bottom = s.polyline([bl, br, c]);    
     var left = s.polyline([bl, tl, c]);  
       
-    setColor('#ffffff')(top);
-    setColor('#ffffff')(bottom);
-    setColor('#ffffff')(left);
-    setColor('#ffffff')(right);
+    setFrameColor(top);
+    setFrameColor(bottom);
+    setFrameColor(left);
+    setFrameColor(right);
        
     var icon = s.group(top, bottom, left, right);  
     
@@ -357,12 +373,12 @@ function loading(container, color, gradient, callback) {
     loadingIcon.right.animate({
       transform : 'rotate(' + 180 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
       },
-       duration,animationMode,
-       function(){
+      duration,animationMode,
+      function(){
         loadingIcon.right.attr({
           transform : 'rotate(' + 0 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
         });
-       }
+      }
     );
         
     loadingIcon.left.animate({
@@ -458,9 +474,6 @@ function loading(container, color, gradient, callback) {
   */
   this.drawCorners = function(size){ 
     var h = $(window).height()/1.5;
-
-    //var x = $(window).width()*0.5-size/2;
-    //var y = $(window).height()*0.5-size/2;
     
     var x = w * 0.05 + h * 0.015;
     var y = h * 0.05 + h * 0.015;
@@ -508,11 +521,14 @@ function loading(container, color, gradient, callback) {
     var breastBoarder = s.group(cLeftTop, cRightTop, cLeftBottom, cRightBottom); 
 
     breastBoarder.attr({
-      fill   : 'white',
+      fill   : mainColor,
       opacity : 0.1
     });
   }
-  
+    
+  /*
+  * construct about "page"
+  */  
   function createAbout(){
     $('body').append('<div class = "about"><div class = "about_content"></div><div class = "about_exit"></div></div>');
     
@@ -531,7 +547,5 @@ function loading(container, color, gradient, callback) {
    $(".about").hide();
   }
 }
-
-
 
 module.exports = loading;

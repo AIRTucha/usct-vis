@@ -4,7 +4,7 @@
 **/
 var $ = require('jquery');
 
-function tooltip(container) {
+function tooltip() {
   return function(obj){
     
     var w = $(window).width();

@@ -6,6 +6,7 @@ var Snap = require('snap');
 
 /*
 * Instanciate the box 
+*
 * @param - String points SVG element
 * @param - String title of the box
 * @param - int width
