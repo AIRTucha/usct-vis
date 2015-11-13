@@ -35,14 +35,13 @@ var sliders = require('./sliders');
     var tomoConfig = {
       "domContainerId": "breast",
       "slicemaps_paths": [
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_1.png',
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_2.png',
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_3.png',
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_4.png',
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_5.png',
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_6.png',
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_7.png',
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_8.png'     
+        'data/breast1_1.png',
+        'data/breast1_2.png',
+        'data/breast1_3.png',
+        'data/breast1_4.png',
+        'data/breast1_5.png',
+        'data/breast1_6.png',
+        'data/breast1_7.png'
         ],
         "callback" : function(){
           setTimeout(function(){
