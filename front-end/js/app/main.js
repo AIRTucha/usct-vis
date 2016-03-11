@@ -35,43 +35,43 @@ var sliders = require('./sliders');
     var tomoConfig = {
       "domContainerId": "breast",
       "slicemaps_paths": [
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_1.png',
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_2.png',
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_3.png',
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_4.png',
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_5.png',
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_6.png',
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_7.png',
-        'data/Jena_P16_km3-OverlaysNew_oldTransm-reflXY_fused_4x4_8.png'     
-        ],
-        "callback" : function(){
-          setTimeout(function(){
-            loading.stopIcon();           
-          }, 500); 
-        },    
-        "shader_name" : mainConf.shader_name,
-        "slices_range": [0, 128],			
-        "row_col": [4, 4],
-        "render_size": breastHeight > breastWidth ? 
-                        [breastHeight * .65, breastHeight * .65 ] : 
-                        [breastWidth * .65, breastWidth * .65 ],
-        "renderer_canvas_size": [ breastWidth , breastHeight ],	
-        "opacity_factor": mainConf.opacity_factor / 2,
-        "color_factor": (80 - mainConf.color_factor * 0.4) / 100,
-        "x_min": 0,
-        "x_max": 
-      1,
-        "l": parseFloat(mainConf.l) * 0.049,
-        "s" : parseFloat(mainConf.s) / 100,
-        "hMin" : (parseFloat(mainConf.hMin) / 100) - 0.5,
-        "hMax" : parseFloat(mainConf.hMax) / 100,
-        "minRefl" : parseFloat(mainConf.minRefl) / 100,
-        "minSos" : parseFloat(mainConf.minSos) / 100,
-        "minAtten" : parseFloat(mainConf.minAtten) / 100, 
-        "maxRefl" : parseFloat(mainConf.maxRefl) / 100,
-        "maxSos" : parseFloat(mainConf.maxSos) / 100,
-        "maxAtten" : parseFloat(mainConf.maxAtten) / 100,
-        "zFactor" : 0.56
+        'data/phantom1.png',
+        'data/phantom2.png',
+        'data/phantom3.png',
+        'data/phantom4.png',
+        'data/phantom5.png',
+        'data/phantom6.png',
+        'data/phantom7.png',
+        'data/phantom8.png',
+        'data/phantom9.png'
+      ],
+      "callback" : function(){
+        setTimeout(function(){
+          loading.stopIcon();           
+        }, 500); 
+      },    
+      "shader_name" : mainConf.shader_name,
+      "slices_range": [0, 143],
+      "row_col": [4, 4],
+      "renderer_size": breastHeight > breastWidth ? 
+                     [breastHeight * .65, breastHeight * .65 ] : 
+                     [breastWidth * .65, breastWidth * .65 ],
+      "renderer_canvas_size": [ breastWidth , breastHeight ],	
+      "opacity_factor": mainConf.opacity_factor / 2,
+      "color_factor": (80 - mainConf.color_factor * 0.4) / 100,
+      "x_min": 0,
+      "x_max": 1,
+      "l": parseFloat(mainConf.l) * 0.049,
+      "s" : parseFloat(mainConf.s) / 100,
+      "hMin" : (parseFloat(mainConf.hMin) / 100) - 0.5,
+      "hMax" : parseFloat(mainConf.hMax) / 100,
+      "minRefl" : parseFloat(mainConf.minRefl) / 100,
+      "minSos" : parseFloat(mainConf.minSos) / 100,
+      "minAtten" : parseFloat(mainConf.minAtten) / 100, 
+      "maxRefl" : parseFloat(mainConf.maxRefl) / 100,
+      "maxSos" : parseFloat(mainConf.maxSos) / 100,
+      "maxAtten" : parseFloat(mainConf.maxAtten) / 100,
+      "zFactor" : 0.56
     };
     
     var srConf = {

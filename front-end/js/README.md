@@ -1,1 +1,1 @@
-browserify app/main.js -o usct.js -d
+browserify app/main.js -o ./../../public/usct.js -d
