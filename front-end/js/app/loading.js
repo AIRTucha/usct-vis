@@ -100,7 +100,7 @@ function loading(container, color, gradient, callback) {
     });  
     
     // loads logo and init all other elements after that
-    Snap.load("/public/logo.svg", function(f){
+    Snap.load("public/logo.svg", function(f){
       createAbout();
       
       logo=f.select('#usct-logo')
