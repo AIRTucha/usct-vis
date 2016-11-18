@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>USCT Visualization</title>
+  <meta name="description" content="USCT Visualization">
+  <link href="css/usct.css" rel="stylesheet">
+  <link rel="icon" type="image/png" href="public/fav.png">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js" charset="utf-8"></script>
+  <script src="public/libs/threejs/build/three.min.js"></script>
+  <script src="public/libs/OrbitControls.js"></script>
+  <script src="public/libs/embeddedjs/ejs.js"></script>
+  <script src="public/tomo_raycaster2/build/volumeRaycaster.js"></script>
+  <script src="public/usct.js"></script>
+  
+</head>
+
+<body>
+<svg id="main" xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml"></svg>  
+  <script type="text/javascript">
+    usctVis({
+     shader_name : "secondPassFusion",             
+     l : 100,
+     s : 100,
+     hMin : 0,
+     hMax : 100,
+     minRefl : 0,
+     minSos : 0,
+     minAtten : 0,  
+     maxRefl : 100, 
+     maxSos : 100, 
+     maxAtten : 100,
+     opacity_factor : 80, 
+     color_factor : 100,
+     xMin : 0,
+     yMin : 0,
+     zMin : 0,  
+     xMax : 100, 
+     yMax : 100, 
+     zMax : 100
+    });
+  </script>
+</body>
+</html>
