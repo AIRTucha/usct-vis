@@ -138,7 +138,7 @@ function box(container, text, boxW, boxH, color) {
 module.exports = box;
  
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":8}],2:[function(require,module,exports){
+},{"jquery":9}],2:[function(require,module,exports){
 (function (global){
 /**
 * SVG loading animation
@@ -146,13 +146,14 @@ module.exports = box;
 **/
 var $ = require('jquery');
 var Snap = (typeof window !== "undefined" ? window['Snap'] : typeof global !== "undefined" ? global['Snap'] : null);
+var Propeller = require('./propeller');
 
-function loading(container, color, gradient, callback) {
-  
+function loading(conf) {
   var w = $(window).width();
   var h = $(window).height();
+  var animationMode = mina.easeinout;
   
-  var s = Snap(container).attr({
+  var s = Snap(conf.container).attr({
     width  : w,
     height : h
   });
@@ -208,15 +209,13 @@ function loading(container, color, gradient, callback) {
    -w*0.03, -h*0.03,
    0, -h*0.03
   ]);
-    
-  var loaded = false;
   
-  var loadingIcon;
+  var propeller;
   var logo; 
   
   //starts animation onload
   $(window).ready(function(){
-    init(callback);
+    init(conf.callback);
   });
     
  /**
@@ -232,26 +231,26 @@ function loading(container, color, gradient, callback) {
     $("body").css("overflow", "hidden")
              .css("background", "black");  
 
-    bg.attr({ fill : s.gradient(gradient) });
+    bg.attr({ fill : s.gradient(conf.gradient) });
 	  
     frame.attr({
       fill : "black",
-      stroke : "white",
+      stroke : conf.color,
       "fill-opacity" : 0,
       mask : mask
     });  
     
     // loads logo and init all other elements after that
-    Snap.load("public/logo.svg", function(f){
+    Snap.load(conf.logo, function(f){
       createAbout();
       
-      logo=f.select('#usct-logo')
+      logo = f.select('#usct-logo')
       logo.scale = w/4000;
       logo.height = 125 * logo.scale;
       logo.width = 725 * logo.scale;
       
       s.append(logo);
-
+      
       logo.transform('matrix('
         + logo.scale + ',0,0,' + logo.scale + ','
         + w*0.405 + ',' + h*0.425 + ')'
@@ -260,38 +259,25 @@ function loading(container, color, gradient, callback) {
       logo.attr({border : 0.9});     
       
       //set vertical lines on top and bottom
-      lineUp.attr({stroke : "white"}); 
-      lineDown.attr({stroke : "white"}); 		
+      lineUp.attr({stroke : conf.color}); 
+      lineDown.attr({stroke : conf.color}); 		
 
-      //set corners
-      cLeftTop.attr({
-       fill : "#fff",
-       stroke : "#fff"
-      });  
-      cLeftTop.attr({transform : 'translate('+w*0.4+','+h*0.32+')'});
-
-      cRightTop.attr({
-        fill : "#fff",
-        stroke : "#fff"
-      }); 
-      cRightTop.attr({transform:'translate(' + w*0.6 + ',' + h*0.32 + ')'});
-
-      cLeftBottom.attr({
-        fill : "#fff",
-        stroke : "#fff"
-      });  
-      cLeftBottom.attr({transform : 'translate('+w*0.4+','+h*0.58+')'});   
-
-      cRightBottom.attr({
-        fill : "#fff",
-        stroke : "#fff"
-      }); 
-      cRightBottom.attr({transform : 'translate(' + w*0.6 + ',' + h*0.58 + ')'});    
+      //set initial position for the corners
+      setTranslation(cLeftTop, 0.4, 0.32);
+      setTranslation(cRightTop, 0.6, 0.32);
+      setTranslation(cLeftBottom, 0.4, 0.58);   
+      setTranslation(cRightBottom, 0.6, 0.58); 
+      
+      //set default color for corners
+      setColor(cLeftTop);
+      setColor(cRightTop);
+      setColor(cLeftBottom)
+      setColor(cRightBottom)
        
       // animation starts
       setTimeout(function(){ 
-        startLoadingAnimation(250, mina.easeinout, callback)
-      }, 500);            
+        startLoadingAnimation(callback)
+      }, conf.animationTime * 2);            
     });
   }
  /**
@@ -300,7 +286,7 @@ function loading(container, color, gradient, callback) {
  * @param animation mode for Snap
  * @param callback executed when the loading is done
  */ 
-  function startLoadingAnimation(duration, animationMode, callback){     
+  function startLoadingAnimation(callback){     
     //main frame animation
     frame.animate({
       x : w*0.05,
@@ -308,58 +294,31 @@ function loading(container, color, gradient, callback) {
       width : w*0.9,
       height : h*0.9
       },
-      duration,animationMode
+      conf.animationTime, 
+      animationMode
      );
 
-    //corners
-    cLeftTop.animate({
-      transform : 'translate(' + w*0.05 + ',' + h*0.005 + ')'
-     },
-      duration, animationMode);
-
-    cRightTop.animate({
-     transform : 'translate(' + w*0.95 + ',' + h*0.005 + ')'
-    },
-     duration, animationMode);
-
-    cLeftBottom.animate({
-     transform : 'translate(' + w*0.05 + ',' + h*0.965 + ')'
-    },
-     duration, animationMode);
-
-    cRightBottom.animate({
-      transform : 'translate(' + w*0.95 + ',' + h*0.965 + ')'
-    },
-      duration, animationMode);
-
-    pLeftFrame.animate({
-      transform : 'translate(' + w*0.05 + ',' + h*0.4 + ')'
-    },
-      duration, animationMode);
-    pRightFrame.animate({
-     transform : 'translate(' + w*0.95 + ',' + h*0.4 + ')'
-    },                        
-     duration, animationMode);
-
-
-    // vertical lines on top and on bottom
-    lineUp.animate({
-      transform : 'translate(' + 0 + ',' + -h*0.315 + ')'
-    },
-      duration, animationMode);
-
-    lineDown.animate({
-      transform  : 'translate(' + 0 + ',' + h*0.385 + ')'
-    },
-     duration, animationMode); 
+    //corners animation
+    setAnimatedTranslation(cLeftTop, 0.05, 0.005);
+    setAnimatedTranslation(cRightTop, 0.95, 0.005);
+    setAnimatedTranslation(cLeftBottom, 0.05, 0.965);
+    setAnimatedTranslation(cRightBottom, 0.95, 0.965);
+    
+    //handles animation
+    setAnimatedTranslation(pLeftFrame, 0.05, 0.4);
+    setAnimatedTranslation(pRightFrame, 0.95, 0.4);
+    
+    //vertical lines on top and on bottom
+    setAnimatedTranslation(lineUp, 0, -0.315);
+    setAnimatedTranslation(lineDown, 0, 0.385);
     
     //logo moved to corner
     logo.animate({
-      transform : 'matrix('
-      + logo.scale + ',0,0,' + logo.scale + ','
-      + (w*0.95 - logo.width - h*0.015 )  + ',' + (h*0.92 - logo.height) + ')'
-    },            
-      duration, animationMode,
+        transform : 'matrix('
+        + logo.scale + ',0,0,' + logo.scale + ','
+        + (w*0.95 - logo.width - h*0.015 )  + ',' + (h*0.92 - logo.height) + ')'
+      },            
+      conf.animationTime, animationMode,
       function(){
       
         var logoEventHandler = s.rect(w*0.95 - logo.width - h*0.015, (h*0.92 - logo.height), logo.width, logo.height);
@@ -369,8 +328,9 @@ function loading(container, color, gradient, callback) {
         logoEventHandler.addClass('usct-logo');
       
         //start loading icon animation
-        loadingIcon = createLoadingIcon(w*0.5, h*0.47); 
-        startIconAnimation(mina.easeinout, 250);
+        propeller = Propeller(s, w*0.5, h*0.47, h*0.02, animationMode, conf.animationTime); 
+        setColor(propeller);
+        propeller.start();
       
         callback();
       }       
@@ -415,194 +375,66 @@ function loading(container, color, gradient, callback) {
     maskB.attr({fill : 'black', stroke : 'black'});
     
     pLeftB.attr({
-      stroke  : "white",
+      stroke  : conf.color,
       "opacity" : 0.5,
       "fill-opacity" : 0
     });
     
-    lineLeft.attr({stroke : "white"});
-    setColor('#ffffff')(pLeftM);
+    lineLeft.attr({stroke : conf.color});
+    setColor(pLeftM);
     
     halfFrame.attr({transform:'translate(' + x + ',' + y + ')', mask : mask});
         
     return halfFrame;
   }
-  
-  /**
-  * @function create loading icon
-  * @param x, y {int} coordinates position    
-  */
-  function createLoadingIcon(x, y){
-    x-=h*0.02; // centralizetion 
-    
-    var tl = [x, y];              // top left corner
-    var tr = [x+h*0.04, y];       // top right corner
-    var c = [x+h*0.02, y+h*0.02]; // center
-    var bl = [x, y+h*0.04];       // bottom left
-    var br = [x+h*0.04, y+h*0.04];// bottom right 
-        
-    var top = s.polyline([tl, tr, c]);    
-    var right = s.polyline([tr, br, c]);    
-    var bottom = s.polyline([bl, br, c]);    
-    var left = s.polyline([bl, tl, c]);  
-      
-    setColor('#ffffff')(top);
-    setColor('#ffffff')(bottom);
-    setColor('#ffffff')(left);
-    setColor('#ffffff')(right);
-       
-    var icon = s.group(top, bottom, left, right);  
-    
-    icon.top = top;
-    icon.bottom = bottom;
-    icon.left = left;
-    icon.right = right;
-        
-    icon.tl = tl;
-    icon.tr = tr;
-    icon.c  = c;
-    icon.bl = bl;
-    icon.br = br;
-        
-    return icon;    
-  }
-  
-  /**
-  * @function start animation for loading icon
-  * @param animation mode for Snap
-  * @param int duration 
-  */
-  function startIconAnimation(animationMode, duration){
-   //step one
-    loadingIcon.right.animate({
-      transform : 'rotate(' + 90 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-    },
-       duration,animationMode
-    );
-        
-    loadingIcon.left.animate({
-      transform : 'rotate(' + 90 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-    },                           
-      duration,animationMode
-    );   
-    
-    if(!loaded)
-      setTimeout(function(){
-        loadingStepTwo(animationMode, duration)
-      }, duration*3);    
-  }
-  
-  /**
-  * @functions different steps of loading icon's animation
-  */
-  function loadingStepTwo(animationMode, duration){  
-    loadingIcon.right.animate({
-      transform : 'rotate(' + 180 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-      },
-       duration,animationMode,
-       function(){
-        loadingIcon.right.attr({
-          transform : 'rotate(' + 0 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-        });
-       }
-    );
-        
-    loadingIcon.left.animate({
-      transform : 'rotate(' + 180 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-      },                           
-      duration,animationMode,
-      function(){
-        loadingIcon.left.attr({
-          transform : 'rotate(' + 0 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-        });
-      }                             
-    );        
-    
-    if(!loaded)
-      setTimeout(function(){
-        loadingStepThree(animationMode, duration)
-      }, duration*3);
-  }
-  function loadingStepThree(animationMode, duration){  
-    loadingIcon.top.animate({
-      transform : 'rotate(' + 90 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-    },
-       duration,animationMode
-    );
-        
-    loadingIcon.bottom.animate({
-      transform : 'rotate(' + 90 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-    },                           
-      duration,animationMode
-    );
-    
-    if(!loaded)
-      setTimeout(function(){
-        loadingStepFour(animationMode, duration)
-      }, duration*3);
-  }
-  function loadingStepFour(animationMode, duration){  
-    loadingIcon.top.animate({
-      transform : 'rotate(' + 180 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-    },
-       duration,animationMode,
-      function(){
-        loadingIcon.top.attr({
-          transform : 'rotate(' + 0 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-        });
-      }             
-    );
-        
-    loadingIcon.bottom.animate({
-      transform : 'rotate(' + 180 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-    },                           
-      duration,animationMode,
-      function(){
-        loadingIcon.bottom.attr({
-          transform : 'rotate(' + 0 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-        });
-      }                   
-    );
-    
-    if(!loaded)
-      setTimeout(function(){
-        startIconAnimation(animationMode, duration)
-      }, duration*3);
-  }
     
   /**
-  * @function function returns function which keeps color in string as closure
-  * @param color - color in string format
-  * @curr Snap.svg object - the element you want to set to the color 
+  * @function set stroke and fill colors of the object to conf.color
+  * @param Snap.svg object - the element you want to set to the color 
   */
-  function setColor(color){
-    return function sc(o){
-      o.attr({
-        fill   : color
+  function setColor(obj){
+      obj.attr({
+        fill   : conf.color,
+        stroke : conf.color
       });
-    }
+  }
+  
+  /**
+  * @function set translation for the object
+  * @param x - displacement along x axis
+  * @param y - displacement along y axis
+  */
+  function setTranslation(obj, x, y){
+    obj.attr({transform : 'translate(' + w*x + ',' + h*y + ')'});
+  }
+  
+  /**
+  * @function set animated translation for the object
+  * @param x - displacement along x axis
+  * @param y - displacement along y axis
+  */
+  function setAnimatedTranslation(obj, x, y){
+     obj.animate({
+        transform : 'translate(' + w*x + ',' + h*y + ')'
+       },
+      conf.animationTime, 
+      animationMode
+     );
   }
   
   /**
   * @function turn off the loading icon
   */
-  this.stopIcon = function (){   
-    loadingIcon.top.remove();
-    loadingIcon.right.remove();
-    loadingIcon.bottom.remove();
-    loadingIcon.left.remove();
-
-    loaded = true;   
+  this.stopIcon = function (){
+    propeller.stop();
   }
+  
   /**
   * @function drows white corners in for square in the center of screen
   * @param size of square
   */
   this.drawCorners = function(size){ 
     var h = $(window).height()/1.5;
-
-    //var x = $(window).width()*0.5-size/2;
-    //var y = $(window).height()*0.5-size/2;
     
     var x = w * 0.05 + h * 0.015;
     var y = h * 0.05 + h * 0.015;
@@ -657,19 +489,9 @@ function loading(container, color, gradient, callback) {
   
   function createAbout(){
     $('body').append('<div class = "about"><div class = "about_content"></div><div class = "about_exit"></div></div>');
-    
-    
-    
-    $('.about_content').append('<h1>About Us</h1><br/>' + 
-                       '<p>The visualisation is created by <a target = "_blank" href = "http://ipe.kit.edu">Institute of Data Processing and Electronics</a> of <a target = "_blank" href = "http://kit.edu">Karslruhe Institute of Technology</a> for <a target = "_blank" href = "http://www.ipe.kit.edu/english/167.php">Early Breast Cancer Detection with Ultrasound Computertomography project</a>.</p><br/>' +
-                       '<p>Breast cancer is one of the most common and fatal cancerous diseases among women. Worldwide, there are approx. 1,600,000 cases of breast cancer every year. Although the breast is not a vital organ, the number of women healed of this disease is not as large as it could be. If breast cancer is diagnosed early, patients have a good prognosis.</p><br/>' +
-                      '<p>In the project "Ultrasound Computer Tomography" (USCT) a new imaging methodology for early breast cancer detection is developed. It promises three dimensional images of the breast with high spatial resolution. Our aim is the detection of tumors with an average diameter of less than 5 mm to improve the survival probability of the patients.</p><br/>' + 
-                      '<p><a target = "_blank" href = "https://www.startnext.com/en/usct"> You can help project here!</a></p>');
-    
-   $('a').css({'color' : color});
-    
+   $('.about_content').append(conf.aboutText); 
+   $('a').css({'color' : conf.linkColor});
    $(".about_exit").click(function(){ $(".about").fadeOut(500)});
-    
    $(".about").hide();
   }
 }
@@ -679,7 +501,7 @@ function loading(container, color, gradient, callback) {
 module.exports = loading;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":8}],3:[function(require,module,exports){
+},{"./propeller":5,"jquery":9}],3:[function(require,module,exports){
 var $ = require('jquery');
 var Loading = require('./loading');
 var Modes = require('./modes');
@@ -1100,50 +922,60 @@ var sliders = require('./sliders');
       ]
      };
 
-    //magic starts here
-    var loading = new Loading('#main', guiColor, "r(0.5, 0.8, 1)#30385f-#000", function(){ 
-      var s = Snap("#main");
+    var loading = new Loading({
+      container : '#main', 
+      color : 'red',
+      linkColor : guiColor, 
+      gradient : "r(0.5, 0.8, 1)#30385f-#000", 
+      logo : 'public/logo.svg',
+      animationTime : 250,
+      aboutText : '<h1>About Us</h1><br/>' + 
+                       '<p>The visualisation is created by <a target = "_blank" href = "http://ipe.kit.edu">Institute of Data Processing and Electronics</a> of <a target = "_blank" href = "http://kit.edu">Karslruhe Institute of Technology</a> for <a target = "_blank" href = "http://www.ipe.kit.edu/english/167.php">Early Breast Cancer Detection with Ultrasound Computertomography project</a>.</p><br/>' +
+                       '<p>Breast cancer is one of the most common and fatal cancerous diseases among women. Worldwide, there are approx. 1,600,000 cases of breast cancer every year. Although the breast is not a vital organ, the number of women healed of this disease is not as large as it could be. If breast cancer is diagnosed early, patients have a good prognosis.</p><br/>' +
+                      '<p>In the project "Ultrasound Computer Tomography" (USCT) a new imaging methodology for early breast cancer detection is developed. It promises three dimensional images of the breast with high spatial resolution. Our aim is the detection of tumors with an average diameter of less than 5 mm to improve the survival probability of the patients.</p><br/>' + 
+                      '<p><a target = "_blank" href = "https://www.startnext.com/en/usct"> You can help project here!</a></p>',
+      callback : function(){ 
+        var s = Snap("#main");
 
-      s.append(Snap.parse('<foreignObject id="breast" width="' + breastWidth + 
-                               '" height="' + breastHeight + '"></foreignObject>'));
+        s.append(Snap.parse('<foreignObject id="breast" width="' + breastWidth + 
+                                 '" height="' + breastHeight + '"></foreignObject>'));
 
-      s.select('#breast').attr({
-        x: w * 0.05 + h*0.016,
-        y: h*0.04
-      });
+        s.select('#breast').attr({
+          x: w * 0.05 + h*0.016,
+          y: h*0.04
+        });
 
-      //starts tomo and gui, on the end of animation, timeout for smothness
-      setTimeout(function(){
+        //starts tomo and gui, on the end of animation, timeout for smothness
+        setTimeout(function(){
+          rcl2 = new VRC.VolumeRaycaster(tomoConfig);
 
-        rcl2 = new VRC.VolumeRaycaster(tomoConfig);
-      
-        //set presetted slice ranges
-        rcl2.setGeometryMinX(mainConf.xMin/101);
-        rcl2.setGeometryMaxX(mainConf.xMax/101);
+          //set presetted slice ranges
+          rcl2.setGeometryMinX(mainConf.xMin/101);
+          rcl2.setGeometryMaxX(mainConf.xMax/101);
 
-        rcl2.setGeometryMinY(mainConf.yMin/101);
-        rcl2.setGeometryMaxY(mainConf.yMax/101);
+          rcl2.setGeometryMinY(mainConf.yMin/101);
+          rcl2.setGeometryMaxY(mainConf.yMax/101);
 
-        rcl2.setGeometryMinZ(mainConf.zMin/101);
-        rcl2.setGeometryMaxZ(mainConf.zMax/101);
-       
+          rcl2.setGeometryMinZ(mainConf.zMin/101);
+          rcl2.setGeometryMaxZ(mainConf.zMax/101);
 
-        Modes(modesConf); 
+          Modes(modesConf); 
 
-        slidersSR = sliders(srConf);
-        slidersMS = sliders(msConf);
-        slidersTH = sliders(thConf);
+          slidersSR = sliders(srConf);
+          slidersMS = sliders(msConf);
+          slidersTH = sliders(thConf);
+        },500);
 
-      },500);
-
-      //resize action
-      var resizeEvt;
-      $(window).resize(function(){
-        clearTimeout(resizeEvt);
-        resizeEvt = setTimeout(function() {
-          window.location.href = window.location.href;
-      }, 500); 
-      });      
+        //resize action
+        var resizeEvt;
+        $(window).resize(function(){
+          clearTimeout(resizeEvt);
+          resizeEvt = setTimeout(function() {
+            window.location.href = window.location.href;
+          }, 
+          500); 
+        });      
+      }
     });
 
     /*
@@ -1180,7 +1012,7 @@ var sliders = require('./sliders');
 })(window);
 
 
-},{"./loading":2,"./modes":4,"./sliders":5,"jquery":8}],4:[function(require,module,exports){
+},{"./loading":2,"./modes":4,"./sliders":6,"jquery":9}],4:[function(require,module,exports){
 (function (global){
 /**
 * Creates element of GUI which allows to choose mode of visualisation.
@@ -1329,7 +1161,195 @@ module.exports = modes;
 //  
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./tooltip":6,"jquery":8}],5:[function(require,module,exports){
+},{"./tooltip":7,"jquery":9}],5:[function(require,module,exports){
+/**
+* Create animated svg-icon of propeller
+**/
+var loaded = false;
+var s;
+/**
+* @function create loading icon
+* @param x, y {int} coordinates position    
+*/
+module.exports = function (snap, width, height, size, animationMode, duration) {
+  s = snap;
+  var obj = createLoadingIcon(width, height, size);
+  
+  obj.start = function (){
+    loaded = false;
+    
+    startIconAnimation(obj, animationMode, duration);
+    
+    obj.attr({
+        visibility: "visible"
+    });
+  }
+  
+  /**
+  * @function turn off the loading icon
+  */
+  obj.stop = function (){ 
+    loaded = true 
+    
+    obj.attr({
+        visibility: "hidden"
+    });
+  };
+
+  return obj;
+}
+
+
+  /**
+  * @function create loading icon
+  * @param x, y {int} coordinates position    
+  */
+  function createLoadingIcon(x, y, size){
+    x -= size; // centralizetion 
+
+    var tl = [x, y];              // top left corner
+    var tr = [x + size*2, y];       // top right corner
+    var c = [x + size, y + size]; // center
+    var bl = [x, y + size*2];       // bottom left
+    var br = [x + size*2, y + size*2];// bottom right 
+
+    var top = s.polyline([tl, tr, c]);    
+    var right = s.polyline([tr, br, c]);    
+    var bottom = s.polyline([bl, br, c]);    
+    var left = s.polyline([bl, tl, c]);  
+
+//    setColor(top);
+//    setColor(bottom);
+//    setColor(left);
+//    setColor(right);
+
+    var icon = s.group(top, bottom, left, right);  
+
+    icon.top = top;
+    icon.bottom = bottom;
+    icon.left = left;
+    icon.right = right;
+
+    icon.tl = tl;
+    icon.tr = tr;
+    icon.c  = c;
+    icon.bl = bl;
+    icon.br = br;
+
+    icon.attr({
+        visibility: "hidden"
+    });
+    
+    return icon;    
+  }
+
+  /**
+  * @function start animation for loading icon
+  * @param animation mode for Snap
+  * @param int duration 
+  */
+  function startIconAnimation(icon ,animationMode, duration){
+    //step one
+    icon.right.animate({
+      transform : 'rotate(' + 90 +', ' + icon.c[0] +', ' + icon.c[1] + ')'
+    },
+       duration, animationMode
+    );
+
+    icon.left.animate({
+      transform : 'rotate(' + 90 +', ' + icon.c[0] +', ' + icon.c[1] + ')'
+    },                           
+      duration, animationMode
+    );   
+
+    if(!loaded)
+      setTimeout(function(){
+        loadingStepTwo(icon, animationMode, duration)
+    }, duration*3);    
+  }
+
+
+  /**
+  * @functions different steps of loading icon's animation
+  */
+  function loadingStepTwo(icon, animationMode, duration){  
+    icon.right.animate({
+      transform : 'rotate(' + 180 +', ' + icon.c[0] +', ' + icon.c[1] + ')'
+      },
+       duration, animationMode,
+       function(){
+        icon.right.attr({
+          transform : 'rotate(' + 0 +', ' + icon.c[0] +', ' + icon.c[1] + ')'
+        });
+       }
+    );
+
+    icon.left.animate({
+      transform : 'rotate(' + 180 +', ' + icon.c[0] +', ' + icon.c[1] + ')'
+      },                           
+      duration, animationMode,
+      function(){
+        icon.left.attr({
+          transform : 'rotate(' + 0 +', ' + icon.c[0] +', ' + icon.c[1] + ')'
+        });
+      }                             
+    );        
+
+    if(!loaded)
+      setTimeout(function(){
+        loadingStepThree(icon, animationMode, duration)
+      }, duration*3);
+  }
+
+  function loadingStepThree(icon, animationMode, duration){  
+    icon.top.animate({
+      transform : 'rotate(' + 90 +', ' + icon.c[0] +', ' + icon.c[1] + ')'
+    },
+       duration, animationMode
+    );
+
+    icon.bottom.animate({
+      transform : 'rotate(' + 90 +', ' + icon.c[0] +', ' + icon.c[1] + ')'
+    },                           
+      duration, animationMode
+    );
+
+    if(!loaded)
+      setTimeout(function(){
+        loadingStepFour(icon, animationMode, duration)
+      }, duration*3);
+  }
+
+  function loadingStepFour(icon, animationMode, duration){  
+    icon.top.animate({
+      transform : 'rotate(' + 180 +', ' + icon.c[0] +', ' + icon.c[1] + ')'
+    },
+       duration, animationMode,
+      function(){
+        icon.top.attr({
+          transform : 'rotate(' + 0 +', ' + icon.c[0] +', ' + icon.c[1] + ')'
+        });
+      }             
+    );
+
+    icon.bottom.animate({
+      transform : 'rotate(' + 180 +', ' + icon.c[0] +', ' + icon.c[1] + ')'
+    },                           
+      duration,animationMode,
+      function(){
+        icon.bottom.attr({
+          transform : 'rotate(' + 0 +', ' + icon.c[0] +', ' + icon.c[1] + ')'
+        });
+      }                   
+    );
+
+    if(!loaded)
+      setTimeout(function(){
+        startIconAnimation(icon, animationMode, duration)
+      }, duration*3);
+  }
+  
+},{}],6:[function(require,module,exports){
 (function (global){
 /**
 * Create sliders in accoding with config object
@@ -1469,7 +1489,7 @@ function sliders(conf) {
 module.exports = sliders;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./box":1,"jquery":8,"jquery-ui":7}],6:[function(require,module,exports){
+},{"./box":1,"jquery":9,"jquery-ui":8}],7:[function(require,module,exports){
 /**
 * Creates multiline tooltip for SVG-based website the tooltip
 * the tooltip is located on top of the window 
@@ -1503,7 +1523,7 @@ function tooltip(container) {
 
 module.exports = tooltip;
  
-},{"jquery":8}],7:[function(require,module,exports){
+},{"jquery":9}],8:[function(require,module,exports){
 var jQuery = require('jquery');
 
 /*! jQuery UI - v1.10.3 - 2013-05-03
@@ -16510,7 +16530,7 @@ $.widget( "ui.tooltip", {
 
 }( jQuery ) );
 
-},{"jquery":8}],8:[function(require,module,exports){
+},{"jquery":9}],9:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/

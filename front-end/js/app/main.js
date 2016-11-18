@@ -418,50 +418,60 @@ var sliders = require('./sliders');
       ]
      };
 
-    //magic starts here
-    var loading = new Loading('#main', guiColor, "r(0.5, 0.8, 1)#30385f-#000", function(){ 
-      var s = Snap("#main");
+    var loading = new Loading({
+      container : '#main', 
+      color : 'red',
+      linkColor : guiColor, 
+      gradient : "r(0.5, 0.8, 1)#30385f-#000", 
+      logo : 'public/logo.svg',
+      animationTime : 250,
+      aboutText : '<h1>About Us</h1><br/>' + 
+                       '<p>The visualisation is created by <a target = "_blank" href = "http://ipe.kit.edu">Institute of Data Processing and Electronics</a> of <a target = "_blank" href = "http://kit.edu">Karslruhe Institute of Technology</a> for <a target = "_blank" href = "http://www.ipe.kit.edu/english/167.php">Early Breast Cancer Detection with Ultrasound Computertomography project</a>.</p><br/>' +
+                       '<p>Breast cancer is one of the most common and fatal cancerous diseases among women. Worldwide, there are approx. 1,600,000 cases of breast cancer every year. Although the breast is not a vital organ, the number of women healed of this disease is not as large as it could be. If breast cancer is diagnosed early, patients have a good prognosis.</p><br/>' +
+                      '<p>In the project "Ultrasound Computer Tomography" (USCT) a new imaging methodology for early breast cancer detection is developed. It promises three dimensional images of the breast with high spatial resolution. Our aim is the detection of tumors with an average diameter of less than 5 mm to improve the survival probability of the patients.</p><br/>' + 
+                      '<p><a target = "_blank" href = "https://www.startnext.com/en/usct"> You can help project here!</a></p>',
+      callback : function(){ 
+        var s = Snap("#main");
 
-      s.append(Snap.parse('<foreignObject id="breast" width="' + breastWidth + 
-                               '" height="' + breastHeight + '"></foreignObject>'));
+        s.append(Snap.parse('<foreignObject id="breast" width="' + breastWidth + 
+                                 '" height="' + breastHeight + '"></foreignObject>'));
 
-      s.select('#breast').attr({
-        x: w * 0.05 + h*0.016,
-        y: h*0.04
-      });
+        s.select('#breast').attr({
+          x: w * 0.05 + h*0.016,
+          y: h*0.04
+        });
 
-      //starts tomo and gui, on the end of animation, timeout for smothness
-      setTimeout(function(){
+        //starts tomo and gui, on the end of animation, timeout for smothness
+        setTimeout(function(){
+          rcl2 = new VRC.VolumeRaycaster(tomoConfig);
 
-        rcl2 = new VRC.VolumeRaycaster(tomoConfig);
-      
-        //set presetted slice ranges
-        rcl2.setGeometryMinX(mainConf.xMin/101);
-        rcl2.setGeometryMaxX(mainConf.xMax/101);
+          //set presetted slice ranges
+          rcl2.setGeometryMinX(mainConf.xMin/101);
+          rcl2.setGeometryMaxX(mainConf.xMax/101);
 
-        rcl2.setGeometryMinY(mainConf.yMin/101);
-        rcl2.setGeometryMaxY(mainConf.yMax/101);
+          rcl2.setGeometryMinY(mainConf.yMin/101);
+          rcl2.setGeometryMaxY(mainConf.yMax/101);
 
-        rcl2.setGeometryMinZ(mainConf.zMin/101);
-        rcl2.setGeometryMaxZ(mainConf.zMax/101);
-       
+          rcl2.setGeometryMinZ(mainConf.zMin/101);
+          rcl2.setGeometryMaxZ(mainConf.zMax/101);
 
-        Modes(modesConf); 
+          Modes(modesConf); 
 
-        slidersSR = sliders(srConf);
-        slidersMS = sliders(msConf);
-        slidersTH = sliders(thConf);
+          slidersSR = sliders(srConf);
+          slidersMS = sliders(msConf);
+          slidersTH = sliders(thConf);
+        },500);
 
-      },500);
-
-      //resize action
-      var resizeEvt;
-      $(window).resize(function(){
-        clearTimeout(resizeEvt);
-        resizeEvt = setTimeout(function() {
-          window.location.href = window.location.href;
-      }, 500); 
-      });      
+        //resize action
+        var resizeEvt;
+        $(window).resize(function(){
+          clearTimeout(resizeEvt);
+          resizeEvt = setTimeout(function() {
+            window.location.href = window.location.href;
+          }, 
+          500); 
+        });      
+      }
     });
 
     /*

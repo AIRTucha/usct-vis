@@ -4,13 +4,14 @@
 **/
 var $ = require('jquery');
 var Snap = require('snap');
+var Propeller = require('./propeller');
 
-function loading(container, color, gradient, callback) {
-  
+function loading(conf) {
   var w = $(window).width();
   var h = $(window).height();
+  var animationMode = mina.easeinout;
   
-  var s = Snap(container).attr({
+  var s = Snap(conf.container).attr({
     width  : w,
     height : h
   });
@@ -66,15 +67,13 @@ function loading(container, color, gradient, callback) {
    -w*0.03, -h*0.03,
    0, -h*0.03
   ]);
-    
-  var loaded = false;
   
-  var loadingIcon;
+  var propeller;
   var logo; 
   
   //starts animation onload
   $(window).ready(function(){
-    init(callback);
+    init(conf.callback);
   });
     
  /**
@@ -90,26 +89,26 @@ function loading(container, color, gradient, callback) {
     $("body").css("overflow", "hidden")
              .css("background", "black");  
 
-    bg.attr({ fill : s.gradient(gradient) });
+    bg.attr({ fill : s.gradient(conf.gradient) });
 	  
     frame.attr({
       fill : "black",
-      stroke : "white",
+      stroke : conf.color,
       "fill-opacity" : 0,
       mask : mask
     });  
     
     // loads logo and init all other elements after that
-    Snap.load("public/logo.svg", function(f){
+    Snap.load(conf.logo, function(f){
       createAbout();
       
-      logo=f.select('#usct-logo')
+      logo = f.select('#usct-logo')
       logo.scale = w/4000;
       logo.height = 125 * logo.scale;
       logo.width = 725 * logo.scale;
       
       s.append(logo);
-
+      
       logo.transform('matrix('
         + logo.scale + ',0,0,' + logo.scale + ','
         + w*0.405 + ',' + h*0.425 + ')'
@@ -118,38 +117,25 @@ function loading(container, color, gradient, callback) {
       logo.attr({border : 0.9});     
       
       //set vertical lines on top and bottom
-      lineUp.attr({stroke : "white"}); 
-      lineDown.attr({stroke : "white"}); 		
+      lineUp.attr({stroke : conf.color}); 
+      lineDown.attr({stroke : conf.color}); 		
 
-      //set corners
-      cLeftTop.attr({
-       fill : "#fff",
-       stroke : "#fff"
-      });  
-      cLeftTop.attr({transform : 'translate('+w*0.4+','+h*0.32+')'});
-
-      cRightTop.attr({
-        fill : "#fff",
-        stroke : "#fff"
-      }); 
-      cRightTop.attr({transform:'translate(' + w*0.6 + ',' + h*0.32 + ')'});
-
-      cLeftBottom.attr({
-        fill : "#fff",
-        stroke : "#fff"
-      });  
-      cLeftBottom.attr({transform : 'translate('+w*0.4+','+h*0.58+')'});   
-
-      cRightBottom.attr({
-        fill : "#fff",
-        stroke : "#fff"
-      }); 
-      cRightBottom.attr({transform : 'translate(' + w*0.6 + ',' + h*0.58 + ')'});    
+      //set initial position for the corners
+      setTranslation(cLeftTop, 0.4, 0.32);
+      setTranslation(cRightTop, 0.6, 0.32);
+      setTranslation(cLeftBottom, 0.4, 0.58);   
+      setTranslation(cRightBottom, 0.6, 0.58); 
+      
+      //set default color for corners
+      setColor(cLeftTop);
+      setColor(cRightTop);
+      setColor(cLeftBottom)
+      setColor(cRightBottom)
        
       // animation starts
       setTimeout(function(){ 
-        startLoadingAnimation(250, mina.easeinout, callback)
-      }, 500);            
+        startLoadingAnimation(callback)
+      }, conf.animationTime * 2);            
     });
   }
  /**
@@ -158,7 +144,7 @@ function loading(container, color, gradient, callback) {
  * @param animation mode for Snap
  * @param callback executed when the loading is done
  */ 
-  function startLoadingAnimation(duration, animationMode, callback){     
+  function startLoadingAnimation(callback){     
     //main frame animation
     frame.animate({
       x : w*0.05,
@@ -166,58 +152,31 @@ function loading(container, color, gradient, callback) {
       width : w*0.9,
       height : h*0.9
       },
-      duration,animationMode
+      conf.animationTime, 
+      animationMode
      );
 
-    //corners
-    cLeftTop.animate({
-      transform : 'translate(' + w*0.05 + ',' + h*0.005 + ')'
-     },
-      duration, animationMode);
-
-    cRightTop.animate({
-     transform : 'translate(' + w*0.95 + ',' + h*0.005 + ')'
-    },
-     duration, animationMode);
-
-    cLeftBottom.animate({
-     transform : 'translate(' + w*0.05 + ',' + h*0.965 + ')'
-    },
-     duration, animationMode);
-
-    cRightBottom.animate({
-      transform : 'translate(' + w*0.95 + ',' + h*0.965 + ')'
-    },
-      duration, animationMode);
-
-    pLeftFrame.animate({
-      transform : 'translate(' + w*0.05 + ',' + h*0.4 + ')'
-    },
-      duration, animationMode);
-    pRightFrame.animate({
-     transform : 'translate(' + w*0.95 + ',' + h*0.4 + ')'
-    },                        
-     duration, animationMode);
-
-
-    // vertical lines on top and on bottom
-    lineUp.animate({
-      transform : 'translate(' + 0 + ',' + -h*0.315 + ')'
-    },
-      duration, animationMode);
-
-    lineDown.animate({
-      transform  : 'translate(' + 0 + ',' + h*0.385 + ')'
-    },
-     duration, animationMode); 
+    //corners animation
+    setAnimatedTranslation(cLeftTop, 0.05, 0.005);
+    setAnimatedTranslation(cRightTop, 0.95, 0.005);
+    setAnimatedTranslation(cLeftBottom, 0.05, 0.965);
+    setAnimatedTranslation(cRightBottom, 0.95, 0.965);
+    
+    //handles animation
+    setAnimatedTranslation(pLeftFrame, 0.05, 0.4);
+    setAnimatedTranslation(pRightFrame, 0.95, 0.4);
+    
+    //vertical lines on top and on bottom
+    setAnimatedTranslation(lineUp, 0, -0.315);
+    setAnimatedTranslation(lineDown, 0, 0.385);
     
     //logo moved to corner
     logo.animate({
-      transform : 'matrix('
-      + logo.scale + ',0,0,' + logo.scale + ','
-      + (w*0.95 - logo.width - h*0.015 )  + ',' + (h*0.92 - logo.height) + ')'
-    },            
-      duration, animationMode,
+        transform : 'matrix('
+        + logo.scale + ',0,0,' + logo.scale + ','
+        + (w*0.95 - logo.width - h*0.015 )  + ',' + (h*0.92 - logo.height) + ')'
+      },            
+      conf.animationTime, animationMode,
       function(){
       
         var logoEventHandler = s.rect(w*0.95 - logo.width - h*0.015, (h*0.92 - logo.height), logo.width, logo.height);
@@ -227,8 +186,9 @@ function loading(container, color, gradient, callback) {
         logoEventHandler.addClass('usct-logo');
       
         //start loading icon animation
-        loadingIcon = createLoadingIcon(w*0.5, h*0.47); 
-        startIconAnimation(mina.easeinout, 250);
+        propeller = Propeller(s, w*0.5, h*0.47, h*0.02, animationMode, conf.animationTime); 
+        setColor(propeller);
+        propeller.start();
       
         callback();
       }       
@@ -273,194 +233,66 @@ function loading(container, color, gradient, callback) {
     maskB.attr({fill : 'black', stroke : 'black'});
     
     pLeftB.attr({
-      stroke  : "white",
+      stroke  : conf.color,
       "opacity" : 0.5,
       "fill-opacity" : 0
     });
     
-    lineLeft.attr({stroke : "white"});
-    setColor('#ffffff')(pLeftM);
+    lineLeft.attr({stroke : conf.color});
+    setColor(pLeftM);
     
     halfFrame.attr({transform:'translate(' + x + ',' + y + ')', mask : mask});
         
     return halfFrame;
   }
-  
-  /**
-  * @function create loading icon
-  * @param x, y {int} coordinates position    
-  */
-  function createLoadingIcon(x, y){
-    x-=h*0.02; // centralizetion 
-    
-    var tl = [x, y];              // top left corner
-    var tr = [x+h*0.04, y];       // top right corner
-    var c = [x+h*0.02, y+h*0.02]; // center
-    var bl = [x, y+h*0.04];       // bottom left
-    var br = [x+h*0.04, y+h*0.04];// bottom right 
-        
-    var top = s.polyline([tl, tr, c]);    
-    var right = s.polyline([tr, br, c]);    
-    var bottom = s.polyline([bl, br, c]);    
-    var left = s.polyline([bl, tl, c]);  
-      
-    setColor('#ffffff')(top);
-    setColor('#ffffff')(bottom);
-    setColor('#ffffff')(left);
-    setColor('#ffffff')(right);
-       
-    var icon = s.group(top, bottom, left, right);  
-    
-    icon.top = top;
-    icon.bottom = bottom;
-    icon.left = left;
-    icon.right = right;
-        
-    icon.tl = tl;
-    icon.tr = tr;
-    icon.c  = c;
-    icon.bl = bl;
-    icon.br = br;
-        
-    return icon;    
-  }
-  
-  /**
-  * @function start animation for loading icon
-  * @param animation mode for Snap
-  * @param int duration 
-  */
-  function startIconAnimation(animationMode, duration){
-   //step one
-    loadingIcon.right.animate({
-      transform : 'rotate(' + 90 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-    },
-       duration,animationMode
-    );
-        
-    loadingIcon.left.animate({
-      transform : 'rotate(' + 90 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-    },                           
-      duration,animationMode
-    );   
-    
-    if(!loaded)
-      setTimeout(function(){
-        loadingStepTwo(animationMode, duration)
-      }, duration*3);    
-  }
-  
-  /**
-  * @functions different steps of loading icon's animation
-  */
-  function loadingStepTwo(animationMode, duration){  
-    loadingIcon.right.animate({
-      transform : 'rotate(' + 180 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-      },
-       duration,animationMode,
-       function(){
-        loadingIcon.right.attr({
-          transform : 'rotate(' + 0 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-        });
-       }
-    );
-        
-    loadingIcon.left.animate({
-      transform : 'rotate(' + 180 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-      },                           
-      duration,animationMode,
-      function(){
-        loadingIcon.left.attr({
-          transform : 'rotate(' + 0 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-        });
-      }                             
-    );        
-    
-    if(!loaded)
-      setTimeout(function(){
-        loadingStepThree(animationMode, duration)
-      }, duration*3);
-  }
-  function loadingStepThree(animationMode, duration){  
-    loadingIcon.top.animate({
-      transform : 'rotate(' + 90 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-    },
-       duration,animationMode
-    );
-        
-    loadingIcon.bottom.animate({
-      transform : 'rotate(' + 90 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-    },                           
-      duration,animationMode
-    );
-    
-    if(!loaded)
-      setTimeout(function(){
-        loadingStepFour(animationMode, duration)
-      }, duration*3);
-  }
-  function loadingStepFour(animationMode, duration){  
-    loadingIcon.top.animate({
-      transform : 'rotate(' + 180 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-    },
-       duration,animationMode,
-      function(){
-        loadingIcon.top.attr({
-          transform : 'rotate(' + 0 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-        });
-      }             
-    );
-        
-    loadingIcon.bottom.animate({
-      transform : 'rotate(' + 180 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-    },                           
-      duration,animationMode,
-      function(){
-        loadingIcon.bottom.attr({
-          transform : 'rotate(' + 0 +', ' + loadingIcon.c[0] +', ' + loadingIcon.c[1] + ')'
-        });
-      }                   
-    );
-    
-    if(!loaded)
-      setTimeout(function(){
-        startIconAnimation(animationMode, duration)
-      }, duration*3);
-  }
     
   /**
-  * @function function returns function which keeps color in string as closure
-  * @param color - color in string format
-  * @curr Snap.svg object - the element you want to set to the color 
+  * @function set stroke and fill colors of the object to conf.color
+  * @param Snap.svg object - the element you want to set to the color 
   */
-  function setColor(color){
-    return function sc(o){
-      o.attr({
-        fill   : color
+  function setColor(obj){
+      obj.attr({
+        fill   : conf.color,
+        stroke : conf.color
       });
-    }
+  }
+  
+  /**
+  * @function set translation for the object
+  * @param x - displacement along x axis
+  * @param y - displacement along y axis
+  */
+  function setTranslation(obj, x, y){
+    obj.attr({transform : 'translate(' + w*x + ',' + h*y + ')'});
+  }
+  
+  /**
+  * @function set animated translation for the object
+  * @param x - displacement along x axis
+  * @param y - displacement along y axis
+  */
+  function setAnimatedTranslation(obj, x, y){
+     obj.animate({
+        transform : 'translate(' + w*x + ',' + h*y + ')'
+       },
+      conf.animationTime, 
+      animationMode
+     );
   }
   
   /**
   * @function turn off the loading icon
   */
-  this.stopIcon = function (){   
-    loadingIcon.top.remove();
-    loadingIcon.right.remove();
-    loadingIcon.bottom.remove();
-    loadingIcon.left.remove();
-
-    loaded = true;   
+  this.stopIcon = function (){
+    propeller.stop();
   }
+  
   /**
   * @function drows white corners in for square in the center of screen
   * @param size of square
   */
   this.drawCorners = function(size){ 
     var h = $(window).height()/1.5;
-
-    //var x = $(window).width()*0.5-size/2;
-    //var y = $(window).height()*0.5-size/2;
     
     var x = w * 0.05 + h * 0.015;
     var y = h * 0.05 + h * 0.015;
@@ -515,19 +347,9 @@ function loading(container, color, gradient, callback) {
   
   function createAbout(){
     $('body').append('<div class = "about"><div class = "about_content"></div><div class = "about_exit"></div></div>');
-    
-    
-    
-    $('.about_content').append('<h1>About Us</h1><br/>' + 
-                       '<p>The visualisation is created by <a target = "_blank" href = "http://ipe.kit.edu">Institute of Data Processing and Electronics</a> of <a target = "_blank" href = "http://kit.edu">Karslruhe Institute of Technology</a> for <a target = "_blank" href = "http://www.ipe.kit.edu/english/167.php">Early Breast Cancer Detection with Ultrasound Computertomography project</a>.</p><br/>' +
-                       '<p>Breast cancer is one of the most common and fatal cancerous diseases among women. Worldwide, there are approx. 1,600,000 cases of breast cancer every year. Although the breast is not a vital organ, the number of women healed of this disease is not as large as it could be. If breast cancer is diagnosed early, patients have a good prognosis.</p><br/>' +
-                      '<p>In the project "Ultrasound Computer Tomography" (USCT) a new imaging methodology for early breast cancer detection is developed. It promises three dimensional images of the breast with high spatial resolution. Our aim is the detection of tumors with an average diameter of less than 5 mm to improve the survival probability of the patients.</p><br/>' + 
-                      '<p><a target = "_blank" href = "https://www.startnext.com/en/usct"> You can help project here!</a></p>');
-    
-   $('a').css({'color' : color});
-    
+   $('.about_content').append(conf.aboutText); 
+   $('a').css({'color' : conf.linkColor});
    $(".about_exit").click(function(){ $(".about").fadeOut(500)});
-    
    $(".about").hide();
   }
 }
