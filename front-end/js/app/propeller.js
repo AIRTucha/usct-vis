@@ -26,7 +26,7 @@ module.exports = function (conf) {
   */
   obj.start = function (){
     loaded = false;
-    startIconAnimation(obj, conf.animationMode, mina.easeinout);
+    startIconAnimation(obj, mina.easeinout, conf.animationTime);
     obj.attr({
         visibility: "visible"
     });

@@ -15,8 +15,6 @@ var Snap = (typeof window !== "undefined" ? window['Snap'] : typeof global !== "
 * @param - String color
 */
 function box(container, text, boxW, boxH, w, h, color) {
-  var w = $(window).width();
-  var h = $(window).height();
   var s = Snap(container);
   
   //set coordinates for elements
@@ -348,6 +346,7 @@ function loading(conf) {
           y : h*0.47,
           size : h*0.02, 
           animationTime : conf.animationTime
+         // animationMode : animationMode
         }); 
         setColor(propeller);
         propeller.start();
@@ -1218,7 +1217,7 @@ module.exports = function (conf) {
   */
   obj.start = function (){
     loaded = false;
-    startIconAnimation(obj, conf.animationMode, mina.easeinout);
+    startIconAnimation(obj, mina.easeinout, conf.animationTime);
     obj.attr({
         visibility: "visible"
     });
