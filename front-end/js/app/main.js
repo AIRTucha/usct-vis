@@ -26,15 +26,15 @@ var sliders = require('./sliders');
     var tomoConfig = {
       "domContainerId": "breast",
       "slicemaps_paths": [
-        'data/phantom1.png',
-        'data/phantom2.png',
-        'data/phantom3.png',
-        'data/phantom4.png',
-        'data/phantom5.png',
-        'data/phantom6.png',
-        'data/phantom7.png',
-        'data/phantom8.png',
-        'data/phantom9.png'
+        'public/data/phantom1.png',
+        'public/data/phantom2.png',
+        'public/data/phantom3.png',
+        'public/data/phantom4.png',
+        'public/data/phantom5.png',
+        'public/data/phantom6.png',
+        'public/data/phantom7.png',
+        'public/data/phantom8.png',
+        'public/data/phantom9.png'
         ],
         "callback" : function(){
           setTimeout(function(){
@@ -221,7 +221,7 @@ var sliders = require('./sliders');
        activeMode : mainConf.shader_name,
        modes : [
         {
-          image:'/imgs/atten.PNG',
+          image:'public/imgs/atten.PNG',
           name:'Attenuation',
           tooltip:'The model shows distribution of areas with high and low attenuation to user via brightness. So, it allows to estimate the attenuation value at the certain point of space.<br>Attenuation can be helpful in an identification of the particular lesion`s type.',
           callback : function (v) {
@@ -236,7 +236,7 @@ var sliders = require('./sliders');
           }
         },
         {
-          image:'/imgs/attenM.PNG',
+          image:'public/imgs/attenM.PNG',
           name:'Attenuation Max',
           tooltip:'The model shows only parts of breast which have highest attenuation values and allows to look at it more clear.<br>Attenuation can be helpful in an identification of the particular lesion`s type.',
           callback : function (v) {
@@ -251,7 +251,7 @@ var sliders = require('./sliders');
           }
         },
         {
-          image:'/imgs/sos.PNG',
+          image:'public/imgs/sos.PNG',
           name:'Sound Speed',
           tooltip:'The model shows you distribution of areas with high and low sound speed via brightness. So, it allows to estimate the value of sound speed at certain point of space.<br>High sound speed points doctor to the high probability on breast cancer at the point.',
           callback : function (v) {
@@ -266,7 +266,7 @@ var sliders = require('./sliders');
           }
         },
         {
-          image:'/imgs/sosM.PNG',
+          image:'public/imgs/sosM.PNG',
           name:'Sound Speed Max',
           tooltip:'The model shows user only parts of breast which have highest sound speed values and allows look at more clear.<or>High sound speed points doctor to the high probability on breast cancer at the point.',
           callback : function (v) {
@@ -281,7 +281,7 @@ var sliders = require('./sliders');
           }
         },
         {
-          image:'imgs/Refl.PNG',
+          image:'public/imgs/Refl.PNG',
           name:'Reflection',
           tooltip:'The model shows general structures of a breast in high resolution and uses the same principle with traditional ultrasound diagnostics.',
           callback : function (v) {
@@ -296,7 +296,7 @@ var sliders = require('./sliders');
           }
         },
         {
-          image:'/imgs/CuttOffSos.PNG',
+          image:'public/imgs/CuttOffSos.PNG',
           name:'CuttOff Sound Speed',
           tooltip:'Combination of reflectional image with highlighted areas there sound speed data`s values are high.<br>High sound speed points doctor to the high probability on breast cancer at the point.',
           callback : function (v) {
@@ -320,7 +320,7 @@ var sliders = require('./sliders');
           }
         },
         {
-          image:'/imgs/CuttOffAtten.PNG',
+          image:'public/imgs/CuttOffAtten.PNG',
           name:'CuttOff Attenuation',
           tooltip:'Combination of reflectional image with highlighted areas there attenuational data`s values are high.<br>Attenuation can be helpful in an identification of the particular lesion`s type.',
           callback : function (v) {
@@ -344,7 +344,7 @@ var sliders = require('./sliders');
           }
         },
         {
-          image:'/imgs/RA.PNG',
+          image:'public/imgs/RA.PNG',
           name:'Refl+Atten',
           tooltip:'Combination of reflection and attenuation allows to evaluate structure and an attenuation at the same time.<br>The reflectional data is represented by gray scale gradation and attenuation is shown via color. Human eye is more sensitive to the hue of the color than to the saturation that`s why the mode is useful when detalization of attentional data is important.',
           callback : function (v) {
@@ -368,7 +368,7 @@ var sliders = require('./sliders');
           }
         },    
         {
-          image:'/imgs/fusion.PNG',
+          image:'public/imgs/fusion.PNG',
           name:'Fusion',
           callback : function (v) {
            rcl2.setMode(v)
@@ -392,7 +392,7 @@ var sliders = require('./sliders');
           }
         },
         {
-          image:'/imgs/sr.PNG',
+          image:'public/imgs/sr.PNG',
           name:'Sos+Refl',
           tooltip:'Combination of reflection and sound speed allows to evaluate structure and sound speed at the same time.<br>The reflectional data is represented by grayscale gradation and sound speed is shown via color. The mode can be more helpful than fusion of three modalities, because it can be difficult to determine color in areas with high attenuation for normal fusion.',
           callback : function (v) {
