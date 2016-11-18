@@ -7,6 +7,9 @@ var Tooltip= require('./tooltip');
 /*
 *{     
    container : '#main',
+   width : width of screen,
+   height : height of screen,
+   activeMode : the name of shader mode which is activeted
    modes : [
     {
       image : image address (String) ,
@@ -21,12 +24,9 @@ var Tooltip= require('./tooltip');
     }
 */
 function modes(conf) {
-  var w = $(window).width();
-  var h = $(window).height();
-  var buttonSize = w / 24;
-  
+  var buttonSize = conf.width / 24;
   var s = Snap(conf.container);
-  var tl = Tooltip(conf.container);
+  var tl = Tooltip(conf.container, conf.width, conf.height);
 
   modesButtonGenerator(conf.modes);
 
@@ -43,8 +43,8 @@ function modes(conf) {
                                    
                                    'width='+ buttonSize + ' ' + 
                                    'height=' + buttonSize*1.3 +  ' ' + 
-                                   'x=' + (w*0.05 + buttonSize*(.5+i))  + ' ' +
-                                   'y=' + (h*0.95 - buttonSize*1.75) +
+                                   'x=' + (conf.width*0.05 + buttonSize*(.5+i))  + ' ' +
+                                   'y=' + (conf.height*0.95 - buttonSize*1.75) +
                                    (conf.activeMode == b.config.shader_name ? 
                                    '><div class="mode_button_active"' :  
                                    '><div class="mode_button"') +

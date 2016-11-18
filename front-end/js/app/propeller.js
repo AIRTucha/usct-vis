@@ -8,18 +8,25 @@ var s;
 
 /**
 * @function create loading icon
-* @param x, y {int} coordinates position    
+* @param{
+          container : id or class of svg container
+          x : position,
+          y : position,
+          size : size of the propeller, 
+          animationTime : durantion in milliseconds
+        }  
 */
 module.exports = function (conf) {
   s = Snap(conf.container);
   
   var obj = createLoadingIcon(conf.x, conf.y, conf.size);
   
+  /**
+  * @function turn on the loading icon
+  */
   obj.start = function (){
     loaded = false;
-    
-    startIconAnimation(obj, conf.animationMode, conf.animationTime);
-    
+    startIconAnimation(obj, conf.animationMode, mina.easeinout);
     obj.attr({
         visibility: "visible"
     });
@@ -30,7 +37,6 @@ module.exports = function (conf) {
   */
   obj.stop = function (){ 
     loaded = true 
-    
     obj.attr({
         visibility: "hidden"
     });
@@ -38,7 +44,6 @@ module.exports = function (conf) {
 
   return obj;
 }
-
 
   /**
   * @function create loading icon

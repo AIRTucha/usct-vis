@@ -14,8 +14,10 @@ require('jquery-ui');
     container : plase holder Class or ID (String)
     title : sliders block name (String)
     width : width of sliders (int)
+    height : hieght of every slider int
+    screenWidth : width of screen
+    screenHeight : height of screen
     color : String color code 
-    sliderH : hieght of every slider int
     x : int
     y : int
     //array with personal sliders settings
@@ -33,14 +35,16 @@ require('jquery-ui');
 */
  
 function sliders(conf) {
-  var w = $(window).width();
-  var h = $(window).height();
   var s = Snap(conf.container);
-  var box = Box("#main", 
-                conf.title, 
-                conf.width + h*0.06, 
-                conf.sliderH * conf.sliders.length + conf.sliderH,
-                conf.color);
+  var box = Box(
+    "#main", 
+    conf.title, 
+    conf.width + conf.screenHeight*0.06, 
+    conf.height * conf.sliders.length + conf.height,
+    conf.screenWidth,
+    conf.screenHeight,
+    conf.color
+   );
   var slider = [];
     
   //move box to right position
@@ -50,15 +54,15 @@ function sliders(conf) {
   conf.sliders.forEach(function(d,i,ds){
     var fO = s.append(Snap.parse('<foreignObject ' +                                    
                                    'width=' + conf.width + ' ' + 
-                                   'height=' + conf.sliderH +  ' ' + 
-                                   'x=' + (h*0.025 + conf.x) + ' ' +
-                                   'y=' + ((conf.sliderH*i+h*0.04) + conf.y) +
+                                   'height=' + conf.height +  ' ' + 
+                                   'x=' + (conf.screenHeight*0.025 + conf.x) + ' ' +
+                                   'y=' + ((conf.height*i+conf.screenHeight*0.04) + conf.y) +
                                    ' id=' + conf.title.replace(' ','_') + i + '>' +                                   
                                    '<div id=' + 'slider_' + conf.title.replace(' ','_') + i + ' ' +
                                    '></div></foreignObject>'));
     
     $('#slider_' + conf.title.replace(' ','_') + i)
-      .css({'width':conf.width,'margin-top':conf.sliderH/8 });    
+      .css({'width':conf.width,'margin-top':conf.height/8 });    
    
    
     

@@ -6,6 +6,19 @@ var $ = require('jquery');
 var Snap = require('snap');
 var Propeller = require('./propeller');
 
+/**
+* @function draw sci-fi frame
+* @param{
+      container : id or class of svg img
+      color : color of frame,
+      linkColor : color of links in about section, 
+      gradient : background gradient, 
+      logo : svg image for logo,
+      animationTime : animation time for loading,
+      aboutText : html for about page
+      callback : load the app
+    }
+*/
 function loading(conf) {
   var w = $(window).width();
   var h = $(window).height();
@@ -138,6 +151,7 @@ function loading(conf) {
       }, conf.animationTime * 2);            
     });
   }
+  
  /**
  * @functions start loading animation
  * @param int duration in ms
@@ -191,7 +205,6 @@ function loading(conf) {
           x : w*0.5,
           y : h*0.47,
           size : h*0.02, 
-          animationMode : animationMode, 
           animationTime : conf.animationTime
         }); 
         setColor(propeller);
@@ -360,7 +373,5 @@ function loading(conf) {
    $(".about").hide();
   }
 }
-
-
 
 module.exports = loading;

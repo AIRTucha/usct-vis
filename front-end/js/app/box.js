@@ -12,9 +12,7 @@ var Snap = require('snap');
 * @param - int hiegth
 * @param - String color
 */
-function box(container, text, boxW, boxH, color) {
-  var w = $(window).width();
-  var h = $(window).height();
+function box(container, text, boxW, boxH, w, h, color) {
   var s = Snap(container);
   
   //set coordinates for elements

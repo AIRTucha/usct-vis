@@ -12,8 +12,8 @@ var sliders = require('./sliders');
     var breastHeight = $(window).height() - h * .09 - w / 14;
     var breastWidth = boxXCalculation() - w * 0.05 - h*0.02;
 
-    var colorMapCutOff = [ 70, 100] ;
-    var colorMap = [ 0, 100] ;
+    var colorMapCutOff = [70, 100] ;
+    var colorMap = [0, 100] ;
     var isCuttOffColorMap = false;
     var guiColor = "#40f0ff";
 
@@ -69,10 +69,12 @@ var sliders = require('./sliders');
       container : '#main',
       title : 'Slice range',
       width : boxWidthCalculation(),
+      height : h*0.05,
+      screenHeight : h,
+      screenWidth : w,
       x :  boxXCalculation(),
       y : h*0.08,
       color : guiColor,
-      sliderH : h*0.05,
       sliders :[
         {
           range : true,
@@ -112,8 +114,10 @@ var sliders = require('./sliders');
      var thConf = {
       container : '#main',
       title : 'Threshold',
-      sliderH : h*0.05,
+      height : h*0.05,
       width :  boxWidthCalculation(),
+      screenWidth : w,
+      screenHeight : h,
       x :  boxXCalculation(),
       y : h*.05 * 8 + h*.24,
       color : guiColor,
@@ -157,8 +161,10 @@ var sliders = require('./sliders');
      var msConf = {
       container : '#main',
       title : 'Main settings',
-      sliderH : h*0.05,
       width : boxWidthCalculation(),
+      height : h*0.05,
+      screenWidth : w,
+      screenHeight : h,
       x :   boxXCalculation(),
       y : h*0.05 * 3 + h*0.16,
       color : guiColor,
@@ -218,6 +224,8 @@ var sliders = require('./sliders');
 
      var modesConf = {     
        container : '#main',
+       width : w,
+       height : h,
        activeMode : mainConf.shader_name,
        modes : [
         {
@@ -482,6 +490,7 @@ var sliders = require('./sliders');
               Math.round(v[0]) + '% </span> - <span style = "color : ' + guiColor + '">' + 
               Math.round(v[1]) +"% </span>"
     }
+    
     /*
     * generate right string for sliders
     */
@@ -497,7 +506,7 @@ var sliders = require('./sliders');
       return w*.9 - boxWidthCalculation() - h*0.06;
     }
 
-    function setHue(obj,v){  
+    function setHue(obj, v){  
       obj.setHMin(v[0]/100 - 0.5);
       obj.setHMax(v[1]/100);
     }

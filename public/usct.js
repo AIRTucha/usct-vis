@@ -14,7 +14,7 @@ var Snap = (typeof window !== "undefined" ? window['Snap'] : typeof global !== "
 * @param - int hiegth
 * @param - String color
 */
-function box(container, text, boxW, boxH, color) {
+function box(container, text, boxW, boxH, w, h, color) {
   var w = $(window).width();
   var h = $(window).height();
   var s = Snap(container);
@@ -148,6 +148,19 @@ var $ = require('jquery');
 var Snap = (typeof window !== "undefined" ? window['Snap'] : typeof global !== "undefined" ? global['Snap'] : null);
 var Propeller = require('./propeller');
 
+/**
+* @function draw sci-fi frame
+* @param{
+      container : id or class of svg img
+      color : color of frame,
+      linkColor : color of links in about section, 
+      gradient : background gradient, 
+      logo : svg image for logo,
+      animationTime : animation time for loading,
+      aboutText : html for about page
+      callback : load the app
+    }
+*/
 function loading(conf) {
   var w = $(window).width();
   var h = $(window).height();
@@ -280,6 +293,7 @@ function loading(conf) {
       }, conf.animationTime * 2);            
     });
   }
+  
  /**
  * @functions start loading animation
  * @param int duration in ms
@@ -333,7 +347,6 @@ function loading(conf) {
           x : w*0.5,
           y : h*0.47,
           size : h*0.02, 
-          animationMode : animationMode, 
           animationTime : conf.animationTime
         }); 
         setColor(propeller);
@@ -503,8 +516,6 @@ function loading(conf) {
   }
 }
 
-
-
 module.exports = loading;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
@@ -523,8 +534,8 @@ var sliders = require('./sliders');
     var breastHeight = $(window).height() - h * .09 - w / 14;
     var breastWidth = boxXCalculation() - w * 0.05 - h*0.02;
 
-    var colorMapCutOff = [ 70, 100] ;
-    var colorMap = [ 0, 100] ;
+    var colorMapCutOff = [70, 100] ;
+    var colorMap = [0, 100] ;
     var isCuttOffColorMap = false;
     var guiColor = "#40f0ff";
 
@@ -580,10 +591,12 @@ var sliders = require('./sliders');
       container : '#main',
       title : 'Slice range',
       width : boxWidthCalculation(),
+      height : h*0.05,
+      screenHeight : h,
+      screenWidth : w,
       x :  boxXCalculation(),
       y : h*0.08,
       color : guiColor,
-      sliderH : h*0.05,
       sliders :[
         {
           range : true,
@@ -623,8 +636,10 @@ var sliders = require('./sliders');
      var thConf = {
       container : '#main',
       title : 'Threshold',
-      sliderH : h*0.05,
+      height : h*0.05,
       width :  boxWidthCalculation(),
+      screenWidth : w,
+      screenHeight : h,
       x :  boxXCalculation(),
       y : h*.05 * 8 + h*.24,
       color : guiColor,
@@ -668,8 +683,10 @@ var sliders = require('./sliders');
      var msConf = {
       container : '#main',
       title : 'Main settings',
-      sliderH : h*0.05,
       width : boxWidthCalculation(),
+      height : h*0.05,
+      screenWidth : w,
+      screenHeight : h,
       x :   boxXCalculation(),
       y : h*0.05 * 3 + h*0.16,
       color : guiColor,
@@ -729,6 +746,8 @@ var sliders = require('./sliders');
 
      var modesConf = {     
        container : '#main',
+       width : w,
+       height : h,
        activeMode : mainConf.shader_name,
        modes : [
         {
@@ -993,6 +1012,7 @@ var sliders = require('./sliders');
               Math.round(v[0]) + '% </span> - <span style = "color : ' + guiColor + '">' + 
               Math.round(v[1]) +"% </span>"
     }
+    
     /*
     * generate right string for sliders
     */
@@ -1008,7 +1028,7 @@ var sliders = require('./sliders');
       return w*.9 - boxWidthCalculation() - h*0.06;
     }
 
-    function setHue(obj,v){  
+    function setHue(obj, v){  
       obj.setHMin(v[0]/100 - 0.5);
       obj.setHMax(v[1]/100);
     }
@@ -1030,6 +1050,9 @@ var Tooltip= require('./tooltip');
 /*
 *{     
    container : '#main',
+   width : width of screen,
+   height : height of screen,
+   activeMode : the name of shader mode which is activeted
    modes : [
     {
       image : image address (String) ,
@@ -1044,12 +1067,9 @@ var Tooltip= require('./tooltip');
     }
 */
 function modes(conf) {
-  var w = $(window).width();
-  var h = $(window).height();
-  var buttonSize = w / 24;
-  
+  var buttonSize = conf.width / 24;
   var s = Snap(conf.container);
-  var tl = Tooltip(conf.container);
+  var tl = Tooltip(conf.container, conf.width, conf.height);
 
   modesButtonGenerator(conf.modes);
 
@@ -1066,8 +1086,8 @@ function modes(conf) {
                                    
                                    'width='+ buttonSize + ' ' + 
                                    'height=' + buttonSize*1.3 +  ' ' + 
-                                   'x=' + (w*0.05 + buttonSize*(.5+i))  + ' ' +
-                                   'y=' + (h*0.95 - buttonSize*1.75) +
+                                   'x=' + (conf.width*0.05 + buttonSize*(.5+i))  + ' ' +
+                                   'y=' + (conf.height*0.95 - buttonSize*1.75) +
                                    (conf.activeMode == b.config.shader_name ? 
                                    '><div class="mode_button_active"' :  
                                    '><div class="mode_button"') +
@@ -1180,18 +1200,25 @@ var s;
 
 /**
 * @function create loading icon
-* @param x, y {int} coordinates position    
+* @param{
+          container : id or class of svg container
+          x : position,
+          y : position,
+          size : size of the propeller, 
+          animationTime : durantion in milliseconds
+        }  
 */
 module.exports = function (conf) {
   s = Snap(conf.container);
   
   var obj = createLoadingIcon(conf.x, conf.y, conf.size);
   
+  /**
+  * @function turn on the loading icon
+  */
   obj.start = function (){
     loaded = false;
-    
-    startIconAnimation(obj, conf.animationMode, conf.animationTime);
-    
+    startIconAnimation(obj, conf.animationMode, mina.easeinout);
     obj.attr({
         visibility: "visible"
     });
@@ -1202,7 +1229,6 @@ module.exports = function (conf) {
   */
   obj.stop = function (){ 
     loaded = true 
-    
     obj.attr({
         visibility: "hidden"
     });
@@ -1210,7 +1236,6 @@ module.exports = function (conf) {
 
   return obj;
 }
-
 
   /**
   * @function create loading icon
@@ -1375,8 +1400,10 @@ require('jquery-ui');
     container : plase holder Class or ID (String)
     title : sliders block name (String)
     width : width of sliders (int)
+    height : hieght of every slider int
+    screenWidth : width of screen
+    screenHeight : height of screen
     color : String color code 
-    sliderH : hieght of every slider int
     x : int
     y : int
     //array with personal sliders settings
@@ -1394,14 +1421,16 @@ require('jquery-ui');
 */
  
 function sliders(conf) {
-  var w = $(window).width();
-  var h = $(window).height();
   var s = Snap(conf.container);
-  var box = Box("#main", 
-                conf.title, 
-                conf.width + h*0.06, 
-                conf.sliderH * conf.sliders.length + conf.sliderH,
-                conf.color);
+  var box = Box(
+    "#main", 
+    conf.title, 
+    conf.width + conf.screenHeight*0.06, 
+    conf.height * conf.sliders.length + conf.height,
+    conf.screenWidth,
+    conf.screenHeight,
+    conf.color
+   );
   var slider = [];
     
   //move box to right position
@@ -1411,15 +1440,15 @@ function sliders(conf) {
   conf.sliders.forEach(function(d,i,ds){
     var fO = s.append(Snap.parse('<foreignObject ' +                                    
                                    'width=' + conf.width + ' ' + 
-                                   'height=' + conf.sliderH +  ' ' + 
-                                   'x=' + (h*0.025 + conf.x) + ' ' +
-                                   'y=' + ((conf.sliderH*i+h*0.04) + conf.y) +
+                                   'height=' + conf.height +  ' ' + 
+                                   'x=' + (conf.screenHeight*0.025 + conf.x) + ' ' +
+                                   'y=' + ((conf.height*i+conf.screenHeight*0.04) + conf.y) +
                                    ' id=' + conf.title.replace(' ','_') + i + '>' +                                   
                                    '<div id=' + 'slider_' + conf.title.replace(' ','_') + i + ' ' +
                                    '></div></foreignObject>'));
     
     $('#slider_' + conf.title.replace(' ','_') + i)
-      .css({'width':conf.width,'margin-top':conf.sliderH/8 });    
+      .css({'width':conf.width,'margin-top':conf.height/8 });    
    
    
     
@@ -1503,14 +1532,15 @@ module.exports = sliders;
 * the tooltip is located on top of the window 
 **/
 var $ = require('jquery');
-
-function tooltip(container) {
+/**
+*@param id or class of svg container
+*@param width of the screen
+*@param height of the screen
+**/
+function tooltip(container, w, h) {
   return function(obj){
-    
-    var w = $(window).width();
-    var h = $(window).height();
-    var ttH = $(window).height()/4;
-    var ttW = $(window).width()/4;
+    var ttW = w / 4;
+    var ttH = h / 4;
     var size = w / 3;
     
     return function(string){

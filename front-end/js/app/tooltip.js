@@ -3,14 +3,15 @@
 * the tooltip is located on top of the window 
 **/
 var $ = require('jquery');
-
-function tooltip(container) {
+/**
+*@param id or class of svg container
+*@param width of the screen
+*@param height of the screen
+**/
+function tooltip(container, w, h) {
   return function(obj){
-    
-    var w = $(window).width();
-    var h = $(window).height();
-    var ttH = $(window).height()/4;
-    var ttW = $(window).width()/4;
+    var ttW = w / 4;
+    var ttH = h / 4;
     var size = w / 3;
     
     return function(string){
