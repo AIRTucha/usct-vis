@@ -1,20 +1,24 @@
 /**
 * Create animated svg-icon of propeller
 **/
+var Snap = require('snap');
+
 var loaded = false;
 var s;
+
 /**
 * @function create loading icon
 * @param x, y {int} coordinates position    
 */
-module.exports = function (snap, width, height, size, animationMode, duration) {
-  s = snap;
-  var obj = createLoadingIcon(width, height, size);
+module.exports = function (conf) {
+  s = Snap(conf.container);
+  
+  var obj = createLoadingIcon(conf.x, conf.y, conf.size);
   
   obj.start = function (){
     loaded = false;
     
-    startIconAnimation(obj, animationMode, duration);
+    startIconAnimation(obj, conf.animationMode, conf.animationTime);
     
     obj.attr({
         visibility: "visible"
@@ -43,21 +47,16 @@ module.exports = function (snap, width, height, size, animationMode, duration) {
   function createLoadingIcon(x, y, size){
     x -= size; // centralizetion 
 
-    var tl = [x, y];              // top left corner
-    var tr = [x + size*2, y];       // top right corner
-    var c = [x + size, y + size]; // center
-    var bl = [x, y + size*2];       // bottom left
+    var tl = [x, y];                  // top left corner
+    var tr = [x + size*2, y];         // top right corner
+    var c = [x + size, y + size];     // center
+    var bl = [x, y + size*2];         // bottom left
     var br = [x + size*2, y + size*2];// bottom right 
 
     var top = s.polyline([tl, tr, c]);    
     var right = s.polyline([tr, br, c]);    
     var bottom = s.polyline([bl, br, c]);    
     var left = s.polyline([bl, tl, c]);  
-
-//    setColor(top);
-//    setColor(bottom);
-//    setColor(left);
-//    setColor(right);
 
     var icon = s.group(top, bottom, left, right);  
 

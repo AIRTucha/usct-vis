@@ -420,7 +420,7 @@ var sliders = require('./sliders');
 
     var loading = new Loading({
       container : '#main', 
-      color : 'red',
+      color : 'white',
       linkColor : guiColor, 
       gradient : "r(0.5, 0.8, 1)#30385f-#000", 
       logo : 'public/logo.svg',

@@ -186,7 +186,14 @@ function loading(conf) {
         logoEventHandler.addClass('usct-logo');
       
         //start loading icon animation
-        propeller = Propeller(s, w*0.5, h*0.47, h*0.02, animationMode, conf.animationTime); 
+        propeller = Propeller({
+          container : conf.container, 
+          x : w*0.5,
+          y : h*0.47,
+          size : h*0.02, 
+          animationMode : animationMode, 
+          animationTime : conf.animationTime
+        }); 
         setColor(propeller);
         propeller.start();
       

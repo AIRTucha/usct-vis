@@ -328,7 +328,14 @@ function loading(conf) {
         logoEventHandler.addClass('usct-logo');
       
         //start loading icon animation
-        propeller = Propeller(s, w*0.5, h*0.47, h*0.02, animationMode, conf.animationTime); 
+        propeller = Propeller({
+          container : conf.container, 
+          x : w*0.5,
+          y : h*0.47,
+          size : h*0.02, 
+          animationMode : animationMode, 
+          animationTime : conf.animationTime
+        }); 
         setColor(propeller);
         propeller.start();
       
@@ -924,7 +931,7 @@ var sliders = require('./sliders');
 
     var loading = new Loading({
       container : '#main', 
-      color : 'red',
+      color : 'white',
       linkColor : guiColor, 
       gradient : "r(0.5, 0.8, 1)#30385f-#000", 
       logo : 'public/logo.svg',
@@ -1162,23 +1169,28 @@ module.exports = modes;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./tooltip":7,"jquery":9}],5:[function(require,module,exports){
+(function (global){
 /**
 * Create animated svg-icon of propeller
 **/
+var Snap = (typeof window !== "undefined" ? window['Snap'] : typeof global !== "undefined" ? global['Snap'] : null);
+
 var loaded = false;
 var s;
+
 /**
 * @function create loading icon
 * @param x, y {int} coordinates position    
 */
-module.exports = function (snap, width, height, size, animationMode, duration) {
-  s = snap;
-  var obj = createLoadingIcon(width, height, size);
+module.exports = function (conf) {
+  s = Snap(conf.container);
+  
+  var obj = createLoadingIcon(conf.x, conf.y, conf.size);
   
   obj.start = function (){
     loaded = false;
     
-    startIconAnimation(obj, animationMode, duration);
+    startIconAnimation(obj, conf.animationMode, conf.animationTime);
     
     obj.attr({
         visibility: "visible"
@@ -1207,21 +1219,16 @@ module.exports = function (snap, width, height, size, animationMode, duration) {
   function createLoadingIcon(x, y, size){
     x -= size; // centralizetion 
 
-    var tl = [x, y];              // top left corner
-    var tr = [x + size*2, y];       // top right corner
-    var c = [x + size, y + size]; // center
-    var bl = [x, y + size*2];       // bottom left
+    var tl = [x, y];                  // top left corner
+    var tr = [x + size*2, y];         // top right corner
+    var c = [x + size, y + size];     // center
+    var bl = [x, y + size*2];         // bottom left
     var br = [x + size*2, y + size*2];// bottom right 
 
     var top = s.polyline([tl, tr, c]);    
     var right = s.polyline([tr, br, c]);    
     var bottom = s.polyline([bl, br, c]);    
     var left = s.polyline([bl, tl, c]);  
-
-//    setColor(top);
-//    setColor(bottom);
-//    setColor(left);
-//    setColor(right);
 
     var icon = s.group(top, bottom, left, right);  
 
@@ -1349,6 +1356,7 @@ module.exports = function (snap, width, height, size, animationMode, duration) {
       }, duration*3);
   }
   
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],6:[function(require,module,exports){
 (function (global){
 /**
