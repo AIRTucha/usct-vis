@@ -1,7 +1,7 @@
 # usct-vis
 This is a visualisation for USCT data based on Volume Ray Casting.
 
-The most part of the visualisation is represented by JavaScript code. Which is broken to two main parts:
+The most part of the visualisation is represented by JavaScript. Which is broken to two main parts:
 
 * Sci-fi-GUI library contains 6 reusable modules, which can be helpful for an implementation of similar projects.
 * main.js configurates Sci-fi-GUI to defines final appearance of the application. 
@@ -34,7 +34,7 @@ The visualisation can be called from html file via usctVis() which requires an i
     });
 ```
 
-An application can be runned localy as static content from a simple http-server or at Firefox.
+An application can be tested localy as static content from a simple http-server or at Firefox.
 
 [Demo](http://ipepc57.ipe.kit.edu:10002/)
 
