@@ -1,14 +1,40 @@
 # usct-vis
-This is a visualisation interface for USCT data based on Volume Ray Casting.
+This is a visualisation for USCT data based on Volume Ray Casting.
 
 The most part of the visualisation is represented by JavaScript code. Which is broken to two main parts:
 
-* Sci-fi-GUI library is stored in a separate folder. It contains 6 reusable modules which can be helpful for an implementation of similar projects.
-* main.js which defines an application specific stuff. The file includes 6 other modules and defines final appearance of the application vis configuration of them. 
+* Sci-fi-GUI library contains 6 reusable modules, which can be helpful for an implementation of similar projects.
+* main.js uses Sci-fi-GUI and defines final appearance of the application via configuration of the modules. 
 
-The final application is build by Browserify and stored at /public folder as usct.js. 
+The final application is build by Browserify and stored at /public/usct.js. 
 
-The visualisation can be initiated from html file via usctVis() which requires input of configuration object.
+The visualisation can be called from html file via usctVis() which requires an input of configuration object.
+
+```JavaScript
+    usctVis({
+     shader_name : "secondPassFusion",             
+     l : 100,
+     s : 100,
+     hMin : 0,
+     hMax : 100,
+     minRefl : 0,
+     minSos : 0,
+     minAtten : 0,  
+     maxRefl : 100, 
+     maxSos : 100, 
+     maxAtten : 100,
+     opacity_factor : 80, 
+     color_factor : 100,
+     xMin : 0,
+     yMin : 0,
+     zMin : 0,  
+     xMax : 100, 
+     yMax : 100, 
+     zMax : 100
+    });
+```
+
+An application can be runned localy as static content from a simple http-server or at Firefox.
 
 [Demo](http://ipepc57.ipe.kit.edu:10002/)
 
