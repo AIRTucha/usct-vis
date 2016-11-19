@@ -1,7 +1,7 @@
 var $ = require('jquery');
-var Loading = require('./loading');
-var Modes = require('./modes');
-var sliders = require('./sliders');
+var Loading = require('./sci-fi-gui/loading');
+var Modes = require('./sci-fi-gui/modes');
+var sliders = require('./sci-fi-gui/sliders');
 
 
 (function(namespace) {
