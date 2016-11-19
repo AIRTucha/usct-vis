@@ -8,7 +8,7 @@ The most part of the visualisation is represented by JavaScript code. Which is b
 
 The final application is build by Browserify and stored at /public/usct.js. 
 
-The visualisation can be called from html file via usctVis() which requires an input of configuration object.
+The visualisation can be called from html file via usctVis() which requires an input of configuration object. (Example bellow)
 
 ```JavaScript
     usctVis({
