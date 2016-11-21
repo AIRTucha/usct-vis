@@ -24,6 +24,7 @@ var Tooltip= require('./tooltip');
     }
 */
 function modes(conf) {
+  //TODO Make activeMode independent from config.shader_name
   var buttonSize = conf.width / 24;
   var s = Snap(conf.container);
   var tl = Tooltip(conf.container, conf.width, conf.height);
