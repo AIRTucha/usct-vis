@@ -35,7 +35,7 @@ The modules behaviour is defined by configuration object which is passed to them
 	   activeMode : the name of the mode which is activated
 	   modes : [
 	    {
-	      modesName : name of the mode,
+	      modeName : name of the mode,
 	      image : url for button icon,
 	      name : text under button,
 	      tooltip : tooltip for the button,
