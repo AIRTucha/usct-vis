@@ -13,7 +13,7 @@ It also contains Propeller module which is utilised by Loading to create loading
 The modules behaviour is defined by configuration object which is passed to them. You can see an explanation of the configurations objects’ structures below:
 
 # Loading
-‘’’’ JavaSctipt
+``` JavaSctipt
 {
 	      container : id or class of svg img
 	      color : main color ,
@@ -24,10 +24,10 @@ The modules behaviour is defined by configuration object which is passed to them
 	      aboutText : html for about page as a single string
 	      callback : called when animation is finished
 }    
-‘’’’
+```
 
 # Modes
-‘’’’ JavaSctipt
+``` JavaSctipt
 {
   	   container : id or class of svg img
 	   width : width of screen,
@@ -44,10 +44,10 @@ The modules behaviour is defined by configuration object which is passed to them
 	      }
 	    }
 }
-‘’’’
+```
 
 # Sliders
-‘’’’ JavaSctipt
+``` JavaSctipt
 {
 	    container : place holder Class or ID 
 	    title : sliders block name 
@@ -72,11 +72,11 @@ The modules behaviour is defined by configuration object which is passed to them
 	      },
 
 }
-‘’’’
+```
 
 #Propeller
 
-‘’’’ JavaSctipt
+``` JavaSctipt
 {
   		  container : id or class of svg container
 	          x : position,
@@ -84,6 +84,6 @@ The modules behaviour is defined by configuration object which is passed to them
 	          size : size of the propeller, 
 	          animationTime : duration in milliseconds
 }
-‘’’’
+```
 
 
